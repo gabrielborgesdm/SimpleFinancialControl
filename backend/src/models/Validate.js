@@ -1,28 +1,17 @@
 const validator = require("validator")
 
-class Validate {
+class Validate{
     constructor () {
-        this.status = 200
         this.errors = []
-        this.HasError = 0
-    }
-
-    getResponse = () =>{
-        let response = {}
-        response.status = this.status
-        if (this.HasError){
-            response.errors = this.errors
-        }
-        return response
     }
 
     validateField(fieldName, fieldValue, fieldType) {
         if(fieldValue) {
             fieldValue = this.sanitize(fieldValue)
             fieldValue = (fieldType !== "string") ? this.validateAccordingToType(fieldValue, fieldType) : fieldValue
-            fieldValue = (fieldValue) ? fieldValue : this.addError(fieldName, "invalid")
+            fieldValue = (fieldValue) ? fieldValue : this.createError(fieldName, "invalid")
         } else{
-            fieldValue = this.addError(fieldName, "missing")
+            fieldValue = this.createError(fieldName, "missing")
         }
         return fieldValue
     }
@@ -38,18 +27,15 @@ class Validate {
         return fieldValue
     }
 
-    addError(fieldName, state = "invalid"){
+    createError (fieldName, state = "invalid"){
         this.status = 400
-        this.HasError = 1
-        this.errors.push(this.buildErrorBody(fieldName, state))
-        return false
+        this.success = false
+        this.errors.push({
+            "name": fieldName,
+            "state": state,
+            "message" : `${fieldName} is ${state}`
+        })    
     }
-    
-    buildErrorBody = (fieldName, state) => ({
-        "fieldName": fieldName,
-        "state": state,
-        "message" : `${fieldName} is ${state}`
-    })
 
 }
 
