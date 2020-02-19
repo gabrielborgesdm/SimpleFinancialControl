@@ -6,10 +6,10 @@ It uses [Bcrypt](https://www.npmjs.com/package/bcrypt) in order to hash the user
 
 ### Instalation ###
 1. Create a .env file and add the next paramters:
-`
+```
 ACCESS_TOKEN_SECRET=[jwt signature]
 DATABASE_ACCESS_LINK=[mongo Db Link]
 PORT=[port] //Whatever port you want, it could be 8000, for an example
-`
+```
 2. Run `npm init` to install all the packages
 3. Run `npm start` to init the server
