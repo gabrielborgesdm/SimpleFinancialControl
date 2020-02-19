@@ -28,7 +28,7 @@ class Validate{
     }
 
     createError (fieldName, state = "invalid"){
-        this.status = 400
+        this.status = 200
         this.success = false
         this.errors.push({
             "name": fieldName,

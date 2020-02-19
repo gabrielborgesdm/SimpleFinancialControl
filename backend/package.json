@@ -1,9 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.14.1"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "devStart": "nodemon app.js"
   },
@@ -14,6 +18,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-ip": "^1.0.3",
     "express-validator": "^6.3.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.10",

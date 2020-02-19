@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const express = require('express')
+const expressip = require('express-ip')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -8,7 +9,7 @@ const routes = require('./src/routes')
 
 const app = express()
 
-mongoose.connect('', 
+mongoose.connect(process.env.DATABASE_ACCESS_LINK, 
 {
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -16,6 +17,8 @@ mongoose.connect('',
 });
 
 app.use(cors())
+app.use(express.static(__dirname))
 app.use(express.json())
+app.use(expressip().getIpInfoMiddleware)
 app.use(routes)
-app.listen(3334)
+app.listen(process.env.PORT)
