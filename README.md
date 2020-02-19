@@ -5,7 +5,7 @@ It's an online dashboard application divided in three directories: backend, webA
 It uses [Bcrypt](https://www.npmjs.com/package/bcrypt) in order to hash the user's password and [JSON Web Tokens](https://jwt.io/) in order to authorizate access to the dashboard panel.
 
 ### Instalation ###
-1. Create a .env file ìnto the backend directory, then and add the next paramters:
+1. Create a .env file into the backend root directory, then and add the next paramters:
 ```
 ACCESS_TOKEN_SECRET=[jwt signature]
 DATABASE_ACCESS_LINK=[mongo Db Link]
