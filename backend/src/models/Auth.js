@@ -28,6 +28,19 @@ module.exports = {
         let account = await Account.findOne(userObject)
         return account
     },
+
+    async confirmAccount(_id){
+        let account = await module.exports.getAccount({_id})
+        try {
+            account.isActive = true
+            await account.save()
+            account = true
+        } catch (error) {
+            account = false
+        }
+    
+        return account
+    }
         
 }
 

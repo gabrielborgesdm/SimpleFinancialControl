@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 const express = require('express')
-const expressip = require('express-ip')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -19,6 +18,5 @@ mongoose.connect(process.env.DATABASE_ACCESS_LINK,
 app.use(cors())
 app.use(express.static(__dirname))
 app.use(express.json())
-app.use(expressip().getIpInfoMiddleware)
 app.use(routes)
 app.listen(process.env.PORT)

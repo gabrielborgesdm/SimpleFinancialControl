@@ -14,6 +14,7 @@ const AccountSchema = new Schema({
         unique: true,
     },
     hash: { type: String, required: true },
+    isActive: { type: Boolean, required: false, default: false },
 }, {
     timestamps: true
 }, {collection: 'webDashboard'});
