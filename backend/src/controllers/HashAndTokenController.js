@@ -5,9 +5,9 @@ const authenticateToken = async function(req, res, next) {
     const token = authHeader && authHeader.split(' ')[1]
     const requestIp = getIp(req) 
     if(!token) return res.status(401).json({"state": "Unauthorized"})
-    account = HashAndToken.verifyToken(token, requestIp)
-    if(!account) return res.status(403).json({"state": "Forbidden"})
-    req.user = account
+    let _id = await HashAndToken.verifyToken(token, requestIp)
+    if(!_id) return res.status(403).json({"state": "Forbidden"})
+    req.user = {_id}
     next()
 }
 
@@ -17,7 +17,7 @@ const generateToken = (payload) => HashAndToken.generateAccessToken(payload)
 
 const hashPassword = async (password) => await HashAndToken.hashPassword(password)
 
-const decodeEmailToken = async (token) => await HashAndToken.decodeEmailToken(token)
+const verifyToken = async (token, ip) => await HashAndToken.verifyToken(token, ip)
 
 const getIp = (req) => req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
@@ -26,7 +26,7 @@ module.exports = {
     verifyPassword,
     generateToken,
     hashPassword,
-    decodeEmailToken,
+    verifyToken,
     getIp
 }
 

@@ -13,7 +13,7 @@ module.exports = {
         let decoded
         try {
             decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-            decoded = (decoded.ip == requestIp) ? decoded : false
+            decoded = (decoded.ip == requestIp) ? decoded._id : false
         } catch(err) {
             decoded = false
         }

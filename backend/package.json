@@ -1,10 +1,9 @@
 {
-  "name": "server",
+  "name": "backend",
   "version": "1.0.0",
   "engines": {
     "node": "12.14.1"
   },
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
@@ -27,5 +26,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
-  }
+  },
+  "description": ""
 }

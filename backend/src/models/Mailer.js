@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer")
+const path = require("path")
 const hbs = require("nodemailer-express-handlebars")
 class Mailer {
     constructor () {
@@ -15,15 +16,17 @@ class Mailer {
             }
         })
 
-        transport.use("compile", hbs({
+        let hbsData = {
             viewEngine: {
                 extName: '.handlebars',
-                partialsDir: 'src/views/emailTemplate/',
-                layoutsDir: 'src/views/emailTemplate/',
-                defaultLayout: "confirmAccountTemplate.handlebars"
+                partialsDir: path.join(__dirname, '../views/emailTemplate'),
+                layoutsDir: path.join(__dirname, '../views/emailTemplate'),
+                defaultLayout: null
             },
-            viewPath: "src/views/emailTemplate/"
-        }))
+            viewPath: path.join(__dirname, "../views/emailTemplate")
+        }
+
+        transport.use("compile", hbs(hbsData))
         this.transport = transport
     }
 
@@ -31,7 +34,7 @@ class Mailer {
     setTo = (to) => this.to = to
     setSubject = (subject) => this.subject = subject
     setText = (text) => this.text = text
-    setHtmlTemplate = (htmlTemplate) => this.htmlTemplate = htmlTemplate
+    setHtmlTemplate = (htmlTemplate) => this.htmlTemplate = htmlTemplate 
     setContext = (context) => this.context = context
 
 
@@ -47,6 +50,7 @@ class Mailer {
                 context: this.context
             }) 
         } catch (error) {
+            console.log(error)
             info = false
         }
         return info

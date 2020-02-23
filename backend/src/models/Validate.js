@@ -5,7 +5,8 @@ class Validate{
         this.errors = []
     }
 
-    validateField(fieldName, fieldValue, fieldType) {
+    validateField(fieldName, fieldValue) {
+        let fieldType = (fieldName == "email") ? "email" : "string"
         if(fieldValue) {
             fieldValue = this.sanitize(fieldValue)
             fieldValue = (fieldType !== "string") ? this.validateAccordingToType(fieldValue, fieldType) : fieldValue

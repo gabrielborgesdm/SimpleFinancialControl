@@ -14,14 +14,19 @@ module.exports = {
         return (success) ? account : false
     },
 
-    validateAndBuildUserObject (name, email, password){
+    validateAndBuildUserObject (userObject){
         let validate = new Validate()
-        let user = {
-            "name" : validate.validateField("name", name, "string"),
-            "email" : validate.validateField("email", email, "email"),
-            "password" : validate.validateField("password", password, "string" ) 
+        for (let [key, value] of Object.entries(userObject)) {
+            value = validate.validateField(key, value)
         }
-        return (validate.errors.length > 0) ? validate.errors : user
+        
+        return (validate.errors.length > 0) ? validate.errors : userObject
+    },
+
+    validateEmail(email){
+        let validate = new Validate()
+        email = validate.validateField("email", email, "email")
+        return (validate.errors.length > 0) ? validate.errors : email
     },
 
     async getAccount(userObject){
@@ -34,6 +39,18 @@ module.exports = {
         try {
             account.isActive = true
             await account.save()
+            account = true
+        } catch (error) {
+            account = false
+        }
+    
+        return account
+    },
+
+    async updateAccount(_id, update){
+        let account
+        try {
+            account = await Account.findOneAndUpdate(_id, update);
             account = true
         } catch (error) {
             account = false

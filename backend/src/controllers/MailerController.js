@@ -10,6 +10,16 @@ const sendEmailConfirmation = async (name, email, token, url) => {
     mailer.sendMessage()
 }
 
+const sendRecoverPassword = async (name, email, token, frontendRecoverURL) => {
+    mailer.setFrom(process.env.EMAIL_USER)
+    mailer.setTo(email)
+    mailer.setSubject("Recover your account.")
+    mailer.setHtmlTemplate("recoverPasswordTemplate")
+    mailer.setContext({name, "link": `${frontendRecoverURL}/${token}`})
+    mailer.sendMessage()
+}
+
 module.exports = {
-    sendEmailConfirmation
+    sendEmailConfirmation,
+    sendRecoverPassword
 }
