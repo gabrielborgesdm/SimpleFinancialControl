@@ -19,6 +19,7 @@ router.post('/accounts/recoverPassword/', AuthController.recoverPassword)//new p
 
 router.get('/transactions/getTransactions', TransactionController.getTransactions)
 router.post('/transactions/postTransaction', TransactionController.postTransaction)
+router.post('/transactions/deleteTransaction', TransactionController.deleteTransaction)
 
 
 

@@ -17,11 +17,14 @@ const getTransactions = async (req, res) =>{
 
 const postTransaction = async (req, res) =>{
     const response = new ResponseBuilder()
-    
     const userId = req.user._id
-    
-    const {amount, details, recordDate} = req.body
-    const transactionObject = await buildTransactionObject(userId, amount, details, recordDate, response)
+    const {amount, details, transactionDate} = req.body
+    const transactionObject = await buildTransactionObject([
+        ["userId", "string", userId], 
+        ["amount", "float", amount, {"toFixed": 2}], 
+        ["details", "string", details], 
+        ["transactionDate", "date", transactionDate]
+    ], response)
     
     if(response.checkSuccess()) {
         const transaction = await Transaction.postRecord(transactionObject)
@@ -35,13 +38,8 @@ const postTransaction = async (req, res) =>{
     return res.json(response.getParams())
 }
 
-const buildTransactionObject = async (userId, amount, details, recordDate, response) => {
-    let inputObject = await validate.validateInputArray([
-        ["userId", "string", userId], 
-        ["amount", "float", amount, {"toFixed": 2}], 
-        ["details", "string", details], 
-        ["transactionDate", "date", recordDate]
-    ])
+const buildTransactionObject = async (inputObject, response) => {
+    inputObject = await validate.validateInputArray(inputObject)
     if(inputObject.errors) {
         response.addMultipleErrors(inputObject.errors)
     } else{
@@ -57,7 +55,48 @@ const buildTransactionObject = async (userId, amount, details, recordDate, respo
     return inputObject
 }
 
+const updateTransaction = async (req, res) =>{
+    const response = new ResponseBuilder()
+    const userId = req.user._id
+    const {_id,  amount, details, transactionDate} = req.body
+    const transactionObject = await buildTransactionObject([
+        ["_id", "string", _id], 
+        ["userId", "string", userId], 
+        ["amount", "float", amount, {"toFixed": 2}], 
+        ["details", "string", details], 
+        ["transactionDate", "date", transactionDate]
+    ], response)
+    if(response.checkSuccess()) {
+        const transaction = await Transaction.putRecord({"_id": transactionObject._id}, transactionObject)
+        if(transaction) {
+            response.addParams({transaction})
+        } else {
+            response.addError("transaction", "operation failed", "It wasn't possible to update the transaction")
+        } 
+    }
+    return res.json(response.getParams())
+}
+
+const deleteTransaction = async (req, res) =>{
+    const response = new ResponseBuilder()
+    const userId = req.user._id
+    const {_id} = req.body
+    const transactionObject = await validate.validateInputArray([["_id", "string", _id]])
+    if (transactionObject.errors) response.addMultipleErrors(transactionObject.errors)
+    if(response.checkSuccess()) {
+        const transaction = await Transaction.deleteRecord({"_id": transactionObject._id})
+        if(transaction) {
+            response.addParams({transaction})
+        } else {
+            response.addError("transaction", "operation failed", "It wasn't possible to delete the transaction")
+        } 
+    }
+    return res.json(response.getParams())
+}
+
 module.exports = {
     getTransactions,
-    postTransaction
+    postTransaction,
+    updateTransaction,
+    deleteTransaction
 }

@@ -18,18 +18,29 @@ module.exports = {
         try{    
             success = await transaction.save()
         } catch(error) {
-            console.log(error)
             success = false
         }
         return success
     },
-    
-    validateAndBuildTransactionObject (transactionObject){
-        let validate = new Validate()
-        for (let [key, value] of Object.entries(transactionObject)) {
-            value = validate.validateField(key, value)
+
+    async putRecord(_id, filterObject){
+        let success
+        try{    
+             success = await Transaction.updateOne(_id, filterObject)
+        } catch(error) {
+            success = false
         }
-        
-        return (validate.errors.length > 0) ? validate.errors : transactionObject
+        return success
     },
+
+    async deleteRecord(_id){
+        let success
+        try{    
+            success = await Transaction.deleteOne(_id)
+        } catch(error) {
+            success = false
+        }
+        return success
+    }
+
 }

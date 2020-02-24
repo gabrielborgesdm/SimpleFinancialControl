@@ -16,5 +16,6 @@ EMAIL_USER=[E-mail service user]
 EMAIL_PASSWORD=[E-mail service password]
 
 ```
-2. Run `npm init` to install all the packages
-3. Run `npm start` to init the server
+2. Run `npm init` to initiate the project
+3. Run `npm install` to install all the packages
+4. Run `npm start` to start the server
