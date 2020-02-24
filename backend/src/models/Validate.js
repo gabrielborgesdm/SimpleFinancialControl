@@ -5,10 +5,12 @@ class Validate{
         this.errors = []
     }
 
-    async validateField(fieldName, fieldType, fieldValue) {
+    async validateField(fieldName, fieldType, fieldValue, fieldOptions) {
+        
         if(fieldValue) {
-            fieldValue = this.sanitize(fieldValue)
+            fieldValue = (typeof fieldValue == "string") ? this.sanitize(fieldValue) : fieldValue
             fieldValue = await this.validateAccordingToType(fieldValue, fieldType)
+            if (fieldOptions) fieldValue = this.checkOptions(fieldValue, fieldOptions)
             fieldValue = (fieldValue) ? fieldValue : this.createError(fieldName, "invalid")
         } else{
             fieldValue = this.createError(fieldName, "missing")
@@ -19,12 +21,33 @@ class Validate{
     sanitize = (value) => validator.escape(value)
 
     async validateAccordingToType(fieldValue, fieldType){
-        fieldValue = this.sanitize(fieldValue)
         switch (fieldType) {
             case "email":
                 fieldValue = await (validator.isEmail(fieldValue)) ? fieldValue : false
                 break
+            case "float":
+                if(typeof fieldValue !== "number") fieldValue = validator.toFloat(fieldValue)
+                break
+            case "date":
+                fieldValue = fieldValue.toString()
+                fieldValue = validator.toDate(fieldValue)
+                break
             
+        }
+        return fieldValue
+    }
+
+    checkOptions(fieldValue, fieldOptions){
+        if(fieldOptions.toFixed){
+            fieldValue = fieldValue.toFixed(fieldOptions.toFixed)
+        }
+       
+        if (fieldOptions.enum) {
+            let valid = false
+            fieldOptions.enum.forEach(element => {
+                valid = (fieldValue == element) ? true : valid
+            })
+            fieldValue = (valid) ? fieldValue : false
         }
         return fieldValue
     }

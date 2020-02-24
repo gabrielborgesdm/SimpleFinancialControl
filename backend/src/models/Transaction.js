@@ -1,24 +1,24 @@
-const Record = require("./schemas/Transaction")
+const Transaction = require("./schemas/Transaction")
 const Validate = require("../models/Validate")
 
 module.exports = {
     async getRecords(filter){
-        let transactions
+        let transaction
         try{    
-            transactions = await Transactions.find(filter)
+            transaction = await Transaction.find(filter)
         } catch(error) {
-            transactions = false
+            transaction = false
         }
-        return transactions
+        return transaction
     },
 
     async postRecord(dataObject){
-        const transaction = new Transactions(dataObject)
+        const transaction = new Transaction(dataObject)
         let success
         try{    
-            
-            success = transaction.save()
+            success = await transaction.save()
         } catch(error) {
+            console.log(error)
             success = false
         }
         return success

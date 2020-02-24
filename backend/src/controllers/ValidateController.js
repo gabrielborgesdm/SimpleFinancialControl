@@ -10,7 +10,8 @@ module.exports = {
             let fieldName = input[0]
             let fieldType = input[1]
             let fieldValue = input[2]
-            value = await validate.validateField(fieldName, fieldType, fieldValue)
+            let fieldOptions = (input[3]) ? input[3] : null
+            value = await validate.validateField(fieldName, fieldType, fieldValue, fieldOptions)
             fieldObject[fieldName] = value
             if (value) inputObject = {...inputObject, ...fieldObject}
         }
