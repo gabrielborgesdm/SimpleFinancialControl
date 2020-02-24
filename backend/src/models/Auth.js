@@ -1,5 +1,4 @@
-const Validate = require("../models/Validate")
-const Account = require("../models/Account")
+const Account = require("./schemas/Account")
 
 module.exports = {
 
@@ -12,15 +11,6 @@ module.exports = {
             success = false
         }   
         return (success) ? account : false
-    },
-
-    validateAndBuildUserObject (userObject){
-        let validate = new Validate()
-        for (let [key, value] of Object.entries(userObject)) {
-            value = validate.validateField(key, value)
-        }
-        
-        return (validate.errors.length > 0) ? validate.errors : userObject
     },
 
     validateEmail(email){
@@ -50,7 +40,7 @@ module.exports = {
     async updateAccount(_id, update){
         let account
         try {
-            account = await Account.findOneAndUpdate(_id, update);
+            account = await Account.updateOne(_id, update);
             account = true
         } catch (error) {
             account = false

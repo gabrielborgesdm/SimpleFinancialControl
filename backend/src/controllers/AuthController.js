@@ -3,6 +3,7 @@ const Auth = require("../models/Auth")
 const HashAndToken = require("./HashAndTokenController")
 const MailerController = require("./MailerController")
 const ResponseBuilder = require("./ResponseBuilder")
+const validate = require("./ValidateController")
 
 const getAccount = async function(req, res){
     const response = new ResponseBuilder()
@@ -22,14 +23,17 @@ const getAccount = async function(req, res){
 
 const signIn = async function(req, res){
     const response = new ResponseBuilder()
-    const {name, email, password} = req.body
-    let userInput = await validateUserInput({name, email, password})
+    const { email, password } = req.body
+    let userInput = await validate.validateInputArray([
+        ["email", "email", email], 
+        ["password", "string", password]
+    ])
     let account = {}
-    if (userInput.email){
+    if (!userInput.errors){
         account = await Auth.getAccount({"email": userInput.email}) 
         if(!account) response.addError("account", "nonexistent", "Account does not exist")
     } else {
-        response.addMultipleErrors(userInput)
+        response.addMultipleErrors(userInput.errors)
     } 
     await login(account, userInput, req, response)
     return res.json(response.getParams())
@@ -51,22 +55,22 @@ const login = async (account, userInput, req, response) =>{
 const signUp = async function(req, res){
     const response = new ResponseBuilder()
     const {name, email, password} = req.body
-    let userInput = await validateUserInput({name, email, password})
-    if(userInput.email){
+    let userInput = await validate.validateInputArray([
+        ["name", "string", name], 
+        ["email", "email", email], 
+        ["password", "string", password]
+    ])
+    if(!userInput.errors){
         let accountExists = await Auth.getAccount({"email": userInput.email})
         if (accountExists) response.addError("email", "unavailable", "Email is unavailable")
     } else {
-        response.addMultipleErrors(userInput)
+        response.addMultipleErrors(userInput.errors)
         userInput = false
     }
+    
     let account = (response.checkSuccess()) ? await createAccount(userInput, response) : false
     if (response.checkSuccess()) sendEmailConfirmation(account, req.get("host"), HashAndToken.getIp(req))
     return res.json(response.getParams())
-}
-
-const validateUserInput = async (inputObject, response) => {
-    inputObject =  await Auth.validateAndBuildUserObject(inputObject)
-    return inputObject
 }
 
 const createAccount = async (userInput, response) =>{
@@ -93,9 +97,12 @@ const passwordRecovery = async (req, res) =>  {
     let account
     const ip = HashAndToken.getIp(req)
     let {email, frontendRecoverURL} = req.body
-    let inputObject = await validateUserInput({email, frontendRecoverURL})
-    if(!inputObject.email) {
-        response.addMultipleErrors(inputObject)
+    let inputObject = await validate.validateInputArray([
+        ["email", "email", email],
+        ["frontendRecoverURL", "string", frontendRecoverURL]
+    ])
+    if(inputObject.errors) {
+        response.addMultipleErrors(inputObject.errors)
     } else{
         email = inputObject.email
         frontendRecoverURL = inputObject.frontendRecoverURL
@@ -117,18 +124,17 @@ const recoverPassword = async (req, res) =>  {
     const response = new ResponseBuilder()
     let password = req.body.password
     const _id = req.user._id
-    
     let updateAccount
-    userInput = await validateUserInput({password})
-    if(!userInput.password) {
-        response.addMultipleErrors(userInput)
-        console.log("teste")
+    userInput = await validate.validateInputArray([["password", "string", password]])
+    if(userInput.errors) {
+        response.addMultipleErrors(userInput.errors)
     } else{
         password = userInput.password
     }
     if(response.checkSuccess()){
         let hash = await HashAndToken.hashPassword(password)
-        updateAccount = await Auth.updateAccount(_id, {hash})
+        console.log("asd")
+        updateAccount = await Auth.updateAccount({_id}, {hash})
     }
     if(updateAccount){
         response.addParams({"message": "Account updated with success"})

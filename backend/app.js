@@ -12,8 +12,7 @@ mongoose.connect(process.env.DATABASE_ACCESS_LINK,
 {
     useCreateIndex: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
+    useUnifiedTopology: true
 });
 
 app.use(cors())

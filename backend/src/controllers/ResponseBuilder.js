@@ -27,7 +27,9 @@ class Response {
 
     addMultipleErrors(errors){
         this.body.success = false
+        if(!this.body.errors) this.body.errors = []
         this.body.errors.push(...errors)
+        
     }
 
     checkSuccess = () => this.body.success

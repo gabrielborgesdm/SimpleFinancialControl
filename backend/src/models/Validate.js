@@ -5,11 +5,10 @@ class Validate{
         this.errors = []
     }
 
-    validateField(fieldName, fieldValue) {
-        let fieldType = (fieldName == "email") ? "email" : "string"
+    async validateField(fieldName, fieldType, fieldValue) {
         if(fieldValue) {
             fieldValue = this.sanitize(fieldValue)
-            fieldValue = (fieldType !== "string") ? this.validateAccordingToType(fieldValue, fieldType) : fieldValue
+            fieldValue = await this.validateAccordingToType(fieldValue, fieldType)
             fieldValue = (fieldValue) ? fieldValue : this.createError(fieldName, "invalid")
         } else{
             fieldValue = this.createError(fieldName, "missing")
@@ -19,11 +18,13 @@ class Validate{
 
     sanitize = (value) => validator.escape(value)
 
-    validateAccordingToType(fieldValue, fieldType){
+    async validateAccordingToType(fieldValue, fieldType){
+        fieldValue = this.sanitize(fieldValue)
         switch (fieldType) {
             case "email":
-                fieldValue = (validator.isEmail(fieldValue)) ? fieldValue : false
+                fieldValue = await (validator.isEmail(fieldValue)) ? fieldValue : false
                 break
+            
         }
         return fieldValue
     }
@@ -35,7 +36,8 @@ class Validate{
             "name": fieldName,
             "state": state,
             "message" : `${fieldName} is ${state}`
-        })    
+        })
+        return false 
     }
 
 }
