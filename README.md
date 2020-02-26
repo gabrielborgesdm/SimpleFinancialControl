@@ -1,5 +1,5 @@
 # Simple Financial Control #
-It's a financial application that helps you to deal with your finances. It is divided in three main folders: backend, webApp and mobileApp. The backend is a Rest API made with Node.js and both Web and Mobile applications were respectively developed using React and React Native.
+This is the backend of a financial application that helps you to deal with your finances, it's a Rest API App made with Node.js.
 
 ## Api Rest Backend ##
 It uses [Bcrypt](https://www.npmjs.com/package/bcrypt) in order to hash the user's password and [JSON Web Tokens](https://jwt.io/) in order to authorizate access to the dashboard panel.
