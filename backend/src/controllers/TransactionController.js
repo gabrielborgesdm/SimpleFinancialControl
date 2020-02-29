@@ -1,10 +1,11 @@
 const Transaction = require("../models/Transaction")
 const validate = require("./ValidateController")
 const ResponseBuilder = require("./ResponseBuilder")
+const Auth = require("../models/Auth")
 
 const getTransactions = async (req, res) =>{
     const response = new ResponseBuilder()
-    
+    const _id = req.params.id
     const userId = req.user._id
     const transactions = await Transaction.getRecords({userId})
     if(transactions) {
@@ -25,7 +26,14 @@ const postTransaction = async (req, res) =>{
         ["details", "string", details], 
         ["transactionDate", "date", transactionDate]
     ], response)
-    
+    if(response.checkSuccess()){
+        const account = await Auth.getAccount({"_id": req.user._id})
+        if(account) {
+            if(!account.isActive) response.addError("account", "nonexistent", "Account does not exist") 
+        } else {
+            response.addError("account", "nonexistent", "Account does not exist")
+        }
+    }
     if(response.checkSuccess()) {
         const transaction = await Transaction.postRecord(transactionObject)
         if(transaction) {
@@ -58,7 +66,8 @@ const buildTransactionObject = async (inputObject, response) => {
 const updateTransaction = async (req, res) =>{
     const response = new ResponseBuilder()
     const userId = req.user._id
-    const {_id,  amount, details, transactionDate} = req.body
+    const _id = req.params.id
+    const { amount, details, transactionDate} = req.body
     const transactionObject = await buildTransactionObject([
         ["_id", "string", _id], 
         ["userId", "string", userId], 
@@ -67,7 +76,7 @@ const updateTransaction = async (req, res) =>{
         ["transactionDate", "date", transactionDate]
     ], response)
     if(response.checkSuccess()) {
-        const transaction = await Transaction.putRecord({"_id": transactionObject._id}, transactionObject)
+        const transaction = await Transaction.putRecord({"_id": transactionObject._id, "userId": userId}, transactionObject)
         if(transaction) {
             response.addParams({transaction})
         } else {

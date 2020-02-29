@@ -21,6 +21,7 @@ class Validate{
     sanitize = (value) => validator.escape(value)
 
     async validateAccordingToType(fieldValue, fieldType){
+        fieldValue = fieldValue.toString()
         switch (fieldType) {
             case "email":
                 fieldValue = await (validator.isEmail(fieldValue)) ? fieldValue : false

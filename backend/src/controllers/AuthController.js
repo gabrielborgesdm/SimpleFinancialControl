@@ -88,9 +88,10 @@ const sendEmailConfirmation = (account, url, ip) => {
 
 const confirmEmail = async (req, res) => {
     const _id = await HashAndToken.verifyToken(req.params.token, HashAndToken.getIp(req))
-    const accountConfirmed = await Auth.confirmAccount(_id)
+    const accountConfirmed = await Auth.confirmAccount({_id})
     res.json({accountConfirmed})
 }
+
 
 const passwordRecovery = async (req, res) =>  {
     const response = new ResponseBuilder()
@@ -109,6 +110,7 @@ const passwordRecovery = async (req, res) =>  {
     }
     if(response.checkSuccess()){
         account = await Auth.getAccount({email})
+        if (!account.isActive) response.addError("account", "needs confirmation", "Your account needs to be confirmed")
         if(!account) response.addError("account", "nonexistent", "Account does not exist")
     }
     if(response.checkSuccess()){
@@ -130,18 +132,18 @@ const recoverPassword = async (req, res) =>  {
         response.addMultipleErrors(userInput.errors)
     } else{
         password = userInput.password
+        account = await Auth.getAccount({_id})
+        if (!account.isActive) response.addError("account", "needs confirmation", "Your account needs to be confirmed")
     }
-    if(response.checkSuccess()){
+    if(response.checkSuccess()) {
         let hash = await HashAndToken.hashPassword(password)
-        console.log("asd")
-        updateAccount = await Auth.updateAccount({_id}, {hash})
-    }
-    if(updateAccount){
-        response.addParams({"message": "Account updated with success"})
-    } else {
-        response.addError("account", "couldn't update", "It wasn't possible to update your account")
-    }
-        
+        updateAccount = await Auth.updateAccount({_id, isActive: true}, {hash})
+        if(updateAccount) {
+            response.addParams({"message": "Account updated with success"})
+        } else {
+            response.addError("account", "couldn't update", "It wasn't possible to update your account")
+        }
+    }     
     return res.json(response.getParams())
 }
 

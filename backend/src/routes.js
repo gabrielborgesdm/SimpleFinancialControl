@@ -8,18 +8,18 @@ const router = express.Router()
 router.post('/accounts/signin', AuthController.signIn)
 router.post('/accounts/signup', AuthController.signUp)
 router.get('/accounts/confirmEmail/:token', AuthController.confirmEmail)
-router.post('/accounts/passwordRecovery/', AuthController.passwordRecovery)//email and frontend link
+router.post('/accounts/passwordRecovery/', AuthController.passwordRecovery)
 
 router.all("/*", HashAndTokenController.authenticateToken)
 
 router.get('/accounts/account', AuthController.getAccount)
+router.post('/accounts/recoverPassword/', AuthController.recoverPassword)
 
-router.post('/accounts/recoverPassword/', AuthController.recoverPassword)//new password
 
-
-router.get('/transactions/getTransactions', TransactionController.getTransactions)
-router.post('/transactions/postTransaction', TransactionController.postTransaction)
-router.post('/transactions/deleteTransaction', TransactionController.deleteTransaction)
+router.get(['/transactions', '/transactions/:id' ], TransactionController.getTransactions)
+router.post('/transactions', TransactionController.postTransaction)
+router.put('/transactions/:id', TransactionController.updateTransaction)
+router.delete('/transactions/:id', TransactionController.deleteTransaction)
 
 
 

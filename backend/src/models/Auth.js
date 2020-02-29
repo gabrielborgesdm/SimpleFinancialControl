@@ -24,8 +24,8 @@ module.exports = {
         return account
     },
 
-    async confirmAccount(_id){
-        let account = await module.exports.getAccount({_id})
+    async confirmAccount(filter){
+        let account = await module.exports.getAccount(filter)
         try {
             account.isActive = true
             await account.save()
@@ -37,15 +37,15 @@ module.exports = {
         return account
     },
 
-    async updateAccount(_id, update){
+    async updateAccount(filter, update){
         let account
         try {
-            account = await Account.updateOne(_id, update);
+            console.log(filter)
+            account = await Account.updateOne({ $and: [filter]}, update)
             account = true
         } catch (error) {
             account = false
         }
-    
         return account
     }
         

@@ -7,7 +7,7 @@ module.exports = {
 
     compareHash: async (userHash, accountHash) => await bcrypt.compare(userHash, accountHash),
 
-    generateAccessToken : (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET ),
+    generateAccessToken : (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "24h"}),
 
     verifyToken : function (token, requestIp){
         let decoded

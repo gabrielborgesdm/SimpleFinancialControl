@@ -1,12 +1,13 @@
 const Transaction = require("./schemas/Transaction")
-const Validate = require("../models/Validate")
 
 module.exports = {
     async getRecords(filter){
+        console.log(filter)
         let transaction
         try{    
-            transaction = await Transaction.find(filter)
+            transaction = await Transaction.find({ $and: [filter]})
         } catch(error) {
+            console.log(error)
             transaction = false
         }
         return transaction
@@ -23,20 +24,20 @@ module.exports = {
         return success
     },
 
-    async putRecord(_id, filterObject){
+    async putRecord(filter, dataObject){
         let success
         try{    
-             success = await Transaction.updateOne(_id, filterObject)
+             success = await Transaction.updateOne( { $and: [filter]}, dataObject)
         } catch(error) {
             success = false
         }
         return success
     },
 
-    async deleteRecord(_id){
+    async deleteRecord(filter){
         let success
         try{    
-            success = await Transaction.deleteOne(_id)
+            success = await Transaction.deleteOne({ $and: [filter]})
         } catch(error) {
             success = false
         }
