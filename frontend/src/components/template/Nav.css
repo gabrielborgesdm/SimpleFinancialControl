@@ -1,0 +1,5 @@
+aside.menu-area{
+    background-color: var(--bg-dark);
+    box-shadow: var(--shadow-menu);
+}
+
