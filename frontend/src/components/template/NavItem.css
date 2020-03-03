@@ -7,6 +7,6 @@ a.nav-items{
 }
 
 a.nav-items:hover {
-    background: linear-gradient(135deg, #07a7e3, #32dac3)
+    background: linear-gradient(135deg, var(--bg-dark-green), var(--bg-light-green))
 }
 

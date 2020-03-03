@@ -15,7 +15,7 @@ mongoose.connect(process.env.DATABASE_ACCESS_LINK,
     useUnifiedTopology: true
 });
 
-//app.use(cors())
+app.use(cors())
 app.use(express.static(__dirname))
 app.use(express.json())
 app.use(routes)
