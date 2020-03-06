@@ -89,8 +89,8 @@ const updateTransaction = async (req, res) =>{
 const deleteTransaction = async (req, res) =>{
     const response = new ResponseBuilder()
     const userId = req.user._id
-    const {_id} = req.body
-    const transactionObject = await validate.validateInputArray([["_id", "string", _id]])
+    const { id } = req.params
+    const transactionObject = await validate.validateInputArray([["_id", "string", id]])
     if (transactionObject.errors) response.addMultipleErrors(transactionObject.errors)
     if(response.checkSuccess()) {
         const transaction = await Transaction.deleteRecord({"_id": transactionObject._id})

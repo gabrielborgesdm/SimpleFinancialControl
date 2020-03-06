@@ -1,0 +1,34 @@
+input[type=submit]{
+    background-color: var(--bg-light-green);
+    border: solid 1px var(--bg-dark);
+    color: var(--bg-dark-green);
+}
+
+input[type=submit]:hover:enabled{
+    background-color: var(--bg-dark-green);
+    border: solid 1px var(--bg-dark-green);
+    color: #fff;
+}
+
+input[type=submit]:hover:disabled{
+    cursor: not-allowed;
+}
+
+input[type=reset]{
+    background-color: var(--bg-light-red);
+    border: solid 1px var(--bg-light-red);
+    color: #fff;
+}
+
+input[type=reset]:hover{
+    background-color: var(--bg-dark-red);
+    border: solid 1px var(--bg-dark-red);
+    color: #fff;
+}
+
+.fa-spinner {
+    vertical-align: middle;
+    font-size: 1.2rem;
+    color: var(--bg-dark-green);
+}
+

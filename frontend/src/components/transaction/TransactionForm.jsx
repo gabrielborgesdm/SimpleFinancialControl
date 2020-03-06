@@ -1,19 +1,18 @@
 import "./TransactionForm.css"
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-
+import Main from "../template/Main"
 import Input from "../form/Input"
 import TextArea from "../form/TextArea"
-
-const token = "[tokenAqui]"
-const baseUrl = "[urlAqui]"
-axios.defaults.headers["Authorization"] = `Bearer ${token}`
 
 
 const TransactionForm = () => {
 
-    const getTodayDate = () => new Date().toISOString().split('T')[0] 
+    const token = process.env.REACT_APP_TOKEN  
+    const baseUrl = process.env.REACT_APP_API_BASE_URL
+    axios.defaults.headers["Authorization"] = `Bearer ${token}`
 
+    const getTodayDate = () => new Date().toISOString().split('T')[0] 
     const [amount, setAmount] = useState("")
     const [details, setDetails] = useState("")
     const [transactionDate, setTransactionDate] = useState(getTodayDate())
@@ -26,10 +25,11 @@ const TransactionForm = () => {
     }, [amount, details, expense, transactionDate])
     
     const submitForm = (e) => {
-        let id = null
+        let id = ""
         e.preventDefault()
         const method = id ? "put" : "post"
-        const url = id ? `${baseUrl}/${id}` : baseUrl
+        const url = id ? `${baseUrl}/transactions/${id}` : `${baseUrl}/transactions`
+        console.log(url)
         let newAmount= expense ? amount * -1 : amount
         
         document.getElementById("loading").style.visibility = 'visible'
@@ -46,6 +46,7 @@ const TransactionForm = () => {
             }
         })
         .catch(error => {
+            console.log(error)
             let newStatus = {className: "text-danger", message: "It wasn't possible to post transaction"}
             setSubmitStatus(newStatus)
         })
@@ -101,7 +102,7 @@ const TransactionForm = () => {
     }
 
     return (
-        <div className="form">
+        <Main className="form" icon="money" title="Transactions" subtitle="Manage your Transactions">
             <span className={`mx-auto my-5 ${submitStatus.className}`}>{submitStatus.message}&nbsp;</span>
             <form method="post" onSubmit={e=> submitForm(e)}>
                 <div className="form-group">
@@ -135,7 +136,7 @@ const TransactionForm = () => {
                     <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
                 </div>
             </form>
-        </div>
+        </Main>
     )
 } 
 
