@@ -5,9 +5,13 @@ const Auth = require("../models/Auth")
 
 const getTransactions = async (req, res) =>{
     const response = new ResponseBuilder()
+    let filter = {userId: req.user._id}
     const _id = req.params.id
-    const userId = req.user._id
-    const transactions = await Transaction.getRecords({userId})
+    if(_id){
+        filter = {...filter, _id}
+    }
+    console.log(filter)
+    const transactions = await Transaction.getRecords(filter)
     if(transactions) {
         response.addParams({"transactions": transactions})
     } else {

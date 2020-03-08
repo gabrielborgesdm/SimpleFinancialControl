@@ -13,6 +13,7 @@ const Login = (props) => {
 
     const submitForm = (e) => {
         e.preventDefault()
+        localStorage.setItem("Token", "")
         document.getElementById("loading").style.visibility = 'visible'
         const url = `${process.env.REACT_APP_API_BASE_URL}/accounts/signin`
         axios.post(url, {email, password})
@@ -20,15 +21,16 @@ const Login = (props) => {
             if(response.data.success){
                 localStorage.setItem("Token", response.data.token)
                 props.history.push("/transactions")
+                window.location.reload()
             } else{
                 document.getElementById("errorStatus").innerHTML = response.data.errors[0].message
             }
         })
         .catch(error => {
-            console.log(error.data)
+            console.log(error)
             document.getElementById("errorStatus").innerHTML = "Something went wrong with the server"
-            document.getElementById("loading").style.visibility = 'hidden'
         })
+        .finally(()=> document.getElementById("loading").style.visibility = 'hidden')
     }
     const checkInputEmpty = input => input.length === 0 ? "Field can't be empty" : ""
 

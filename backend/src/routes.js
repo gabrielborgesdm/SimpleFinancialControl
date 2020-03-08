@@ -16,10 +16,11 @@ router.get('/accounts/account', AuthController.getAccount)
 router.post('/accounts/recoverPassword/', AuthController.recoverPassword)
 
 
-router.get('/transactions', TransactionController.getTransactions)
-router.post('/transactions', TransactionController.postTransaction)
-router.put('/transactions/:id', TransactionController.updateTransaction)
-router.delete('/transactions/:id', TransactionController.deleteTransaction)
+router.get('/transaction', TransactionController.getTransactions)
+router.get('/transaction/:id', TransactionController.getTransactions)
+router.post('/transaction', TransactionController.postTransaction)
+router.put('/transaction/:id', TransactionController.updateTransaction)
+router.delete('/transaction/:id', TransactionController.deleteTransaction)
 
 
 

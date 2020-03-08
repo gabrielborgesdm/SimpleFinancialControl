@@ -1,5 +1,6 @@
 import "./TransactionForm.css"
 import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import axios from "axios"
 import Main from "../template/Main"
 import Input from "../form/Input"
@@ -8,10 +9,10 @@ import TextArea from "../form/TextArea"
 
 const TransactionForm = () => {
 
-    const token = process.env.REACT_APP_TOKEN  
+    const token = localStorage.getItem("Token") 
     const baseUrl = process.env.REACT_APP_API_BASE_URL
     axios.defaults.headers["Authorization"] = `Bearer ${token}`
-
+    const {id} = useParams()
     const getTodayDate = () => new Date().toISOString().split('T')[0] 
     const [amount, setAmount] = useState("")
     const [details, setDetails] = useState("")
@@ -24,11 +25,33 @@ const TransactionForm = () => {
         setSubmitStatus({})
     }, [amount, details, expense, transactionDate])
     
+    useEffect(() => {
+        const url = `${baseUrl}/transaction/${id}`
+        axios.get(url)
+        .then(response => {
+            if(response.data.success){
+                const transaction = response.data.transactions[0]
+                if(transaction.amount > 0) {
+                    setAmount(transaction.amount)
+                    setExpense(false)
+                } else {
+                    setAmount(transaction.amount * -1)
+                    setExpense(true)
+                }
+                setDetails(transaction.details)
+                setTransactionDate(new Date(transaction.transactionDate).toISOString().split('T')[0] )
+                setInvalidFields([1, 1, 1])
+            }
+        })
+        .catch(error => {
+            console.log(url, error)
+        })
+    }, [id, baseUrl])
+
     const submitForm = (e) => {
-        let id = ""
         e.preventDefault()
         const method = id ? "put" : "post"
-        const url = id ? `${baseUrl}/transactions/${id}` : `${baseUrl}/transactions`
+        const url = id ? `${baseUrl}/transaction/${id}` : `${baseUrl}/transaction`
         console.log(url)
         let newAmount= expense ? amount * -1 : amount
         

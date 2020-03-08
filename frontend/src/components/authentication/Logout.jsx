@@ -6,6 +6,7 @@ const Logout = (props) => {
     const handleYes = () => {
         localStorage.removeItem("Token")
         props.history.push("/")
+        window.location.reload()
     }
 
     return (
