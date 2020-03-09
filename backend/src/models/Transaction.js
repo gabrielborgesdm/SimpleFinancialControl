@@ -2,7 +2,6 @@ const Transaction = require("./schemas/Transaction")
 
 module.exports = {
     async getRecords(filter){
-        console.log(filter)
         let transaction
         try{    
             transaction = await Transaction.find({ $and: [filter]})

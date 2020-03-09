@@ -43,9 +43,13 @@ const login = async (account, userInput, req, response) =>{
     if(response.checkSuccess()) {
         if(account.isActive){
             checkPassword = await HashAndToken.verifyPassword(userInput.password, account.hash)
-            const message = (checkPassword) ? "Authorization allowed" : "Authorization denied"
-            const token = (checkPassword) ? HashAndToken.generateToken({"ip": HashAndToken.getIp(req), "_id": account._id}) : undefined
-            response.addParams({message, token})
+            if(!checkPassword) {
+                response.addError("authorization", "denied", "Authorization denied")
+            }
+            if(response.checkSuccess()){
+                const token = (checkPassword) ? HashAndToken.generateToken({"ip": HashAndToken.getIp(req), "_id": account._id}) : undefined
+                response.addParams({token})
+            }
         } else{
             response.addError("account", "needs confirmation", "Your account needs to be confirmed")
         }  
@@ -76,8 +80,11 @@ const signUp = async function(req, res){
 const createAccount = async (userInput, response) =>{
     userInput.hash = await HashAndToken.hashPassword(userInput.password)
     let account = await Auth.createUser(userInput)
-    const message = (account) ? "Account created" : "Coudn't create account"
-    response.addParams({message})
+    if(!account) {
+        response.addError("account", "couldn't create", "It wasn't possible to create the account")
+    } else {
+        response.addParams("message", "Account created, check your e-mail to confirm your account")
+    } 
     return account
 }
 

@@ -5,7 +5,6 @@ const authenticateToken = async function(req, res, next) {
     const token = authHeader && authHeader.split(' ')[1]
     const requestIp = getIp(req) 
     if(!token) return res.status(401).json({"state": "Unauthorized"})
-    console.log(requestIp, token)
     let _id = await HashAndToken.verifyToken(token, requestIp)
     if(!_id) return res.status(403).json({"state": "Forbidden"})
     req.user = {_id}
