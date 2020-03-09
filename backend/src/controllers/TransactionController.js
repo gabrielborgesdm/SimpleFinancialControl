@@ -10,7 +10,6 @@ const getTransactions = async (req, res) =>{
     if(_id){
         filter = {...filter, _id}
     }
-    console.log(filter)
     const transactions = await Transaction.getRecords(filter)
     if(transactions) {
         response.addParams({"transactions": transactions})

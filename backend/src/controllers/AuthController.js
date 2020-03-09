@@ -58,7 +58,7 @@ const login = async (account, userInput, req, response) =>{
 
 const signUp = async function(req, res){
     const response = new ResponseBuilder()
-    const {name, email, password} = req.body
+    let {name, email, password, confirmAccountUrl} = req.body
     let userInput = await validate.validateInputArray([
         ["name", "string", name], 
         ["email", "email", email], 
@@ -73,7 +73,7 @@ const signUp = async function(req, res){
     }
     
     let account = (response.checkSuccess()) ? await createAccount(userInput, response) : false
-    if (response.checkSuccess()) sendEmailConfirmation(account, req.get("host"), HashAndToken.getIp(req))
+    if (response.checkSuccess()) sendEmailConfirmation(account, confirmAccountUrl)
     return res.json(response.getParams())
 }
 
@@ -83,20 +83,26 @@ const createAccount = async (userInput, response) =>{
     if(!account) {
         response.addError("account", "couldn't create", "It wasn't possible to create the account")
     } else {
-        response.addParams("message", "Account created, check your e-mail to confirm your account")
+        response.addParams({"message": "Account created, check your e-mail to confirm your account"})
     } 
     return account
 }
 
-const sendEmailConfirmation = (account, url, ip) => {
-    const token = HashAndToken.generateToken({"ip": ip, "_id": account._id})
+const sendEmailConfirmation = (account, url) => {
+    const token = HashAndToken.generateToken({"_id": account._id})
     MailerController.sendEmailConfirmation(account.name, account.email, token, url)
 }
 
 const confirmEmail = async (req, res) => {
-    const _id = await HashAndToken.verifyToken(req.params.token, HashAndToken.getIp(req))
-    const accountConfirmed = await Auth.confirmAccount({_id})
-    res.json({accountConfirmed})
+    let response = new ResponseBuilder()
+    const _id = await HashAndToken.verifyEmailToken(req.params.token)
+    if(_id) {
+        const accountConfirmed = await Auth.confirmAccount({_id})
+        if (accountConfirmed) response.addParams({"message": "Account confirmed, go back and log in your account"})
+    } else {
+        response.addError("authorization", "denied", "Access denied, make sure your using the same device you created your account to activate it")
+    }
+   res.json(response.getParams())
 }
 
 

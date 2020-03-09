@@ -26,35 +26,35 @@ const TransactionForm = () => {
     }, [amount, details, expense, transactionDate])
     
     useEffect(() => {
-        const url = `${baseUrl}/transaction/${id}`
-        axios.get(url)
-        .then(response => {
-            if(response.data.success){
-                const transaction = response.data.transactions[0]
-                if(transaction.amount > 0) {
-                    setAmount(transaction.amount)
-                    setExpense(false)
-                } else {
-                    setAmount(transaction.amount * -1)
-                    setExpense(true)
+        if (id) {
+            const url = `${baseUrl}/transaction/${id}` 
+            axios.get(url)
+            .then(response => {
+                if(response.data.success){
+                    const transaction = response.data.transactions[0]
+                    if(transaction.amount > 0) {
+                        setAmount(transaction.amount)
+                        setExpense(false)
+                    } else {
+                        setAmount(transaction.amount * -1)
+                        setExpense(true)
+                    }
+                    setDetails(transaction.details)
+                    setTransactionDate(new Date(transaction.transactionDate).toISOString().split('T')[0] )
+                    setInvalidFields([1, 1, 1])
                 }
-                setDetails(transaction.details)
-                setTransactionDate(new Date(transaction.transactionDate).toISOString().split('T')[0] )
-                setInvalidFields([1, 1, 1])
-            }
-        })
-        .catch(error => {
-            console.log(url, error)
-        })
+            })
+            .catch(error => {
+                console.log(url, error)
+            })
+        }
     }, [id, baseUrl])
 
     const submitForm = (e) => {
         e.preventDefault()
         const method = id ? "put" : "post"
         const url = id ? `${baseUrl}/transaction/${id}` : `${baseUrl}/transaction`
-        console.log(url)
         let newAmount= expense ? amount * -1 : amount
-        
         document.getElementById("loading").style.visibility = 'visible'
         axios[method](url, {amount: newAmount, details, transactionDate})
         .then(response => {

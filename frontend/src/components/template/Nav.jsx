@@ -9,7 +9,10 @@ const Nav = props => {
         <nav className="menu">
             <NavItem href="/" icons="fa fa-home">Home</NavItem>
             {!token ? (
-                <NavItem href="/login" icons="fa fa-sign-in">Login</NavItem>
+                <React.Fragment>
+                    <NavItem href="/login" icons="fa fa-sign-in">Login</NavItem>
+                    <NavItem href="/signup" icons="fa fa-sign-in">Signup</NavItem>
+                </React.Fragment>
             ) : (
                 <React.Fragment>
                     <NavItem href="/transaction" icons="fa fa-money">Transactions</NavItem>

@@ -6,7 +6,7 @@ const sendEmailConfirmation = async (name, email, token, url) => {
     mailer.setTo(email)
     mailer.setSubject("Confirm your account.")
     mailer.setHtmlTemplate("confirmAccountTemplate")
-    mailer.setContext({name, "link": url + "/accounts/confirmEmail/" + token})
+    mailer.setContext({name, "link": url + "/" + token})
     mailer.sendMessage()
 }
 

@@ -20,7 +20,7 @@ module.exports = {
         return(decoded)
     },
     
-    decodeEmailToken: async (token) => await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    verifyEmailToken: async (token) => await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
         
 }
     
