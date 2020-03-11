@@ -1,5 +1,5 @@
 ## Front-end ##
-It uses [Bcrypt](https://www.npmjs.com/package/bcrypt) in order to hash the user's password and [JSON Web Tokens](https://jwt.io/) in order to authorizate access to the dashboard panel.
+Responsive React application
 
 ### Instalation ###
 1. Create a .env file into the frontend directory, then and add the next paramter:
