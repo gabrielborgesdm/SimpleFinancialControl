@@ -18,12 +18,10 @@ const generateToken = (payload) => HashAndToken.generateAccessToken(payload)
 const hashPassword = async (password) => await HashAndToken.hashPassword(password)
 
 const verifyToken = async (token, ip) => {
-    console.log(token, ip)
     return await HashAndToken.verifyToken(token, ip)
 }
 
 const verifyEmailToken = async (token) => {
-    console.log(token)
     return await HashAndToken.verifyEmailToken(token)
 }
 

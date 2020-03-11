@@ -3,3 +3,12 @@ aside.menu-area{
     box-shadow: var(--shadow-menu);
 }
 
+@media(max-width: 768px) {
+    .menu {
+        height: 100%;
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+}

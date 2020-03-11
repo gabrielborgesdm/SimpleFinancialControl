@@ -13,6 +13,14 @@ table.table-striped td {
     border-width:  0  1px 1px  0;
 }        
 
+th i {
+    vertical-align: middle;
+    color: var(--bg-dark-green);
+}
+th i:hover {
+    color: var(--bg-dark);
+    cursor: pointer;
+}
 
 .fa {
     font-size: 1.3rem;

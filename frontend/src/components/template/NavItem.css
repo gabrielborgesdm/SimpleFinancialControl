@@ -10,3 +10,10 @@ a.nav-items:hover {
     background: linear-gradient(135deg, var(--bg-dark-green), var(--bg-light-green))
 }
 
+@media(max-width: 768px) {
+    a {
+        display: inline;
+        padding: 10px;
+        margin: 0;
+    }
+}

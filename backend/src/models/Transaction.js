@@ -6,7 +6,6 @@ module.exports = {
         try{    
             transaction = await Transaction.find({ $and: [filter]})
         } catch(error) {
-            console.log(error)
             transaction = false
         }
         return transaction

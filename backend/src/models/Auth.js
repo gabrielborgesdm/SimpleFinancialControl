@@ -40,7 +40,6 @@ module.exports = {
     async updateAccount(filter, update){
         let account
         try {
-            console.log(filter)
             account = await Account.updateOne({ $and: [filter]}, update)
             account = true
         } catch (error) {

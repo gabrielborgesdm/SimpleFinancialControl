@@ -50,7 +50,6 @@ class Mailer {
                 context: this.context
             }) 
         } catch (error) {
-            console.log(error)
             info = false
         }
         return info
