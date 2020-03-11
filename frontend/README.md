@@ -1,3 +1,12 @@
+## Front-end ##
+It uses [Bcrypt](https://www.npmjs.com/package/bcrypt) in order to hash the user's password and [JSON Web Tokens](https://jwt.io/) in order to authorizate access to the dashboard panel.
+
+### Instalation ###
+1. Create a .env file into the frontend directory, then and add the next paramter:
+```
+REACT_APP_API_BASE_URL=[api base URL]
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
