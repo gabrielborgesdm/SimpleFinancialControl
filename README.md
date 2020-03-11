@@ -3,16 +3,20 @@ Simple Financial Control is an application that helps you to have control of you
 
 I divided it into back-end and front-end. The first one is a Rest API in Node that uses JWT, Bycript, and other technologies that increases security. The second one is a responsive React application which interacts with the API.
 
+# Instalation #
+Each folder has its instalation's instructions
 # Screenshots #
 
+##### Signing up using the API #####
 ![api-signup](/screenshots/api-signup.png)
-Format: ![Signup into the Api](url)
 
+##### Errors when the API doesn't receive propper input #####
 ![api-signup-error](/screenshots/api-signup-error.png)
-Format: ![Errors when the API doesn't receive propper input](url)
 
+
+##### Signing up using the frontend #####
 ![frontend-signup](/screenshots/frontend-signup.png)
-Format: ![Signing up into the application](url)
 
+
+##### Posting a transaction using the frontend #####
 ![frontend-transaction-post](/screenshots/frontend-transactions-post.png)
-Format: ![Posting a transaction into the application](url)
