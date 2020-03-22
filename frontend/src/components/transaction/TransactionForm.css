@@ -1,6 +1,6 @@
 input[type=submit]{
     background-color: var(--bg-light-green);
-    border: solid 1px var(--bg-dark);
+    border: solid 1px var(--bg-dark-blue);
     color: var(--bg-dark-green);
 }
 
@@ -26,9 +26,4 @@ input[type=reset]:hover{
     color: #fff;
 }
 
-.fa-spinner {
-    vertical-align: middle;
-    font-size: 1.2rem;
-    color: var(--bg-dark-green);
-}
 

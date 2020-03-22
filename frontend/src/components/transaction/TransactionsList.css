@@ -18,19 +18,7 @@ th i {
     color: var(--bg-dark-green);
 }
 th i:hover {
-    color: var(--bg-dark);
+    color: var(--bg-dark-blue);
     cursor: pointer;
 }
 
-.fa {
-    font-size: 1.3rem;
-}
-
-.fa-edit { 
-    color: var(--bg-dark);
-}
-
-.fa-trash { 
-    color: var(--bg-light-red);
-    cursor: pointer;
-}

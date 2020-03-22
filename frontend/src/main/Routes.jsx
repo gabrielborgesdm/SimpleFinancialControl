@@ -3,7 +3,7 @@ import { Switch, Route, Redirect} from "react-router"
 import PrivateRoute from "../components/template/PrivateRoute"
 import Home from "../components/template/Home"
 import TransactionForm from "../components/transaction/TransactionForm"
-import TransactionList from "../components/transaction/TransactionList"
+import TransactionsList from "../components/transaction/TransactionsList"
 import Login from "../components/authentication/Login"
 import Signup from "../components/authentication/Signup"
 import ConfirmAccount from "../components/authentication/ConfirmAccount"
@@ -18,7 +18,7 @@ const Router = props => (
         <Route path="/confirmaccount/:token" component={ConfirmAccount} />
         <PrivateRoute path="/transaction/form/:id" component={TransactionForm} />
         <PrivateRoute path="/transaction/form" component={TransactionForm} />
-        <PrivateRoute path="/transaction" component={TransactionList} />
+        <PrivateRoute path="/transaction" component={TransactionsList} />
         <Redirect from="*" to="/" />
     </Switch>
 )

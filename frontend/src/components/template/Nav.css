@@ -1,9 +1,9 @@
 aside.menu-area{
-    background-color: var(--bg-dark);
+    background-color: var(--bg-dark-blue);
     box-shadow: var(--shadow-menu);
 }
 
-@media(max-width: 768px) {
+@media(max-width: 1222px) {
     .menu {
         height: 100%;
 

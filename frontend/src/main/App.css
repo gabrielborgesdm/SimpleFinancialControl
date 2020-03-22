@@ -1,5 +1,9 @@
 :root {
-    --bg-dark: #2e4057;
+    --size-md: 1222px;
+    --size-sm: 576px ;
+
+    --bg-dark-blue: #2e4057;
+    --bg-light-blue: #3F8D73;
     --bg-light-green: #86f075;
     --bg-dark-green: #3e5641;
     --bg-light-red: #a24936;
@@ -24,6 +28,24 @@
     font-family: "Montserrat", "sans-serif";
 }
 
+.bg-dark-red{
+    background-color: var(--bg-dark-red);
+}
+.bg-light-red{
+    background-color: var(--bg-light-red);
+}
+.bg-dark-green{
+    background-color: var(--bg-dark-green);
+}
+.bg-light-green{
+    background-color: var(--bg-light-green);
+}
+.bg-dark-blue{
+    background-color: var(--bg-dark-blue);
+}
+.bg-light-blue{
+    background-color: var(--bg-light-blue);
+}
 /* Layout em Grid */
 
 .app {
@@ -62,7 +84,26 @@ footer.footer {
     grid-area: footer;
 }
 
-@media(max-width: 768px) {
+.fa {
+    font-size: 1.3rem;
+}
+
+.fa-spinner {
+    vertical-align: middle;
+    font-size: 1.2rem;
+    color: var(--bg-dark-green);
+}
+
+.fa-edit { 
+    color: var(--bg-dark-blue);
+}
+
+.fa-trash { 
+    color: var(--bg-light-red);
+    cursor: pointer;
+}
+
+@media(max-width: 1222px) {
     .app {
         grid-template-rows: 
             var(--header-height)
@@ -92,10 +133,10 @@ footer.footer {
         ;
         grid-template-columns: 1fr;
         grid-template-areas: 
-            "logo"
-            "menu"
-            "content"
-            "footer"
+            "logo logo"
+            "menu menu"
+            "content content"
+            "footer footer"
         ;
     }
 }
