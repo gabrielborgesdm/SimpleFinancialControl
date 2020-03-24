@@ -12,8 +12,7 @@ class TransactionsList extends Component{
         super(props)
         this.state = {
             transactions: [],
-            transactionsList: null,
-            status: null
+            transactionsList: null
         }
         //this.deleteTransaction = this.deleteTransaction.bind(this)
     }
@@ -98,41 +97,45 @@ class TransactionsList extends Component{
     render(){
         return(
         <Main icon="money" title="Transactions" subtitle="List your Transactions">
-            <form className="row">
-                <div className="form-group col-12">
-                    <input onKeyUp={e=>this.filter(e.target.value)} className="form-control" type="text" placeholder="Filter"/>
+            <div className="p-3 mt-3">
+                <div className="p-3 mt-3">
+                    <form className="row ">
+                        <div className="form-group col-12">
+                            <input onKeyUp={e=>this.filter(e.target.value)} className="form-control" type="text" placeholder="Filter"/>
+                        </div>
+                    </form>
+                    <div className="table-responsive">
+                        <table className="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th># <i onClick={e=>this.sort(e, "order", 0)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Details <i onClick={e=>this.sort(e, "details", 1)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Amount <i  onClick={e=>this.sort(e, "amount", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Type <i onClick={e=>this.sort(e, "transactionType", 3)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Date <i onClick={e=>this.sort(e, "transactionDate", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th colSpan="2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.transactionsList !== null ? (
+                                    this.state.transactionsList.map((transaction)=>
+                                    <tr key={transaction._id}>
+                                        <td>{transaction.order}</td>
+                                        <td>{transaction.details}</td>
+                                        <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>{transaction.amount}</td>
+                                        <td>{transaction.transactionType}</td>
+                                        <td>{transaction.transactionDate}</td>
+                                        <td><a href={`/transaction/form/${transaction._id}`}><i className="fa fa-edit"></i></a></td>
+                                        <td><i onClick={e=>this.deleteTransaction(transaction._id)} className="fa fa-trash"></i></td>
+                                    </tr>
+                                )
+                                ):(
+                                    <tr><td colSpan="6">Loading <i className="fa fa-spinner fa-spin"></i></td></tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </form>
-            <div className="table-responsive">
-                <table className="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th># <i onClick={e=>this.sort(e, "order", 0)} name="arrow" className="fa fa-arrow-right"></i></th>
-                            <th>Details <i onClick={e=>this.sort(e, "details", 1)} name="arrow" className="fa fa-arrow-right"></i></th>
-                            <th>Amount <i  onClick={e=>this.sort(e, "amount", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
-                            <th>Type <i onClick={e=>this.sort(e, "transactionType", 3)} name="arrow" className="fa fa-arrow-right"></i></th>
-                            <th>Date <i onClick={e=>this.sort(e, "transactionDate", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
-                            <th colSpan="2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.transactionsList !== null ? (
-                            this.state.transactionsList.map((transaction)=>
-                            <tr key={transaction._id}>
-                                <td>{transaction.order}</td>
-                                <td>{transaction.details}</td>
-                                <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>{transaction.amount}</td>
-                                <td>{transaction.transactionType}</td>
-                                <td>{transaction.transactionDate}</td>
-                                <td><i className="fa fa-edit"></i></td>
-                                <td><i onClick={e=>this.deleteTransaction(transaction._id)} className="fa fa-trash"></i></td>
-                            </tr>
-                        )
-                        ):(
-                            <tr><td colSpan="6">Loading <i className="fa fa-spinner fa-spin"></i></td></tr>
-                        )}
-                    </tbody>
-                </table>
             </div>
         </Main>)
     }  

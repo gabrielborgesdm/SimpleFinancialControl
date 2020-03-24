@@ -28,6 +28,25 @@
     font-family: "Montserrat", "sans-serif";
 }
 
+.text-dark-red{
+    color:  var(--bg-dark-red);
+}
+.text-dark-blue{
+    color: var(--bg-dark-blue);
+}
+.text-dark-green{
+    color: var(--bg-dark-green);
+}
+.text-light-red{
+    color:  var(--bg-light-red);
+}
+.text-light-blue{
+    color: var(--bg-light-blue);
+}
+.text-light-green{
+    color: var(--bg-light-green);
+}
+
 .bg-dark-red{
     background-color: var(--bg-dark-red);
 }
@@ -62,6 +81,11 @@
         "menu footer";
     height: 100vh;
     background-color: #f5f5f5;
+}
+
+main > div {
+    background-color: #fff;
+    box-shadow: var(--shadow-content-div);
 }
 
 aside.logo {

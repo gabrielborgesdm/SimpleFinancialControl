@@ -72,29 +72,31 @@ const Signup = (props) => {
 
     return (
         <Main className="form" icon="sign-in" title="Signup" subtitle="Create an account">
-            <form method="post" onSubmit={e=> submitForm(e)}>
-                <span className="text-danger" id="errorStatus"></span>
-                <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <Input type="text" name="name" id="name" className="form-control" onChange={(e)=>updateName(e)} value={name} />
-                    <small className="text-danger"></small>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <Input type="email" name="email" id="email" className="form-control" onChange={(e)=>updateEmail(e)} value={email} />
-                    <small className="text-danger"></small>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <Input type="password" name="password" id="password" className="form-control" value={password} onChange={(e)=>updatePassword(e)} />
-                    <small className="text-danger"></small>
-                </div>
-                <div className="form-group">
-                    <Input type="reset" className="btn m-2" onClick={e=>clearForm()} value="Clear"/>
-                    <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 3} value="Submit"/>
-                    <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
-                </div>
-            </form>
+            <div className="p-3 mt-3">
+                <form method="post" onSubmit={e=> submitForm(e)}>
+                    <span className="text-danger" id="errorStatus"></span>
+                    <div className="form-group">
+                        <label htmlFor="name">Name</label>
+                        <Input type="text" name="name" id="name" className="form-control" onChange={(e)=>updateName(e)} value={name} />
+                        <small className="text-danger"></small>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <Input type="email" name="email" id="email" className="form-control" onChange={(e)=>updateEmail(e)} value={email} />
+                        <small className="text-danger"></small>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <Input type="password" name="password" id="password" className="form-control" value={password} onChange={(e)=>updatePassword(e)} />
+                        <small className="text-danger"></small>
+                    </div>
+                    <div className="form-group">
+                        <Input type="reset" className="btn m-2" onClick={e=>clearForm()} value="Clear"/>
+                        <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 3} value="Submit"/>
+                        <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
+                    </div>
+                </form>
+            </div>
         </Main>
     )
 } 

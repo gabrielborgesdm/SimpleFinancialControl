@@ -11,9 +11,11 @@ const Logout = (props) => {
 
     return (
         <Main  icon="sign-out" title="Logout" subtitle="Log out your account">
-            <div>
-                <h1 className="lead">Are you sure you want to sign out of your account? </h1>
-                <button onClick={e=>handleYes()} className="btn my-1 btn-outline-danger">YES</button>
+            <div className="p-3 mt-3">
+                <div>
+                    <h1 className="lead">Are you sure you want to sign out of your account? </h1>
+                    <button onClick={e=>handleYes()} className="btn my-1 btn-outline-danger">YES</button>
+                </div>
             </div>
         </Main>
     )

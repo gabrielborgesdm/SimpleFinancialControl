@@ -4,6 +4,7 @@ import PrivateRoute from "../components/template/PrivateRoute"
 import Home from "../components/template/Home"
 import TransactionForm from "../components/transaction/TransactionForm"
 import TransactionsList from "../components/transaction/TransactionsList"
+import Transactions from "../components/transaction/Transactions"
 import Login from "../components/authentication/Login"
 import Signup from "../components/authentication/Signup"
 import ConfirmAccount from "../components/authentication/ConfirmAccount"
@@ -18,7 +19,8 @@ const Router = props => (
         <Route path="/confirmaccount/:token" component={ConfirmAccount} />
         <PrivateRoute path="/transaction/form/:id" component={TransactionForm} />
         <PrivateRoute path="/transaction/form" component={TransactionForm} />
-        <PrivateRoute path="/transaction" component={TransactionsList} />
+        <PrivateRoute path="/transaction/list" component={TransactionsList} />
+        <PrivateRoute path="/transaction" component={Transactions} />
         <Redirect from="*" to="/" />
     </Switch>
 )

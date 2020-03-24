@@ -14,6 +14,7 @@ const TransactionForm = () => {
     axios.defaults.headers["Authorization"] = `Bearer ${token}`
     const {id} = useParams()
     const getTodayDate = () => new Date().toISOString().split('T')[0] 
+
     const [amount, setAmount] = useState("")
     const [details, setDetails] = useState("")
     const [transactionDate, setTransactionDate] = useState(getTodayDate())
@@ -126,39 +127,41 @@ const TransactionForm = () => {
 
     return (
         <Main className="form" icon="money" title="Transactions" subtitle="Manage your Transactions">
-            <span className={`mx-auto my-5 ${submitStatus.className}`}>{submitStatus.message}&nbsp;</span>
-            <form method="post" onSubmit={e=> submitForm(e)}>
-                <div className="form-group">
-                    <label htmlFor="amount">Amount ($)</label>
-                    <Input type="text" name="amount" id="amount" className="form-control" value={amount} onChange={(e)=>updateAmount(e)} />
-                    <small className="text-danger"></small>
-                </div>
-                <div className="form-group">
-                    <div className="form-check form-check-inline">
-                        <Input type="radio" name="transactionType" id="typeExpense" className="form-check-input" onChange={e => setExpense(true)} checked={expense}  />
-                        <label className="form-check-label" htmlFor="typeExpense">Expense</label>
+            <div className="p-3 mt-3">
+                <span className={`mx-auto my-5 ${submitStatus.className}`}>{submitStatus.message}&nbsp;</span>
+                <form method="post" onSubmit={e=> submitForm(e)}>
+                    <div className="form-group">
+                        <label htmlFor="amount">Amount ($)</label>
+                        <Input type="text" name="amount" id="amount" className="form-control" value={amount} onChange={(e)=>updateAmount(e)} />
+                        <small className="text-danger"></small>
                     </div>
-                    <div className="form-check form-check-inline">
-                        <Input type="radio" name="transactionType" id="typeIncome" className="form-check-input" onChange={e => setExpense(false)} checked={!expense}/>
-                        <label className="form-check-label" htmlFor="typeIncome">Income</label>
+                    <div className="form-group">
+                        <div className="form-check form-check-inline">
+                            <Input type="radio" name="transactionType" id="typeExpense" className="form-check-input" onChange={e => setExpense(true)} checked={expense}  />
+                            <label className="form-check-label" htmlFor="typeExpense">Expense</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <Input type="radio" name="transactionType" id="typeIncome" className="form-check-input" onChange={e => setExpense(false)} checked={!expense}/>
+                            <label className="form-check-label" htmlFor="typeIncome">Income</label>
+                        </div>
                     </div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="details">Details</label>
-                    <TextArea name="details" id="details" className="form-control" onChange={(e)=>updateDetails(e)} value={details} ></TextArea>
-                    <small className="text-danger"></small>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="transactionDate">Date</label>
-                    <Input type="date" name="transactionDate" id="transactionDate" className="form-control" value={transactionDate} onChange={(e)=>updateTransactionDate(e)} />
-                    <small className="text-danger"></small>
-                </div>
-                <div className="form-group">
-                    <Input type="reset" className="btn m-2" onClick={e=>clearForm()} value="Clear"/>
-                    <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 3} value="Submit"/>
-                    <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
-                </div>
-            </form>
+                    <div className="form-group">
+                        <label htmlFor="details">Details</label>
+                        <TextArea name="details" id="details" className="form-control" onChange={(e)=>updateDetails(e)} value={details} ></TextArea>
+                        <small className="text-danger"></small>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="transactionDate">Date</label>
+                        <Input type="date" name="transactionDate" id="transactionDate" className="form-control" value={transactionDate} onChange={(e)=>updateTransactionDate(e)} />
+                        <small className="text-danger"></small>
+                    </div>
+                    <div className="form-group">
+                        <Input type="reset" className="btn m-2" onClick={e=>clearForm()} value="Clear"/>
+                        <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 3} value="Submit"/>
+                        <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
+                    </div>
+                </form>
+            </div>
         </Main>
     )
 } 

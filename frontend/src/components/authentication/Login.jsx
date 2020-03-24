@@ -66,6 +66,7 @@ const Login = (props) => {
 
     return (
         <Main className="form" icon="sign-in" title="Login" subtitle="Log in your account">
+            <div className="p-3 mt-3">
             <form method="post" onSubmit={e=> submitForm(e)}>
                 <span className="text-danger" id="errorStatus"></span>
                 <div className="form-group">
@@ -84,6 +85,7 @@ const Login = (props) => {
                     <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
                 </div>
             </form>
+            </div>
         </Main>
     )
 } 
