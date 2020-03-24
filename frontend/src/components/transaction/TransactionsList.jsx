@@ -74,9 +74,9 @@ class TransactionsList extends Component{
     abstractObjectFromTransactionsQuery(query){
         let transactions = []
         Object.values(query).forEach((queryElement, index)=>{
-            let {_id, amount, details, transactionType, transactionDate} = queryElement
+            let {_id, amount, category, details, transactionType, transactionDate} = queryElement
             transactionDate = new Date(transactionDate).toISOString().split('T')[0] 
-            let transaction = {order: index + 1, _id, amount, details, transactionType, transactionDate}
+            let transaction = {order: index + 1, _id, amount, category, details, transactionType, transactionDate}
             transactions.push(transaction)
         })
         return transactions
@@ -111,26 +111,31 @@ class TransactionsList extends Component{
                                     <th># <i onClick={e=>this.sort(e, "order", 0)} name="arrow" className="fa fa-arrow-right"></i></th>
                                     <th>Details <i onClick={e=>this.sort(e, "details", 1)} name="arrow" className="fa fa-arrow-right"></i></th>
                                     <th>Amount <i  onClick={e=>this.sort(e, "amount", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Type <i onClick={e=>this.sort(e, "transactionType", 3)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Date <i onClick={e=>this.sort(e, "transactionDate", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Category <i onClick={e=>this.sort(e, "category", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Type <i onClick={e=>this.sort(e, "transactionType", 5)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Date <i onClick={e=>this.sort(e, "transactionDate", 6)} name="arrow" className="fa fa-arrow-right"></i></th>
                                     <th colSpan="2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {this.state.transactionsList !== null ? (
-                                    this.state.transactionsList.map((transaction)=>
-                                    <tr key={transaction._id}>
-                                        <td>{transaction.order}</td>
-                                        <td>{transaction.details}</td>
-                                        <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>{transaction.amount}</td>
-                                        <td>{transaction.transactionType}</td>
-                                        <td>{transaction.transactionDate}</td>
-                                        <td><a href={`/transaction/form/${transaction._id}`}><i className="fa fa-edit"></i></a></td>
-                                        <td><i onClick={e=>this.deleteTransaction(transaction._id)} className="fa fa-trash"></i></td>
-                                    </tr>
-                                )
-                                ):(
-                                    <tr><td colSpan="6">Loading <i className="fa fa-spinner fa-spin"></i></td></tr>
+                                    this.state.transactionsList.length > 0 ? (
+                                        this.state.transactionsList.map((transaction)=>
+                                        <tr key={transaction._id}>
+                                            <td>{transaction.order}</td>
+                                            <td>{transaction.details || "No description"}</td>
+                                            <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>{transaction.amount}</td>
+                                            <td>{transaction.category}</td>
+                                            <td>{transaction.transactionType}</td>
+                                            <td>{transaction.transactionDate}</td>
+                                            <td><a href={`/transaction/form/${transaction._id}`}><i className="fa fa-edit"></i></a></td>
+                                            <td><i onClick={e=>this.deleteTransaction(transaction._id)} className="fa fa-trash"></i></td>
+                                        </tr>
+                                    )) : (
+                                        <tr><td colSpan="7">There aren't any transactions</td></tr>
+                                    )
+                                ) : (
+                                    <tr><td colSpan="7">Loading <i className="fa fa-spinner fa-spin"></i></td></tr>
                                 )}
                             </tbody>
                         </table>

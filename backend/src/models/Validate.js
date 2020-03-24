@@ -5,13 +5,15 @@ class Validate{
         this.errors = []
     }
 
-    async validateField(fieldName, fieldType, fieldValue, fieldOptions) {
-        
-        if(fieldValue) {
-            fieldValue = (typeof fieldValue == "string") ? this.sanitize(fieldValue) : fieldValue
-            fieldValue = await this.validateAccordingToType(fieldValue, fieldType)
+    async validateField(fieldName, fieldType, fieldValue, fieldOptions = []) {
+        let { canBeEmpty } = fieldOptions
+        if(fieldValue || canBeEmpty) {
+            if(fieldValue){
+                fieldValue = (typeof fieldValue == "string") ? this.sanitize(fieldValue) : fieldValue
+                fieldValue = await this.validateAccordingToType(fieldValue, fieldType)
+            }
             if (fieldOptions) fieldValue = this.checkOptions(fieldValue, fieldOptions)
-            fieldValue = (fieldValue) ? fieldValue : this.createError(fieldName, "invalid")
+            fieldValue = (fieldValue || fieldValue === null) ? fieldValue : this.createError(fieldName, "invalid")
         } else{
             fieldValue = this.createError(fieldName, "missing")
         }
@@ -42,7 +44,9 @@ class Validate{
         if(fieldOptions.toFixed){
             fieldValue = fieldValue.toFixed(fieldOptions.toFixed)
         }
-       
+        if(fieldOptions.canBeEmpty){
+            fieldValue = (!fieldValue) ? null : fieldValue
+        }
         if (fieldOptions.enum) {
             let valid = false
             fieldOptions.enum.forEach(element => {

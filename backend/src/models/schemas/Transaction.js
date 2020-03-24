@@ -21,7 +21,8 @@ const TransactionSchema = new Schema({
     },
 
     details: { type: String },
-
+    category: { type: String },
+    
     transactionDate: {
         type: Date,
         required: true

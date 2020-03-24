@@ -15,12 +15,13 @@ const TransactionForm = () => {
     const {id} = useParams()
     const getTodayDate = () => new Date().toISOString().split('T')[0] 
 
-    const [amount, setAmount] = useState("")
     const [details, setDetails] = useState("")
+    const [category, setCategory] = useState("others")
+    const [amount, setAmount] = useState("")
     const [transactionDate, setTransactionDate] = useState(getTodayDate())
     const [expense, setExpense] = useState(true)
     const [submitStatus, setSubmitStatus] = useState({})
-    const [invalidFields, setInvalidFields] = useState([0, 0, 1])
+    const [invalidFields, setInvalidFields] = useState([0, 1])
 
     useEffect(()=>{
         setSubmitStatus({})
@@ -40,9 +41,10 @@ const TransactionForm = () => {
                         setAmount(transaction.amount * -1)
                         setExpense(true)
                     }
-                    setDetails(transaction.details)
+                    setDetails(transaction.details || "")
+                    setCategory(transaction.category)
                     setTransactionDate(new Date(transaction.transactionDate).toISOString().split('T')[0] )
-                    setInvalidFields([1, 1, 1])
+                    setInvalidFields([1, 1])
                 }
             })
             .catch(error => {
@@ -55,17 +57,19 @@ const TransactionForm = () => {
         e.preventDefault()
         const method = id ? "put" : "post"
         const url = id ? `${baseUrl}/transaction/${id}` : `${baseUrl}/transaction`
+
         let newAmount= expense ? amount * -1 : amount
         document.getElementById("loading").style.visibility = 'visible'
-        axios[method](url, {amount: newAmount, details, transactionDate})
+
+        axios[method](url, {details, amount: newAmount, category, transactionDate})
         .then(response => {
             if(response.data.success){
                 clearForm(e)
                 let newStatus = {className: "text-success", message: "Transaction posted with success"}
                 setSubmitStatus(newStatus)
             } else{
-                
-                let newStatus = {className: "text-danger", message: "There are invalid fields"}
+                console.log(response.data.errors)
+                let newStatus = {className: "text-danger", message: response.data.errors[0].message}
                 setSubmitStatus(newStatus)
             }
         })
@@ -99,17 +103,33 @@ const TransactionForm = () => {
         setAmount(amount)
     }
 
-    const updateDetails = (e) => {
-        let details = e.target.value
-        e.target.nextSibling.innerHTML = checkInputEmpty(details) 
-        checkErrorStatusEmpty(1, e.target.nextSibling.innerHTML)
-        setDetails(details)
+    const updateDetails = (e) => setDetails(e.target.value)
+
+    const updateCategory = (e) => {
+        let category
+        switch(e.target.value){
+            case "food":
+            case "shopping":
+            case "housing":
+            case "transportation":
+            case "vehicle":
+            case "entertainment":
+            case "technology":
+            case "education":
+            case "investments":
+            case "expenses":
+                category = e.target.value
+                break
+            default:
+                category = "others"
+        }
+        setCategory(category)
     }
 
     const updateTransactionDate = (e) => {
         let transactionDate = e.target.value
         e.target.nextSibling.innerHTML = checkInputEmpty(transactionDate)
-        checkErrorStatusEmpty(2, e.target.nextSibling.innerHTML)
+        checkErrorStatusEmpty(1, e.target.nextSibling.innerHTML)
         setTransactionDate(transactionDate)
     }
     
@@ -131,6 +151,27 @@ const TransactionForm = () => {
                 <span className={`mx-auto my-5 ${submitStatus.className}`}>{submitStatus.message}&nbsp;</span>
                 <form method="post" onSubmit={e=> submitForm(e)}>
                     <div className="form-group">
+                        <label htmlFor="details">Details (Optional)</label>
+                        <TextArea name="details" id="details" className="form-control" onChange={(e)=>updateDetails(e)} value={details} ></TextArea>
+                        <small className="text-danger"></small>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="category">Category</label>
+                        <select name="category" id="category" className="form-control" onChange={(e)=>updateCategory(e)} value={category} >
+                            <option value="others" defaultValue>Others</option>
+                            <option value="food">Food</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="housing">Housing</option>
+                            <option value="transportation">Transportation</option>
+                            <option value="vehicle">Vehicle</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="technology">Technology</option>
+                            <option value="education">Education</option>
+                            <option value="investments">Investments</option>
+                            <option value="expenses">Expenses</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="amount">Amount ($)</label>
                         <Input type="text" name="amount" id="amount" className="form-control" value={amount} onChange={(e)=>updateAmount(e)} />
                         <small className="text-danger"></small>
@@ -146,18 +187,13 @@ const TransactionForm = () => {
                         </div>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="details">Details</label>
-                        <TextArea name="details" id="details" className="form-control" onChange={(e)=>updateDetails(e)} value={details} ></TextArea>
-                        <small className="text-danger"></small>
-                    </div>
-                    <div className="form-group">
                         <label htmlFor="transactionDate">Date</label>
                         <Input type="date" name="transactionDate" id="transactionDate" className="form-control" value={transactionDate} onChange={(e)=>updateTransactionDate(e)} />
                         <small className="text-danger"></small>
                     </div>
                     <div className="form-group">
                         <Input type="reset" className="btn m-2" onClick={e=>clearForm()} value="Clear"/>
-                        <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 3} value="Submit"/>
+                        <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 2} value="Submit"/>
                         <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
                     </div>
                 </form>

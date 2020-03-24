@@ -71,7 +71,7 @@ class TransactionsList extends Component{
                     </div>
                     <div className="col align-self-center">
                         <h5 className="text-dark-green">Balance</h5>
-                        <span className={this.state.balance > 0 ? "text-light-blue" : "text-light-red"}>{this.state.balance} R$</span> 
+                        <span className={this.state.balance >= 0 ? "text-light-blue" : "text-light-red"}>{this.state.balance} R$</span> 
                     </div>
                     <div className="col align-self-center">
                         <h5 className="text-light-blue">Incomes</h5>
@@ -81,7 +81,9 @@ class TransactionsList extends Component{
                 </div>
             </div>
             <div className="p-3 mt-3">
-                <a className="my-4" href="/transaction/list">See Detailed list of transactions</a>
+                <a className="my-4 text-light-blue" href="/transaction/list">
+                    See Detailed list of transactions
+                </a>
             </div>
         </Main>)
     }  

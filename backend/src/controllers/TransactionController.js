@@ -22,11 +22,12 @@ const getTransactions = async (req, res) =>{
 const postTransaction = async (req, res) =>{
     const response = new ResponseBuilder()
     const userId = req.user._id
-    const {amount, details, transactionDate} = req.body
+    const {amount, category, details, transactionDate} = req.body
     const transactionObject = await buildTransactionObject([
-        ["userId", "string", userId], 
+        ["userId", "string", userId],  
+        ["details", "string", details, {"canBeEmpty": true}], 
+        ["category", "string", category], 
         ["amount", "float", amount, {"toFixed": 2}], 
-        ["details", "string", details], 
         ["transactionDate", "date", transactionDate]
     ], response)
     if(response.checkSuccess()){
@@ -70,12 +71,13 @@ const updateTransaction = async (req, res) =>{
     const response = new ResponseBuilder()
     const userId = req.user._id
     const _id = req.params.id
-    const { amount, details, transactionDate} = req.body
+    const { amount, details, category, transactionDate} = req.body
     const transactionObject = await buildTransactionObject([
         ["_id", "string", _id], 
         ["userId", "string", userId], 
         ["amount", "float", amount, {"toFixed": 2}], 
-        ["details", "string", details], 
+        ["details", "string", details, {"canBeEmpty": true}], 
+        ["category", "string", category], 
         ["transactionDate", "date", transactionDate]
     ], response)
     if(response.checkSuccess()) {
