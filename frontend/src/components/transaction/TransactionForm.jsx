@@ -80,11 +80,12 @@ const TransactionForm = () => {
         })
         .finally(()=> document.getElementById("loading").style.visibility = 'hidden')
     }
-    const checkInputEmpty = input => input.length === 0 ? "Field can't be empty" : ""
+    const checkInputEmpty = input => input.length === 0 ? "Field can't be empty" : "&nbsp;"
 
     const checkErrorStatusEmpty = (fieldPosition, errorStatusEmpty) => {
+        
         let newInvalidFields = invalidFields
-        newInvalidFields[fieldPosition] = errorStatusEmpty === "" ? 1 : 0
+        newInvalidFields[fieldPosition] = errorStatusEmpty === "&nbsp;" ? 1 : 0
         setInvalidFields(newInvalidFields)
     }
 
@@ -97,7 +98,7 @@ const TransactionForm = () => {
         } else if (isNaN(amount)) {
             e.target.nextSibling.innerHTML = "Amount need's to be a number"
         }else {
-            e.target.nextSibling.innerHTML = ""
+            e.target.nextSibling.innerHTML = "&nbsp;"
         }
         checkErrorStatusEmpty(0, e.target.nextSibling.innerHTML)
         setAmount(amount)
@@ -137,12 +138,12 @@ const TransactionForm = () => {
         setAmount("")
         setDetails("")
         for(let i = 0; i < document.getElementsByTagName("small").length; i++){
-            document.getElementsByTagName("small")[i].innerHTML = ""
+            document.getElementsByTagName("small")[i].innerHTML = "&nbsp;"
         }
         
         setTransactionDate(getTodayDate())
         setExpense(true)
-        setInvalidFields([0, 0, 1])
+        setInvalidFields([0, 1])
     }
 
     return (
@@ -150,12 +151,12 @@ const TransactionForm = () => {
             <div className="p-3 mt-3">
                 <span className={`mx-auto my-5 ${submitStatus.className}`}>{submitStatus.message}&nbsp;</span>
                 <form method="post" onSubmit={e=> submitForm(e)}>
-                    <div className="form-group">
-                        <label htmlFor="details">Details (Optional)</label>
-                        <TextArea name="details" id="details" className="form-control" onChange={(e)=>updateDetails(e)} value={details} ></TextArea>
-                        <small className="text-danger"></small>
+                    <div className="form-group d-inline-block px-0 m-0 pr-sm-1 col-12 col-sm-6 ">
+                        <label htmlFor="amount">Amount (R$)</label>
+                        <Input type="text" name="amount" id="amount" className="form-control" value={amount} onChange={(e)=>updateAmount(e)} />
+                        <small className="text-danger">&nbsp;</small>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group d-inline-block p-0 m-0 pl-sm-1 col-12 col-sm-6">
                         <label htmlFor="category">Category</label>
                         <select name="category" id="category" className="form-control" onChange={(e)=>updateCategory(e)} value={category} >
                             <option value="others" defaultValue>Others</option>
@@ -170,13 +171,9 @@ const TransactionForm = () => {
                             <option value="investments">Investments</option>
                             <option value="expenses">Expenses</option>
                         </select>
+                        <small className="text-danger">&nbsp;</small>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="amount">Amount ($)</label>
-                        <Input type="text" name="amount" id="amount" className="form-control" value={amount} onChange={(e)=>updateAmount(e)} />
-                        <small className="text-danger"></small>
-                    </div>
-                    <div className="form-group">
+                    <div className="form-group ">
                         <div className="form-check form-check-inline">
                             <Input type="radio" name="transactionType" id="typeExpense" className="form-check-input" onChange={e => setExpense(true)} checked={expense}  />
                             <label className="form-check-label" htmlFor="typeExpense">Expense</label>
@@ -185,11 +182,17 @@ const TransactionForm = () => {
                             <Input type="radio" name="transactionType" id="typeIncome" className="form-check-input" onChange={e => setExpense(false)} checked={!expense}/>
                             <label className="form-check-label" htmlFor="typeIncome">Income</label>
                         </div>
+                        <small className="text-danger">&nbsp;</small>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group m-0">
+                        <label htmlFor="details">Details (Optional)</label>
+                        <TextArea name="details" id="details" className="form-control" onChange={(e)=>updateDetails(e)} value={details} ></TextArea>
+                        <small className="text-danger">&nbsp;</small>
+                    </div>
+                    <div className="form-group m-0">
                         <label htmlFor="transactionDate">Date</label>
                         <Input type="date" name="transactionDate" id="transactionDate" className="form-control" value={transactionDate} onChange={(e)=>updateTransactionDate(e)} />
-                        <small className="text-danger"></small>
+                        <small className="text-danger">&nbsp;</small>
                     </div>
                     <div className="form-group">
                         <Input type="reset" className="btn m-2" onClick={e=>clearForm()} value="Clear"/>

@@ -111,9 +111,9 @@ class TransactionsList extends Component{
                                     <th># <i onClick={e=>this.sort(e, "order", 0)} name="arrow" className="fa fa-arrow-right"></i></th>
                                     <th>Details <i onClick={e=>this.sort(e, "details", 1)} name="arrow" className="fa fa-arrow-right"></i></th>
                                     <th>Amount <i  onClick={e=>this.sort(e, "amount", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Category <i onClick={e=>this.sort(e, "category", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Type <i onClick={e=>this.sort(e, "transactionType", 5)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Date <i onClick={e=>this.sort(e, "transactionDate", 6)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Category <i onClick={e=>this.sort(e, "category", 3)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Type <i onClick={e=>this.sort(e, "transactionType", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>Date <i onClick={e=>this.sort(e, "transactionDate", 5)} name="arrow" className="fa fa-arrow-right"></i></th>
                                     <th colSpan="2">Actions</th>
                                 </tr>
                             </thead>

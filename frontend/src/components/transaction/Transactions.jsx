@@ -3,6 +3,7 @@ import "./TransactionsList.css"
 import React, { Component } from "react"
 import axios from "axios"
 import Main from "../template/Main"
+import TransactionsDoughnut from "../charts/TransactionDoughnut"
 
 const token = localStorage.getItem("Token")
 const baseUrl = process.env.REACT_APP_API_BASE_URL
@@ -23,9 +24,9 @@ class TransactionsList extends Component{
     abstractObjectFromTransactionsQuery(query){
         let transactions = []
         Object.values(query).forEach((queryElement, index)=>{
-            let {_id, amount, details, transactionType, transactionDate} = queryElement
+            let {_id, amount, category, details, transactionType, transactionDate} = queryElement
             transactionDate = new Date(transactionDate).toISOString().split('T')[0] 
-            let transaction = {order: index + 1, _id, amount, details, transactionType, transactionDate}
+            let transaction = {order: index + 1, _id, amount, category, details, transactionType, transactionDate}
             transactions.push(transaction)
         })
         return transactions
@@ -58,9 +59,16 @@ class TransactionsList extends Component{
             }
         })
         .catch(error => console.log(error)) 
+
+        
     }
+
+
     render(){
+        
+        
         return(
+            
         <Main icon="money" title="Transactions" subtitle="Visualize your Transaction's records.">
             <div className="p-3 mt-3">
                 <div className="row text-center">
@@ -84,6 +92,14 @@ class TransactionsList extends Component{
                 <a className="my-4 text-light-blue" href="/transaction/list">
                     See Detailed list of transactions
                 </a>
+            </div>
+
+            <div className="p-3 mt-3">
+                <div className="row">
+                    <div className="col">
+                        <TransactionsDoughnut transactions={this.state.transactions}/>
+                    </div>
+                </div>
             </div>
         </Main>)
     }  
