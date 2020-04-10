@@ -26,4 +26,66 @@ input[type=reset]:hover{
     color: #fff;
 }
 
+/* Customize the label (the container) */
+.transaction-radio {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .transaction-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .transaction-radio span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 40px;
+    width: 40px;
+    background-color: #fff;
+    border: 1px solid #000;
+  }
 
+  /* On mouse-over, add a grey background color */
+.transaction-radio:hover input ~ span {
+    background-color: #ededed;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .transaction-radio input:checked ~ span {
+    background-color: #fff;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  span:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .transaction-radio input:checked ~ span:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .transaction-radio span:after {
+    top: -3px;
+    left: 11px;
+    width: 15px;
+    height: 35px;
+    border: solid 1px var(--bg-dark-green);
+    border-width: 0 4px 4px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }

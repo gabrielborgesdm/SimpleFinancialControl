@@ -69,7 +69,9 @@ const TransactionForm = () => {
                 let newStatus = 
                 {
                     className: "text-success", 
-                    message: <span>Transaction posted with success! Click <a href="/transaction/">here</a> to see it</span>
+                    message: <span>
+                        Transaction posted with success! Check it out by <a className="p-0 text-info" href="/transaction/">clicking here</a>
+                    </span>
                 }
                 setSubmitStatus(newStatus)
             } else{
@@ -156,12 +158,12 @@ const TransactionForm = () => {
             <div className="p-3 mt-3">
                 <span className={`mx-auto my-5 ${submitStatus.className}`}>{submitStatus.message}&nbsp;</span>
                 <form method="post" onSubmit={e=> submitForm(e)}>
-                    <div className="form-group d-inline-block px-0 m-0 pr-sm-1 col-12 col-sm-6 ">
+                    <div className="form-group d-inline-block pl-sm-0 pr-sm-3 col-12 col-sm-6 ">
                         <label htmlFor="amount">Amount (R$)</label>
                         <Input type="text" name="amount" id="amount" className="form-control" value={amount} onChange={(e)=>updateAmount(e)} />
                         <small className="text-danger">&nbsp;</small>
                     </div>
-                    <div className="form-group d-inline-block p-0 m-0 pl-sm-1 col-12 col-sm-6">
+                    <div className="form-group d-inline-block pl-sm-3 pr-0 col-12 col-sm-6">
                         <label htmlFor="category">Category</label>
                         <select name="category" id="category" className="form-control" onChange={(e)=>updateCategory(e)} value={category} >
                             <option value="others" defaultValue>Others</option>
@@ -178,15 +180,20 @@ const TransactionForm = () => {
                         </select>
                         <small className="text-danger">&nbsp;</small>
                     </div>
-                    <div className="form-group ">
-                        <div className="form-check form-check-inline">
-                            <Input type="radio" name="transactionType" id="typeExpense" className="form-check-input" onChange={e => setExpense(true)} checked={expense}  />
-                            <label className="form-check-label" htmlFor="typeExpense">Expense</label>
+                    <div className="form-group px-sm-3 row justify-content-between d-flex">
+                        <div className="col-12 col-sm-6 pl-sm-0">
+                            <label className="bg-dark-red text-light transaction-radio col-12 py-2 my-1 m-sm-0" htmlFor="typeExpense">Expense
+                                <Input type="radio" name="transactionType" id="typeExpense" className="form-check-input" onChange={e => setExpense(true)} checked={expense}  />
+                                <span></span>
+                            </label>
                         </div>
-                        <div className="form-check form-check-inline">
-                            <Input type="radio" name="transactionType" id="typeIncome" className="form-check-input" onChange={e => setExpense(false)} checked={!expense}/>
-                            <label className="form-check-label" htmlFor="typeIncome">Income</label>
+                        <div className="col-12 col-sm-6 pr-sm-0">
+                            <label className="bg-dark-blue text-light transaction-radio col-12 py-2 my-1 m-sm-0 " htmlFor="typeIncome">Income
+                                <Input type="radio" name="transactionType" id="typeIncome" className="form-check-input" onChange={e => setExpense(false)} checked={!expense}/>
+                                <span></span>
+                            </label>
                         </div>
+                     
                         <small className="text-danger">&nbsp;</small>
                     </div>
                     <div className="form-group m-0">

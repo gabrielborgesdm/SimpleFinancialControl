@@ -45,19 +45,17 @@ class TransactionsList extends Component{
         this.buildTransactionsTable(transactions)
     }
     filter(filter){
+        let { transactions } = this.state
         const trueIfFiltered = (transaction) => {
-            let filter
-            let filtered = Object.values(transaction).filter((item)=>{
-                if(item !== null) filter = this.lowerCaseIfString(item.toString()).includes(filter)
-                return filter
-            })
 
+            let filtered = Object.values(transaction).filter((item)=>{
+                return this.lowerCaseIfString(item.toString()).includes(filter)
+            })
             return filtered.length > 0 ? true : false
         }
         this.turnArrowsToRight()
-        let { transactions } = this.state
         let filteredTransactions = transactions.filter((transaction)=>trueIfFiltered(transaction))
-        this.buildTransactionsTable(filteredTransactions)
+        this.buildTransactionsTable(filter !== "" ? filteredTransactions : transactions)
     }
 
     deleteTransaction = (id) => {
@@ -81,12 +79,13 @@ class TransactionsList extends Component{
         Object.values(query).forEach((queryElement, index)=>{
             let {_id, amount, category, details, transactionType, transactionDate} = queryElement
             transactionDate = new Date(transactionDate).toISOString().split('T')[0] 
+            details = details || "No description"
             let transaction = {order: index + 1, _id, amount, category, details, transactionType, transactionDate}
             transactions.push(transaction)
         })
         return transactions
     }
-    async componentDidMount(){
+    componentDidMount(){
         axios.get(`${baseUrl}/transaction`)
         .then(response => {
             if(response.data.success){
@@ -101,8 +100,8 @@ class TransactionsList extends Component{
     render(){
         return(
         <Main icon="money" title="Transactions" subtitle="List your Transactions">
-            <div className="p-3 mt-3">
-                <div className="p-3 mt-3">
+            <div className="p-0 p-md-3 mt-3">
+                <div className="p-1 p-md-3 mt-3">
                     <form className="row ">
                         <div className="form-group col-12">
                             <input onKeyUp={e=>this.filter(e.target.value)} className="form-control" type="text" placeholder="Filter"/>
@@ -111,7 +110,7 @@ class TransactionsList extends Component{
                     <div className="table-responsive">
                         <table className="table table-bordered">
                             <thead>
-                                <tr>
+                                <tr className="text-center">
                                     <th># <i onClick={e=>this.sort(e, "order", 0)} name="arrow" className="fa fa-arrow-right"></i></th>
                                     <th>Details <i onClick={e=>this.sort(e, "details", 1)} name="arrow" className="fa fa-arrow-right"></i></th>
                                     <th>Amount <i  onClick={e=>this.sort(e, "amount", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
@@ -127,7 +126,7 @@ class TransactionsList extends Component{
                                         this.state.transactionsList.map((transaction)=>
                                         <tr key={transaction._id}>
                                             <td>{transaction.order}</td>
-                                            <td>{transaction.details || "No description"}</td>
+                                            <td>{transaction.details}</td>
                                             <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>{transaction.amount}</td>
                                             <td>{transaction.category}</td>
                                             <td>{transaction.transactionType}</td>

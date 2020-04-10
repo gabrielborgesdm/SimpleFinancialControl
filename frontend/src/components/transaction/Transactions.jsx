@@ -79,7 +79,7 @@ class TransactionsList extends Component{
                 <div className="row text-center">
                     <h1 className="col-12 col-sm text-dark-green">Wealth</h1>
                     <div className="col align-self-center">
-                        <h5 className="text-light-red">Incomes x Expenses</h5>
+                        <h5 className="text-light-red">Expenses</h5>
                         <span>{this.state.expensesAmount} R$</span> 
                     </div>
                     <div className="col align-self-center">
