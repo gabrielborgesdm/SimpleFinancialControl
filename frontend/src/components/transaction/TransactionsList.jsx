@@ -12,9 +12,8 @@ class TransactionsList extends Component{
         super(props)
         this.state = {
             transactions: [],
-            transactionsList: null
+            transactionsList: []
         }
-        //this.deleteTransaction = this.deleteTransaction.bind(this)
     }
 
     buildTransactionsTable(transactions){
@@ -38,16 +37,21 @@ class TransactionsList extends Component{
         let transactions = this.state.transactionsList
         if (e.target.className === "fa fa-arrow-down" ){
             e.target.className = "fa fa-arrow-up"
-            transactions = transactions.slice(0).sort((a, b) => this.lowerCaseIfString(a[type]) >= this.lowerCaseIfString(b[type]) ? 1 : 0)
+            transactions = transactions.slice(0).sort((a, b) => this.lowerCaseIfString(a[type]) >= this.lowerCaseIfString(b[type]) ? 1 : -1)
         } else{
             e.target.className = "fa fa-arrow-down"
-            transactions = transactions.slice(0).sort((a, b) => this.lowerCaseIfString(a[type]) < this.lowerCaseIfString(b[type]) ? 1 : 0)
+            transactions = transactions.slice(0).sort((a, b) => this.lowerCaseIfString(a[type]) < this.lowerCaseIfString(b[type]) ? 1 : -1)
         }
         this.buildTransactionsTable(transactions)
     }
     filter(filter){
         const trueIfFiltered = (transaction) => {
-            let filtered = Object.values(transaction).filter((item)=>this.lowerCaseIfString(item.toString()).includes(filter))
+            let filter
+            let filtered = Object.values(transaction).filter((item)=>{
+                if(item !== null) filter = this.lowerCaseIfString(item.toString()).includes(filter)
+                return filter
+            })
+
             return filtered.length > 0 ? true : false
         }
         this.turnArrowsToRight()
@@ -57,6 +61,7 @@ class TransactionsList extends Component{
     }
 
     deleteTransaction = (id) => {
+        if (!window.confirm("Are you sure you want to delete this record?")) return
         axios.delete(`${process.env.REACT_APP_API_BASE_URL}/transaction/${id}`)
         .then(response => {
             if(response.data.success){
@@ -85,15 +90,14 @@ class TransactionsList extends Component{
         axios.get(`${baseUrl}/transaction`)
         .then(response => {
             if(response.data.success){
-                console.log(response.data.transactions)
                 let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
-                console.log(transactions)
                 this.setState({transactions: transactions}) 
                 this.buildTransactionsTable(transactions)
             }
         })
         .catch(error => console.log(error)) 
     }
+   
     render(){
         return(
         <Main icon="money" title="Transactions" subtitle="List your Transactions">

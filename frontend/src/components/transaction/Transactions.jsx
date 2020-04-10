@@ -3,7 +3,15 @@ import "./TransactionsList.css"
 import React, { Component } from "react"
 import axios from "axios"
 import Main from "../template/Main"
-import TransactionsDoughnut from "../charts/TransactionDoughnut"
+
+import TransactionsLines from "../charts/TransactionsLines"
+import TransactionsBars from "../charts/TransactionsBars"
+
+import ExpensesDoughnut from "../charts/ExpensesDoughnut"
+import ExpensesLines from "../charts/ExpensesLines"
+
+import IncomesDoughnut from "../charts/IncomesDoughnut"
+import IncomeLines from "../charts/IncomesLines"
 
 const token = localStorage.getItem("Token")
 const baseUrl = process.env.REACT_APP_API_BASE_URL
@@ -14,9 +22,11 @@ class TransactionsList extends Component{
         super(props)
         this.state = {
             transactions: [],
-            balance:null,
-            incomes: null,
-            expenses: null
+            incomes:[],
+            expenses: [],
+            balanceAmount:0,
+            incomesAmount: 0,
+            expensesAmount: 0,
         }
         //this.deleteTransaction = this.deleteTransaction.bind(this)
     }
@@ -31,25 +41,26 @@ class TransactionsList extends Component{
         })
         return transactions
     }
+
     getWealth(){
-        let { transactions } = this.state
-        let incomes = 0
-        let expenses = 0
-        let balance = 0
+        let { transactions, expenses, incomes, expensesAmount, incomesAmount, balanceAmount } = this.state
         
         transactions.forEach((transaction)=>{
             let { amount } = transaction
             if(amount > 0){
-                incomes += amount
-                
+                incomesAmount += amount
+                incomes.push(transaction)
             } else {
-                expenses += amount * -1
+                expensesAmount += amount * -1
+                expenses.push(transaction)
             }
-            balance += amount
+            balanceAmount += amount
         })
-        this.setState({incomes: incomes.toFixed(2), expenses: expenses.toFixed(2), balance: balance.toFixed(2)})
+        this.setState({incomesAmount: incomesAmount.toFixed(2), expensesAmount: expensesAmount.toFixed(2), balanceAmount: balanceAmount.toFixed(2)})
+        console.log(this.state.incomes, this.state.expenses)
     }
-    async componentDidMount(){
+    
+    componentDidMount(){
         axios.get(`${baseUrl}/transaction`)
         .then(response => {
             if(response.data.success){
@@ -59,48 +70,106 @@ class TransactionsList extends Component{
             }
         })
         .catch(error => console.log(error)) 
-
-        
     }
 
-
     render(){
-        
-        
         return(
-            
         <Main icon="money" title="Transactions" subtitle="Visualize your Transaction's records.">
             <div className="p-3 mt-3">
                 <div className="row text-center">
                     <h1 className="col-12 col-sm text-dark-green">Wealth</h1>
                     <div className="col align-self-center">
-                        <h5 className="text-light-red">Expenses</h5>
-                        <span>{this.state.expenses} R$</span> 
+                        <h5 className="text-light-red">Incomes x Expenses</h5>
+                        <span>{this.state.expensesAmount} R$</span> 
                     </div>
                     <div className="col align-self-center">
                         <h5 className="text-dark-green">Balance</h5>
-                        <span className={this.state.balance >= 0 ? "text-light-blue" : "text-light-red"}>{this.state.balance} R$</span> 
+                        <span className={this.state.balanceAmount >= 0 ? "text-light-blue" : "text-light-red"}>{this.state.balanceAmount} R$</span> 
                     </div>
                     <div className="col align-self-center">
                         <h5 className="text-light-blue">Incomes</h5>
-                        <span>{this.state.incomes} R$</span> 
+                        <span>{this.state.incomesAmount} R$</span> 
                     </div>
                     
                 </div>
             </div>
             <div className="p-3 mt-3">
                 <a className="my-4 text-light-blue" href="/transaction/list">
-                    See Detailed list of transactions
+                    <i className="fa fa-eye"></i> See Transaction's Details
                 </a>
             </div>
-
-            <div className="p-3 mt-3">
-                <div className="row">
-                    <div className="col">
-                        <TransactionsDoughnut transactions={this.state.transactions}/>
-                    </div>
+            {this.state.transactions.length > 0 ? (
+                <React.Fragment>
+                    {this.state.expenses.length > 0 && this.state.incomes.length > 0 && (
+                        <div className="p-3 mt-3">
+                            <div className="row">
+                                <div className="col border-bottom pb-2">
+                                    <h2 className="text-dark-green">Incomes x Expenses</h2>      
+                                </div>
+                            </div>
+                            
+                            <div className="row mt-5">
+                                <div className="p-0 col-12 col-md-6 my-4 my-md-0">
+                                    <h5 className="col-12 text-center">Grouped By Date</h5>
+                                    <TransactionsBars transactions={this.state.transactions}/>
+                                </div>
+                                <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
+                                    <h5 className="col-12 text-center">Grouped By Date</h5>
+                                    <TransactionsLines transactions={this.state.transactions}/>
+                                </div>  
+                            </div>
+                        </div>
+                    )}
+        
+                    {this.state.expenses.length > 0 && (
+                        <div className="p-3 mt-3">
+                            <div className="row">
+                                <div className="col border-bottom pb-2">
+                                    <h2 className="text-dark-green">Expenses</h2>      
+                                </div>
+                            </div>
+                            
+                            <div className="row mt-5">
+                                <div className="p-0 col-12 col-md-6 my-4 my-md-0">
+                                    <h5 className="col-12 text-center">Grouped by Categories</h5>
+                                    <ExpensesDoughnut expenses={this.state.expenses}/>
+                                </div>
+                                <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
+                                    <h5 className="col-12 text-center">Grouped By Date</h5>
+                                    <ExpensesLines expenses={this.state.expenses} />
+                                </div>  
+                            </div>
+                        </div>
+                    )}
+                    {this.state.incomes.length > 0 && (
+                        <div className="p-3 mt-3">
+                            <div className="row">
+                                <div className="col border-bottom pb-2">
+                                    <h2 className="text-dark-green">Incomes</h2>      
+                                </div>
+                            </div>
+                            
+                            <div className="row mt-5">
+                                <div className="p-0 col-12 col-md-6 my-4 my-md-0">
+                                    <h5 className="col-12 text-center">Grouped by Categories</h5>
+                                    <IncomesDoughnut transactions={this.state.incomes}/>
+                                </div>
+                                <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
+                                    <h5 className="col-12 text-center">Grouped By Date</h5>
+                                    <IncomeLines transactions={this.state.incomes} />
+                                </div>  
+                            </div>
+                        </div>
+                    )}
+                </React.Fragment>
+            ) : (
+                <div className="p-3 mt-3">
+                    <a className="my-4 text-light-blue" href="/transaction/form">
+                    <i className="fa fa-plus"></i> Add a Record
+                    </a>
                 </div>
-            </div>
+            )}
+            
         </Main>)
     }  
 }

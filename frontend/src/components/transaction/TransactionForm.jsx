@@ -27,6 +27,7 @@ const TransactionForm = () => {
         setSubmitStatus({})
     }, [amount, details, expense, transactionDate])
     
+
     useEffect(() => {
         if (id) {
             const url = `${baseUrl}/transaction/${id}` 
@@ -65,7 +66,11 @@ const TransactionForm = () => {
         .then(response => {
             if(response.data.success){
                 clearForm(e)
-                let newStatus = {className: "text-success", message: "Transaction posted with success"}
+                let newStatus = 
+                {
+                    className: "text-success", 
+                    message: <span>Transaction posted with success! Click <a href="/transaction/">here</a> to see it</span>
+                }
                 setSubmitStatus(newStatus)
             } else{
                 console.log(response.data.errors)
