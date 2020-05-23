@@ -24,6 +24,7 @@ if(!connectionError){
     app.use(express.json())
     app.use(routes)
     app.listen(process.env.PORT)
+    console.log("Server started on Port", process.env.PORT)
 }
 
 

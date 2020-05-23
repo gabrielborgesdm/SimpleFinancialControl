@@ -22,12 +22,27 @@ class ExpensesDoughnut extends Component{
             '#e8ae68',
             '#107e7d',
             '#72195a',
+            '#ffaaee',
             '#1a090d',
             '#6b6570',
         ]
     }
 
     componentDidMount(){
+        this.expenses = this.props.expenses
+        console.log("alo")
+        this.expensesData = []
+        this.expensesSum = 0
+        this.expensesLabel = []
+        this.initChart()
+    }
+
+    componentDidUpdate(){
+        this.expenses = this.props.expenses
+        console.log("alo")
+        this.expensesData = []
+        this.expensesSum = 0
+        this.expensesLabel = []
         this.initChart()
     }
 
@@ -38,13 +53,22 @@ class ExpensesDoughnut extends Component{
 
     buildExpensesInfo = () => {
         this.expenses.forEach((transaction)=>{
-            this.expensesLabel.push(transaction["category"])
-            this.expensesData.push(transaction.amount * -1)
-            this.expensesSum += transaction.amount * -1
+            if(this.expensesLabel.indexOf(transaction["category"]) === -1){
+                this.expensesLabel.push(transaction["category"])
+                this.expensesData.push(transaction.amount * -1)
+                this.expensesSum += transaction.amount * -1
+            } else {
+                let indexOfExpense = this.expensesLabel.indexOf(transaction["category"])
+                this.expensesData[indexOfExpense] += transaction.amount * -1
+                this.expensesSum += transaction.amount * -1
+            }
         })
     }
 
     renderChart = () => {
+        let expensesCanvasDiv = document.querySelector("#expensesCanvasDiv")
+        expensesCanvasDiv.innerHTML = ""
+        expensesCanvasDiv.innerHTML = `<canvas id="expensesDoughnut" className="canvas"></canvas>`
         let ctx = document.getElementById('expensesDoughnut').getContext('2d')
         let { expensesSum } = this
         new Chart(ctx, {
@@ -79,7 +103,10 @@ class ExpensesDoughnut extends Component{
         })
     }
 
-    render = () => <canvas id="expensesDoughnut" className="canvas"></canvas>
+    render = () => 
+    <div id="expensesCanvasDiv">
+        <canvas id="expensesDoughnut" className="canvas"></canvas>
+    </div>
      
 }
 

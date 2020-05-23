@@ -1,8 +1,14 @@
 import "./Transactions.css"
 import "./TransactionsList.css"
 import React, { Component } from "react"
+
 import axios from "axios"
+import 'jquery'
+import 'popper.js'
+
 import Main from "../template/Main"
+
+import DateDropdown from "../template/DateDropdown"
 
 import TransactionsLines from "../charts/TransactionsLines"
 import TransactionsBars from "../charts/TransactionsBars"
@@ -21,17 +27,30 @@ class TransactionsList extends Component{
     constructor(props){
         super(props)
         this.state = {
+            fetchedTransactions: [],
             transactions: [],
+            incomesAndExpenses: [],
             incomes:[],
             expenses: [],
             balanceAmount:0,
             incomesAmount: 0,
-            expensesAmount: 0,
+            expensesAmount: 0
         }
-        //this.deleteTransaction = this.deleteTransaction.bind(this)
     }
 
-    abstractObjectFromTransactionsQuery(query){
+    componentDidMount(){
+        axios.get(`${baseUrl}/transaction`)
+        .then(response => {
+            if(response.data.success){
+                let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
+                this.setState({fetchedTransactions: transactions}) 
+                this.getWealth(transactions)
+            }
+        })
+        .catch(error => console.log(error)) 
+    }
+
+    abstractObjectFromTransactionsQuery = (query) => {
         let transactions = []
         Object.values(query).forEach((queryElement, index)=>{
             let {_id, amount, category, details, transactionType, transactionDate} = queryElement
@@ -42,9 +61,14 @@ class TransactionsList extends Component{
         return transactions
     }
 
-    getWealth(){
-        let { transactions, expenses, incomes, expensesAmount, incomesAmount, balanceAmount } = this.state
+    getWealth = (transactions) => {
         
+        let expenses = []
+        let incomes = []
+        let incomesAndExpenses = []
+        let expensesAmount = 0
+        let incomesAmount = 0
+        let balanceAmount = 0
         transactions.forEach((transaction)=>{
             let { amount } = transaction
             if(amount > 0){
@@ -54,24 +78,42 @@ class TransactionsList extends Component{
                 expensesAmount += amount * -1
                 expenses.push(transaction)
             }
+            incomesAndExpenses.push(transaction)
             balanceAmount += amount
         })
-        this.setState({incomesAmount: incomesAmount.toFixed(2), expensesAmount: expensesAmount.toFixed(2), balanceAmount: balanceAmount.toFixed(2)})
-        console.log(this.state.incomes, this.state.expenses)
-    }
-    
-    componentDidMount(){
-        axios.get(`${baseUrl}/transaction`)
-        .then(response => {
-            if(response.data.success){
-                let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
-                this.setState({transactions: transactions}) 
-                this.getWealth()
-            }
+        
+        this.setState({
+            incomesAmount: incomesAmount.toFixed(2), 
+            expensesAmount: expensesAmount.toFixed(2), 
+            balanceAmount: balanceAmount.toFixed(2),
+            expenses,
+            incomes,
+            incomesAndExpenses,
+            transactions
         })
-        .catch(error => console.log(error)) 
     }
 
+    selectDateFilter = (startDate = null, endDate = null) => {
+        if(startDate && endDate){
+            this.filterTransactionsWithDate(startDate, endDate)
+        } else {
+            this.getWealth(this.state.fetchedTransactions) 
+        }
+        
+    }
+
+    filterTransactionsWithDate = (startDate, endDate) => {
+        
+        let transactions = this.state.fetchedTransactions
+        
+        transactions = transactions.filter(transaction => {
+            let check = true
+            check = transaction.transactionDate >= startDate ? check : false 
+            check = transaction.transactionDate <= endDate ? check : false
+            return check 
+        })
+        this.getWealth(transactions) 
+    }
     render(){
         return(
         <Main icon="money" title="Transactions" subtitle="Visualize your Transaction's records.">
@@ -94,9 +136,12 @@ class TransactionsList extends Component{
                 </div>
             </div>
             <div className="p-3 mt-3">
-                <a className="my-4 text-light-blue" href="/transaction/list">
-                    <i className="fa fa-eye"></i> See Transaction's Details
-                </a>
+                <div className="row px-3 d-flex justify-content-between">
+                    <a className=" text-light-blue align-self-center" href="/transaction/list">
+                        <i className="fa fa-eye"></i> See Transaction's Details
+                    </a>
+                    <DateDropdown transactions={this.state.transactions} selectDateFilter={this.selectDateFilter} transactionType="all" />
+                </div>
             </div>
             {this.state.transactions.length > 0 ? (
                 <React.Fragment>
@@ -111,11 +156,11 @@ class TransactionsList extends Component{
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
                                     <h5 className="col-12 text-center">Grouped By Date</h5>
-                                    <TransactionsBars transactions={this.state.transactions}/>
+                                    <TransactionsBars transactions={this.state.incomesAndExpenses}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
                                     <h5 className="col-12 text-center">Grouped By Date</h5>
-                                    <TransactionsLines transactions={this.state.transactions}/>
+                                    <TransactionsLines transactions={this.state.incomesAndExpenses}/>
                                 </div>  
                             </div>
                         </div>
@@ -123,6 +168,7 @@ class TransactionsList extends Component{
         
                     {this.state.expenses.length > 0 && (
                         <div className="p-3 mt-3">
+                            
                             <div className="row">
                                 <div className="col border-bottom pb-2">
                                     <h2 className="text-dark-green">Expenses</h2>      
@@ -152,11 +198,11 @@ class TransactionsList extends Component{
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
                                     <h5 className="col-12 text-center">Grouped by Categories</h5>
-                                    <IncomesDoughnut transactions={this.state.incomes}/>
+                                    <IncomesDoughnut incomes={this.state.incomes}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
                                     <h5 className="col-12 text-center">Grouped By Date</h5>
-                                    <IncomeLines transactions={this.state.incomes} />
+                                    <IncomeLines incomes={this.state.incomes} />
                                 </div>  
                             </div>
                         </div>

@@ -14,16 +14,17 @@ class IncomesLines extends Component{
         this.initChart()
     }
 
+    componentDidUpdate(){
+        this.initChart()
+    }
+
     initChart(){
-        this.filterIncomes(this.props.transactions)
+        this.incomes = this.props.incomes
         this.groupByDate()
         this.incomesDates = this.incomes.map((income)=>income.date)
         this.incomesValues = this.incomes.map((income)=>income.amount)
         this.renderChart()
-    }
-
-    filterIncomes = (transactions) => this.incomes = transactions.filter((transaction => transaction["amount"] > 0))
-    
+    }    
     
     groupByDate = () => {
         let incomes = this.incomes
@@ -48,7 +49,7 @@ class IncomesLines extends Component{
         this.incomes = groupedIncomes
     }
     
-    sortDate = transactions => transactions.sort((a, b) => a["transactionDate"] >= b["transactionDate"] ? 1 : -1)
+    sortDate = incomes => incomes.sort((a, b) => a["incomeDate"] >= b["incomeDate"] ? 1 : -1)
     
     getYear = date => date.split("-")[0]
     
@@ -62,6 +63,10 @@ class IncomesLines extends Component{
     }
     
     renderChart = () => {
+        let incomesLinesDiv = document.querySelector("#incomesLinesDiv")
+        incomesLinesDiv.innerHTML = ""
+        incomesLinesDiv.innerHTML = `<canvas id="incomesLines" className="canvas"></canvas>`
+
         let ctx = document.getElementById('incomesLines').getContext('2d')
         new Chart(ctx, {
             type: 'line',
@@ -105,7 +110,9 @@ class IncomesLines extends Component{
     }
 
     render = () => 
-    <canvas id="incomesLines"></canvas>
+    <div id="incomesLinesDiv">
+        <canvas id="incomesLines" className="canvas"></canvas>
+    </div>
 }
 
 export default IncomesLines

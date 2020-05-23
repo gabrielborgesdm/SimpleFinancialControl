@@ -8,7 +8,10 @@ class IncomesDoughnut extends Component{
    
     constructor(props){
         super(props)
-        this.transactions = []
+        this.state = {
+            canvas: ""
+        }
+        this.incomes = []
         this.incomesData = []
         this.incomesSum = 0
         this.incomesLabel = []
@@ -28,7 +31,18 @@ class IncomesDoughnut extends Component{
     }
 
     componentDidMount(){
-        this.transactions = this.props.transactions
+        this.incomesData = []
+        this.incomesSum = 0
+        this.incomesLabel = []
+        this.incomes = this.props.incomes
+        this.initChart()
+    }
+
+    componentDidUpdate(){
+        this.incomesData = []
+        this.incomesSum = 0
+        this.incomesLabel = []
+        this.incomes = this.props.incomes
         this.initChart()
     }
 
@@ -38,17 +52,27 @@ class IncomesDoughnut extends Component{
     }
 
     buildIncomesInfo = () => {
-        this.transactions.forEach((transaction)=>{
-            if(transaction.amount > 0) {
+        this.incomes.forEach((transaction)=>{
+            if(this.incomesLabel.indexOf(transaction["category"]) === -1){
                 this.incomesLabel.push(transaction["category"])
                 this.incomesData.push(transaction.amount)
-                this.incomesSum += transaction.amount
+                this.incomesSum += transaction.amount 
+            } else {
+                let indexOfExpense = this.incomesLabel.indexOf(transaction["category"])
+                this.incomesData[indexOfExpense] += transaction.amount 
+                this.incomesSum += transaction.amount 
             }
         })
     }
 
     renderChart = () => {
-        let ctx = document.getElementById('incomesDoughnut').getContext('2d')
+        let incomesCanvasDiv = document.querySelector("#incomesCanvasDiv")
+        incomesCanvasDiv.innerHTML = ""
+        incomesCanvasDiv.innerHTML = `<canvas id="incomesDoughnut" className="canvas"></canvas>`
+
+        let canvas = document.getElementById('incomesDoughnut');
+        let ctx = canvas.getContext('2d')
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
         let { incomesSum } = this
         new Chart(ctx, {
             type: 'pie',
@@ -85,7 +109,9 @@ class IncomesDoughnut extends Component{
     getClientWidth = () => document.getElementsByTagName("body")[0].clientWidth
 
     render = () =>  
-        <canvas id="incomesDoughnut" className="canvas"></canvas>
+        <div id="incomesCanvasDiv">
+            <canvas id="incomesDoughnut" className="canvas"></canvas>
+        </div>
      
 }
 

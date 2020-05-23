@@ -1,4 +1,6 @@
-import "bootstrap/dist/css/bootstrap.min.css"
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.js'
 import "font-awesome/css/font-awesome.min.css"
 import "./App.css"
 import React from "react"

@@ -10,15 +10,24 @@ const authenticate = (props) => {
     
     const token = localStorage.getItem("Token") 
     const baseUrl = process.env.REACT_APP_API_BASE_URL
+    axios.defaults.headers["Authorization"] = `Bearer ${token}`
 
     if (token) {
-        const url = `${baseUrl}/accounts/` 
+        
+        const url = `${baseUrl}/accounts/account` 
         axios.get(url)
-        .catch(error => {
-            if(error.response.status === 403) {
+        .then(response => { 
+            if(response.status === 200) {
+                if (response.data.errors) {
+                    desauthenticate()
+                }
+            } else {
                 desauthenticate()
-            } 
+            }
         })
+        .catch(error => {
+            desauthenticate()
+        }) 
 
     } else{
         desauthenticate()

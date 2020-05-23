@@ -40,16 +40,16 @@ const ConfirmAccount = (props) => {
         } else if(activated) {
             return(
                 <React.Fragment>
-                    <h1>Account activated with success</h1>
-                    <Link className="btn btn-default btn-success" to={"/login"}>Go to the Login page</Link>
+                    <h2 className="pb-1 text-dark">Account activated with success</h2 >
+                    <Link className="text-dark-green" to={"/login"}><i className="fa fa-external-link"></i> Log in</Link>
                 </React.Fragment>
             )
         } else {
             return(
                 <React.Fragment>
-                    <h1>Ops!</h1>
+                    <h2 className="pb-1 text-dark">Ops!</h2   >
                     <p>{error}</p>
-                    <Link className="btn btn-default btn-success" to={"/signup"}>Go to the signup page</Link>
+                    <Link className="text-dark-green" to={"/signup"}><i className="fa fa-external-link"></i> Sign up</Link>
                 </React.Fragment>
             )
         }
@@ -57,7 +57,9 @@ const ConfirmAccount = (props) => {
 
     return (
         <Main className="form" icon="sign-in" title="Account Activation" subtitle="You will be able to use your account after its activation">
-            {showActivationStatus()}
+            <div className="p-3 mt-3">
+                {showActivationStatus()}    
+            </div>
         </Main>
     )
 } 

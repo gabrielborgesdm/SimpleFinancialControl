@@ -14,6 +14,18 @@ class TransactionsBars extends Component{
     }
     
     componentDidMount(){
+        this.transactions = []
+        this.transactionsDates = []
+        this.expenses = []
+        this.incomes = []
+        this.initChart()
+    }
+
+    componentDidUpdate(){
+        this.transactions = []
+        this.transactionsDates = []
+        this.expenses = []
+        this.incomes = []
         this.initChart()
     }
 
@@ -75,7 +87,10 @@ class TransactionsBars extends Component{
     }
     
     renderChart = () => {
-        console.log(this.transactionsDates, this.expenses, this.incomes)
+        let transactionsBarsDiv = document.querySelector("#transactionsBarsDiv")
+        transactionsBarsDiv.innerHTML = ""
+        transactionsBarsDiv.innerHTML = `<canvas id="transactionsBars" className="canvas"></canvas>`
+
         let ctx = document.getElementById('transactionsBars').getContext('2d')
         new Chart(ctx, {
             type: 'bar',
@@ -117,7 +132,9 @@ class TransactionsBars extends Component{
     }
 
     render = () => 
-    <canvas id="transactionsBars"></canvas>
+        <div id="transactionsBarsDiv">
+            <canvas id="transactionsBars" className="canvas"></canvas>
+        </div>
 }
 
 export default TransactionsBars

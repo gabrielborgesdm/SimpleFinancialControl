@@ -5,12 +5,15 @@ import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 class ExpensesLines extends Component{
-    constructor(props){
-        super(props)
-        this.expenses = this.props.expenses
-    }
     
     componentDidMount(){
+        this.expenses = this.props.expenses
+        this.initChart()
+        
+    }
+
+    componentDidUpdate(){
+        this.expenses = this.props.expenses
         this.initChart()
     }
 
@@ -58,6 +61,9 @@ class ExpensesLines extends Component{
     }
     
     renderChart = () => {
+        let expensesLinesDiv = document.querySelector("#expensesLinesDiv")
+        expensesLinesDiv.innerHTML = ""
+        expensesLinesDiv.innerHTML = `<canvas id="expensesLines" className="canvas"></canvas>`
         let ctx = document.getElementById('expensesLines').getContext('2d')
         new Chart(ctx, {
             type: 'line',
@@ -101,7 +107,9 @@ class ExpensesLines extends Component{
     }
 
     render = () => 
-    <canvas id="expensesLines"></canvas>
+    <div id="expensesLinesDiv">
+        <canvas id="expensesLines" className="canvas"></canvas>
+    </div>
 }
 
 export default ExpensesLines

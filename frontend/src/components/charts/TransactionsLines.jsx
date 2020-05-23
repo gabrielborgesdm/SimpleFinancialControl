@@ -14,6 +14,18 @@ class TransactionsLines extends Component{
     }
     
     componentDidMount(){
+        this.transactions = this.props.transactions
+        this.transactionsDates = []
+        this.expenses = []
+        this.incomes = []
+        this.initChart()
+    }
+
+    componentDidUpdate(){
+        this.transactions = this.props.transactions
+        this.transactionsDates = []
+        this.expenses = []
+        this.incomes = []
         this.initChart()
     }
 
@@ -74,7 +86,9 @@ class TransactionsLines extends Component{
     }
     
     renderChart = () => {
-        console.log(this.transactionsDates, this.expenses, this.incomes)
+        let transactionsLinesDiv = document.querySelector("#transactionsLinesDiv")
+        transactionsLinesDiv.innerHTML = ""
+        transactionsLinesDiv.innerHTML = `<canvas id="transactionsLines" className="canvas"></canvas>`
         let ctx = document.getElementById('transactionsLines').getContext('2d')
         new Chart(ctx, {
             type: 'line',
@@ -99,15 +113,9 @@ class TransactionsLines extends Component{
             options: {
                 plugins: {
                     datalabels: {
-                        color: "#fff",
-                        backgroundColor: "#000",
-                        borderRadius: 5,
-                        anchor: "end",
-                        align: "top",
-                        formatter: function(value, context) {
-                            return `${value}`;
-                        }
-                    },
+                        display: false
+                    }
+                    
                     
                 },
                 scales: {
@@ -125,7 +133,9 @@ class TransactionsLines extends Component{
     }
 
     render = () => 
-    <canvas id="transactionsLines"></canvas>
+    <div id="transactionsLinesDiv">
+        <canvas id="transactionsLines" className="canvas"></canvas>
+    </div>
 }
 
 export default TransactionsLines

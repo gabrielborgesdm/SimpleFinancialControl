@@ -126,6 +126,7 @@ const TransactionForm = () => {
             case "education":
             case "investments":
             case "expenses":
+            case "work":
                 category = e.target.value
                 break
             default:
@@ -177,6 +178,7 @@ const TransactionForm = () => {
                             <option value="education">Education</option>
                             <option value="investments">Investments</option>
                             <option value="expenses">Expenses</option>
+                            <option value="work">Work</option>
                         </select>
                         <small className="text-danger">&nbsp;</small>
                     </div>

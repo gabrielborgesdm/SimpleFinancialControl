@@ -66,6 +66,93 @@
 .bg-light-blue{
     background-color: var(--bg-light-blue);
 }
+
+.btn-dark-red{
+    background-color: var(--bg-dark-red);
+    color: #fff;
+}
+.btn-light-red{
+    background-color: var(--bg-light-red);
+    color: #fff;
+}
+.btn-dark-green{
+    background-color: var(--bg-dark-green);
+    color: #fff;
+}
+.btn-light-green{
+    background-color: var(--bg-light-green);
+    color: #fff;
+}
+.btn-dark-blue{
+    background-color: var(--bg-dark-blue);
+    color: #fff;
+}
+.btn-light-blue{
+    background-color: var(--bg-light-blue);
+    color: #fff;
+}
+
+.btn-outline-dark-red{
+    border: solid 2px var(--bg-dark-red);
+    color: var(--bg-dark-red);
+    background-color: #fff;
+}
+.btn-outline-light-red{
+    border: solid 2px var(--bg-light-red);
+    color: var(--bg-light-red);
+    background-color: #fff;
+}
+.btn-outline-dark-green{
+    border: solid 2px var(--bg-dark-green);
+    color: var(--bg-dark-green);
+    background-color: #fff;
+}
+.btn-outline-light-green{
+    border: solid 2px var(--bg-light-green);
+    color: var(--bg-light-green);
+    background-color: #fff;
+}
+.btn-outline-dark-blue{
+    border: solid 2px var(--bg-dark-blue);
+    color: var(--bg-dark-blue);
+    background-color: #fff;
+}
+.btn-outline-light-blue{
+    border: solid 2px var(--bg-light-blue);
+    color: var(--bg-light-blue);
+    background-color: #fff;
+}
+
+.btn-outline-dark-red:hover{
+    transition: all 0.5s;
+    background-color: var(--bg-dark-red);
+    color: #fff;
+}
+.btn-outline-light-red:hover{
+    transition: all 0.5s;
+    background-color: var(--bg-light-red);
+    color: #fff;
+}
+.btn-outline-dark-green:hover{
+    transition: all 0.5s;
+    background-color: var(--bg-dark-green);
+    color: #fff;
+}
+.btn-outline-light-green:hover{
+    transition: all 0.5s;
+    background-color: var(--bg-light-green);
+    color: #fff;
+}
+.btn-outline-dark-blue:hover{
+    transition: all 0.5s;
+    background-color: var(--bg-dark-blue);
+    color: #fff;
+}
+.btn-outline-light-blue:hover{
+    transition: all 0.5s;
+    background-color: var(--bg-light-blue);
+    color: #fff;
+}
 /* Layout em Grid */
 
 .app {
@@ -128,6 +215,10 @@ footer.footer {
     cursor: pointer;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 @media(max-width: 1222px) {
     .app {
         grid-template-rows: 
@@ -143,8 +234,6 @@ footer.footer {
             "content content"
             "footer footer"
         ;
-        
-
     }
 }
 
