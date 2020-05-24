@@ -4,6 +4,8 @@ import React, { Component } from "react"
 import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
+import CountryHelpers from "../helpers/CountryHelpers"
+
 class IncomesDoughnut extends Component{
    
     constructor(props){
@@ -101,7 +103,14 @@ class IncomesDoughnut extends Component{
                         }
                     },
                     
-                }
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']]);
+                        },
+                    }
+                },
             },
         })
     }

@@ -48,7 +48,8 @@ const login = async (account, userInput, req, response) =>{
             }
             if(response.checkSuccess()){
                 const token = (checkPassword) ? HashAndToken.generateToken({"ip": HashAndToken.getIp(req), "_id": account._id}) : undefined
-                response.addParams({token})
+                let { name, email, country } = account
+                response.addParams({token, name, email, country})
             }
         } else{
             response.addError("account", "needs confirmation", "Your account needs to be confirmed")
@@ -58,11 +59,12 @@ const login = async (account, userInput, req, response) =>{
 
 const signUp = async function(req, res){
     const response = new ResponseBuilder()
-    let {name, email, password, confirmAccountUrl} = req.body
+    let {name, email, password, country, confirmAccountUrl} = req.body
     let userInput = await validate.validateInputArray([
         ["name", "string", name], 
         ["email", "email", email], 
-        ["password", "string", password]
+        ["password", "string", password],
+        ["country", "string", country],
     ])
     if(!userInput.errors){
         let accountExists = await Auth.getAccount({"email": userInput.email})

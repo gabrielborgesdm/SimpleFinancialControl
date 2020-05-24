@@ -5,7 +5,7 @@ import axios from "axios"
 import Main from "../template/Main"
 import Input from "../form/Input"
 import TextArea from "../form/TextArea"
-
+import CountryHelpers from "../helpers/CountryHelpers"
 
 const TransactionForm = () => {
 
@@ -22,10 +22,12 @@ const TransactionForm = () => {
     const [expense, setExpense] = useState(true)
     const [submitStatus, setSubmitStatus] = useState({})
     const [invalidFields, setInvalidFields] = useState([0, 1])
+    const [country] = useState(CountryHelpers.getCountry())
+
 
     useEffect(()=>{
         setSubmitStatus({})
-    }, [amount, details, expense, transactionDate])
+    }, [amount, details, expense, transactionDate, country])
     
 
     useEffect(() => {
@@ -96,20 +98,20 @@ const TransactionForm = () => {
         setInvalidFields(newInvalidFields)
     }
 
-    const updateAmount = (e) => {
-        let amount = e.target.value
+    const updateAmount = (amount) => {
+        let small = document.querySelector("#transaction_amount_small")
         if(amount.length === 0) {
-            e.target.nextSibling.innerHTML = checkInputEmpty(amount)
+            small.innerHTML = checkInputEmpty(amount)
         } else if(amount < 1 ) {
-            e.target.nextSibling.innerHTML = "needs to be greater than zero"
-        } else if (isNaN(amount)) {
-            e.target.nextSibling.innerHTML = "Amount need's to be a number"
+            small.innerHTML = "needs to be greater than zero"
         }else {
-            e.target.nextSibling.innerHTML = "&nbsp;"
+            small.innerHTML = "&nbsp;"
         }
-        checkErrorStatusEmpty(0, e.target.nextSibling.innerHTML)
+        checkErrorStatusEmpty(0, small.innerHTML)
+         
         setAmount(amount)
     }
+
 
     const updateDetails = (e) => setDetails(e.target.value)
 
@@ -154,15 +156,16 @@ const TransactionForm = () => {
         setInvalidFields([0, 1])
     }
 
+    
     return (
         <Main className="form" icon="money" title="Transactions" subtitle="Manage your Transactions">
             <div className="p-3 mt-3">
                 <span className={`mx-auto my-5 ${submitStatus.className}`}>{submitStatus.message}&nbsp;</span>
                 <form method="post" onSubmit={e=> submitForm(e)}>
                     <div className="form-group d-inline-block pl-sm-0 pr-sm-3 col-12 col-sm-6 ">
-                        <label htmlFor="amount">Amount (R$)</label>
-                        <Input type="text" name="amount" id="amount" className="form-control" value={amount} onChange={(e)=>updateAmount(e)} />
-                        <small className="text-danger">&nbsp;</small>
+                        <label htmlFor="amount">Amount</label>
+                        {CountryHelpers.getCoinInput(updateAmount, amount)}                    
+                        <small id="transaction_amount_small" className="text-danger">&nbsp;</small>
                     </div>
                     <div className="form-group d-inline-block pl-sm-3 pr-0 col-12 col-sm-6">
                         <label htmlFor="category">Category</label>
@@ -200,7 +203,7 @@ const TransactionForm = () => {
                     </div>
                     <div className="form-group m-0">
                         <label htmlFor="details">Details (Optional)</label>
-                        <TextArea name="details" id="details" className="form-control" onChange={(e)=>updateDetails(e)} value={details} ></TextArea>
+                        <TextArea name="details" id="details" className="form-control" placeholder="Details about the transaction" onChange={(e)=>updateDetails(e)} value={details} ></TextArea>
                         <small className="text-danger">&nbsp;</small>
                     </div>
                     <div className="form-group m-0">

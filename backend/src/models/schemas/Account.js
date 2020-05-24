@@ -13,6 +13,10 @@ const AccountSchema = new Schema({
         required: true,
         unique: true,
     },
+    country: {
+        type: String,
+        required: true,
+    },
     hash: { type: String, required: true },
     isActive: { type: Boolean, required: false, default: false },
 }, {

@@ -2,6 +2,7 @@ import "./TransactionsList.css"
 import React, { Component } from "react"
 import axios from "axios"
 import Main from "../template/Main"
+import CountryHelpers from "../helpers/CountryHelpers"
 
 const token = localStorage.getItem("Token")
 const baseUrl = process.env.REACT_APP_API_BASE_URL
@@ -127,7 +128,9 @@ class TransactionsList extends Component{
                                         <tr key={transaction._id}>
                                             <td>{transaction.order}</td>
                                             <td>{transaction.details}</td>
-                                            <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>{transaction.amount}</td>
+                                            <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>
+                                                {CountryHelpers.getFormattedCoinText(transaction.amount)}
+                                            </td>
                                             <td>{transaction.category}</td>
                                             <td>{transaction.transactionType}</td>
                                             <td>{transaction.transactionDate}</td>

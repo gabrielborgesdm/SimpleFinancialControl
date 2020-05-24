@@ -4,6 +4,8 @@ import React, { Component } from "react"
 import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
+import CountryHelpers from "../helpers/CountryHelpers"
+
 class IncomesLines extends Component{
     constructor(props){
         super(props)
@@ -90,10 +92,17 @@ class IncomesLines extends Component{
                         anchor: "end",
                         align: "top",
                         formatter: function(value, context) {
-                            return `${value}`;
+                            return `${CountryHelpers.getStringMasked(value)}`;
                         }
                     },
                     
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']]);
+                        },
+                    }
                 },
                 scales: {
 					

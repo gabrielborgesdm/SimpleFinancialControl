@@ -4,6 +4,9 @@ import React, { Component } from "react"
 import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
+import CountryHelpers from "../helpers/CountryHelpers"
+
+
 class ExpensesDoughnut extends Component{
    
     constructor(props){
@@ -30,7 +33,6 @@ class ExpensesDoughnut extends Component{
 
     componentDidMount(){
         this.expenses = this.props.expenses
-        console.log("alo")
         this.expensesData = []
         this.expensesSum = 0
         this.expensesLabel = []
@@ -39,7 +41,6 @@ class ExpensesDoughnut extends Component{
 
     componentDidUpdate(){
         this.expenses = this.props.expenses
-        console.log("alo")
         this.expensesData = []
         this.expensesSum = 0
         this.expensesLabel = []
@@ -85,6 +86,13 @@ class ExpensesDoughnut extends Component{
             options: {
                 legend: {
                     display: document.getElementsByTagName("body")[0].clientWidth <= 568 ? false: true,
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']]);
+                        },
+                    }
                 },
                 plugins: {
                     datalabels: {

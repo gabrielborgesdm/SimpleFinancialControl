@@ -21,7 +21,6 @@ module.exports = {
 
     async getAccount(userObject){
         let account = await Account.findOne(userObject)
-        console.log(account)
         return account
     },
 

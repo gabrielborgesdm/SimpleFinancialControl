@@ -13,13 +13,13 @@ const Login = (props) => {
 
     const submitForm = (e) => {
         e.preventDefault()
-        localStorage.setItem("Token", "")
+        resetStorages()
         document.getElementById("loading").style.visibility = 'visible'
         const url = `${process.env.REACT_APP_API_BASE_URL}/accounts/signin`
         axios.post(url, {email, password})
-        .then(response => {
+        .then( response => {
             if(response.data.success){
-                localStorage.setItem("Token", response.data.token)
+                setStorages(response.data)
                 props.history.push("/transactions")
                 window.location.reload()
             } else{
@@ -33,6 +33,22 @@ const Login = (props) => {
             document.getElementById("loading").style.visibility = 'hidden'
         })
     }
+
+    const setStorages = (data) => {
+        let {token, name, email, country} = data
+        localStorage.setItem("Token", token)
+        localStorage.setItem("name", name)
+        localStorage.setItem("email", email)
+        localStorage.setItem("country", country)
+    }
+
+    const resetStorages = () => {
+        localStorage.removeItem("Token")
+        localStorage.removeItem("name")
+        localStorage.removeItem("email")
+        localStorage.removeItem("country")
+    }
+
     const checkInputEmpty = input => input.length === 0 ? "Field can't be empty" : ""
 
     const checkErrorStatusEmpty = (fieldPosition, errorStatusEmpty) => {

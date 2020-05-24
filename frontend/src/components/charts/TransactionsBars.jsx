@@ -4,6 +4,8 @@ import React, { Component } from "react"
 import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
+import CountryHelpers from "../helpers/CountryHelpers"
+
 class TransactionsBars extends Component{
     constructor(props){
         super(props)
@@ -114,8 +116,22 @@ class TransactionsBars extends Component{
                 plugins: {
                     datalabels: {
                         color: "#fff",
-                    },
+                        backgroundColor: "#000",
+                        borderRadius: 5,
+                        anchor: "end",
+                        align: "top",
+                        formatter: function(value, context) {
+                            return `${CountryHelpers.getStringMasked(value)}`;
+                        }
+                    }
                     
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']]);
+                        },
+                    }
                 },
                 scales: {
 					

@@ -8,6 +8,7 @@ import Input from "../form/Input"
 const Signup = (props) => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
+    const [country, setCountry] = useState("")
     const [password, setPassword] = useState("")
     const [invalidFields, setInvalidFields] = useState([0, 0, 0])
 
@@ -17,7 +18,7 @@ const Signup = (props) => {
         document.getElementById("loading").style.visibility = 'visible'
         const url = `${process.env.REACT_APP_API_BASE_URL}/accounts/signup`
         let confirmAccountUrl = window.location.href.replace("signup", "confirmaccount")
-        axios.post(url, {name, email, password, confirmAccountUrl})
+        axios.post(url, {name, email, password, country, confirmAccountUrl})
         .then(response => {
             if(response.data.success){
                 document.getElementById("errorStatus").innerHTML = response.data.message
@@ -53,11 +54,19 @@ const Signup = (props) => {
         checkErrorStatusEmpty(1, e.target.nextSibling.innerHTML)
         setEmail(email)
     }
+    
+    const updateCountry = (e) => {
+        let country = e.target.value
+        if (country !== "usa" && country !== "brazil") country = ""
+        e.target.nextSibling.innerHTML = checkInputEmpty(country) 
+        checkErrorStatusEmpty(2, e.target.nextSibling.innerHTML)
+        setCountry(country)
+    }
 
     const updatePassword = (e) => {
         let password = e.target.value
         e.target.nextSibling.innerHTML = checkInputEmpty(password)
-        checkErrorStatusEmpty(2, e.target.nextSibling.innerHTML)
+        checkErrorStatusEmpty(3, e.target.nextSibling.innerHTML)
         setPassword(password)
     }
     
@@ -86,13 +95,22 @@ const Signup = (props) => {
                         <small className="text-danger"></small>
                     </div>
                     <div className="form-group">
+                        <label htmlFor="country">Country</label>
+                        <select name="country" id="country" className="form-control" onChange={(e)=>updateCountry(e)} value={country} >
+                            <option value="" defaultValue>Select Your Country</option>
+                            <option value="brazil" >Brazil</option>
+                            <option value="usa">U.S.A</option>
+                        </select>
+                        <small className="text-danger">&nbsp;</small>
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="password">Password</label>
                         <Input type="password" name="password" id="password" className="form-control" value={password} onChange={(e)=>updatePassword(e)} />
                         <small className="text-danger"></small>
                     </div>
                     <div className="form-group">
                         <Input type="reset" className="btn m-2" onClick={e=>clearForm()} value="Clear"/>
-                        <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 3} value="Submit"/>
+                        <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 4} value="Submit"/>
                         <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
                     </div>
                 </form>

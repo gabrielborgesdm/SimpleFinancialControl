@@ -1,5 +1,6 @@
 import "./charts.css"
 import React, { Component } from "react"
+import CountryHelpers from "../helpers/CountryHelpers"
 
 import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
@@ -87,10 +88,17 @@ class ExpensesLines extends Component{
                         anchor: "end",
                         align: "top",
                         formatter: function(value, context) {
-                            return `${value}`;
+                            return `${CountryHelpers.getStringMasked(value)}`;
                         }
                     },
                     
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']]);
+                        },
+                    }
                 },
                 scales: {
 					

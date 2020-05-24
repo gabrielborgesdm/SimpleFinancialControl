@@ -19,6 +19,9 @@ import ExpensesLines from "../charts/ExpensesLines"
 import IncomesDoughnut from "../charts/IncomesDoughnut"
 import IncomeLines from "../charts/IncomesLines"
 
+import CountryHelpers from "../helpers/CountryHelpers"
+
+
 const token = localStorage.getItem("Token")
 const baseUrl = process.env.REACT_APP_API_BASE_URL
 axios.defaults.headers["Authorization"] = `Bearer ${token}`
@@ -34,7 +37,8 @@ class TransactionsList extends Component{
             expenses: [],
             balanceAmount:0,
             incomesAmount: 0,
-            expensesAmount: 0
+            expensesAmount: 0,
+            country: CountryHelpers.getCountry()
         }
     }
 
@@ -83,9 +87,9 @@ class TransactionsList extends Component{
         })
         
         this.setState({
-            incomesAmount: incomesAmount.toFixed(2), 
-            expensesAmount: expensesAmount.toFixed(2), 
-            balanceAmount: balanceAmount.toFixed(2),
+            incomesAmount: incomesAmount, 
+            expensesAmount: expensesAmount, 
+            balanceAmount: balanceAmount,
             expenses,
             incomes,
             incomesAndExpenses,
@@ -116,21 +120,23 @@ class TransactionsList extends Component{
     }
     render(){
         return(
-        <Main icon="money" title="Transactions" subtitle="Visualize your Transaction's records.">
+        <Main icon="money" title="Transactions" subtitle={`Visualize your Transaction's records.`}>
             <div className="p-3 mt-3">
                 <div className="row text-center">
                     <h1 className="col-12 col-sm text-dark-green">Wealth</h1>
                     <div className="col align-self-center">
                         <h5 className="text-light-red">Expenses</h5>
-                        <span>{this.state.expensesAmount} R$</span> 
+                        <span>{CountryHelpers.getFormattedCoinText(this.state.expensesAmount) }</span> 
                     </div>
                     <div className="col align-self-center">
                         <h5 className="text-dark-green">Balance</h5>
-                        <span className={this.state.balanceAmount >= 0 ? "text-light-blue" : "text-light-red"}>{this.state.balanceAmount} R$</span> 
+                        <span className={this.state.balanceAmount >= 0 ? "text-light-blue" : "text-light-red"}>
+                            {CountryHelpers.getFormattedCoinText(this.state.balanceAmount) }    
+                        </span> 
                     </div>
                     <div className="col align-self-center">
                         <h5 className="text-light-blue">Incomes</h5>
-                        <span>{this.state.incomesAmount} R$</span> 
+                        <span>{CountryHelpers.getFormattedCoinText(this.state.incomesAmount) } </span> 
                     </div>
                     
                 </div>
