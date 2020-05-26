@@ -41,18 +41,17 @@ const signIn = async function(req, res){
 
 const login = async (account, userInput, req, response) =>{
     if(response.checkSuccess()) {
-        if(account.isActive){
-            checkPassword = await HashAndToken.verifyPassword(userInput.password, account.hash)
-            if(!checkPassword) {
-                response.addError("authorization", "denied", "Authorization denied")
-            }
+        checkPassword = await HashAndToken.verifyPassword(userInput.password, account.hash)
+        if(!checkPassword) {
+            response.addError("authorization", "incorrect", "Password is incorrect")
+        } else if(account.isActive){
             if(response.checkSuccess()){
                 const token = (checkPassword) ? HashAndToken.generateToken({"ip": HashAndToken.getIp(req), "_id": account._id}) : undefined
                 let { name, email, country } = account
                 response.addParams({token, name, email, country})
             }
         } else{
-            response.addError("account", "needs confirmation", "Your account needs to be confirmed")
+            response.addError("account", "inactive", "Your account needs to be activated/confirmed")
         }  
     } 
 }
@@ -68,7 +67,7 @@ const signUp = async function(req, res){
     ])
     if(!userInput.errors){
         let accountExists = await Auth.getAccount({"email": userInput.email})
-        if (accountExists) response.addError("email", "unavailable", "Email is unavailable")
+        if (accountExists) response.addError("email", "in_use", "E-mail is already in use")
     } else {
         response.addMultipleErrors(userInput.errors)
         userInput = false
@@ -83,9 +82,9 @@ const createAccount = async (userInput, response) =>{
     userInput.hash = await HashAndToken.hashPassword(userInput.password)
     let account = await Auth.createUser(userInput)
     if(!account) {
-        response.addError("account", "couldn't create", "It wasn't possible to create the account")
+        response.addError("account", "couldnt_create", "It wasn't possible to create the account")
     } else {
-        response.addParams({"message": "Account created, check your e-mail to confirm your account"})
+        response.addParams({"message": "Account created with success! Check your e-mail to confirm your account"})
     } 
     return account
 }

@@ -1,15 +1,20 @@
-import React from "react"
+import React, {Component} from "react"
 import Main from "./Main"
 
-export default props =>
-<Main icon="home" title="Home" subtitle="Simplify your finances">
-    <div className="p-3 mt-3">
-        <div className="display-4">Welcome</div>
-        <hr/>
-        <p className="mb-0">
-            Simple financial controll is an application which
-            takes notes of your incomes and expenses, helping you
-            with saving your money.
-        </p> 
-    </div>  
-</Main>
+export default class Home extends Component {
+    constructor(props){
+        super(props)
+        this.translate = this.props.translate
+    }
+    render = () =>
+        <Main icon="home" title={this.translate('HOME_TITLE')} translate={this.translate} subtitle={this.translate('HOME_SUBTITLE')}>
+            <div className="p-3 mt-3">
+                <div className="display-4">{this.translate('HOME_WELCOME')}</div>
+                <hr/>
+                <p className="mb-0">
+                    {this.translate('HOME_DESCRIPTION')}
+                </p> 
+            </div>  
+        </Main>
+    
+}

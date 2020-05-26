@@ -10,11 +10,12 @@ import Signup from "../components/authentication/Signup"
 import ConfirmAccount from "../components/authentication/ConfirmAccount"
 import Logout from "../components/authentication/Logout"
 
+import translate from "../components/helpers/Translation"
 const Router = props => (
     <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+        <Route exact path="/"  render={(props) => <Home {...props} translate={translate}/>} />
+        <Route path="/login" render={(props) => <Login {...props} translate={translate}/>} />
+        <Route path="/signup" render={(props) => <Signup {...props} translate={translate}/>}/>
         <Route path="/logout" component={Logout} />
         <Route path="/confirmaccount/:token" component={ConfirmAccount} />
         <PrivateRoute path="/transaction/form/:id" component={TransactionForm} />

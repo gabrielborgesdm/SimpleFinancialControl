@@ -1,123 +1,152 @@
 import "./Auth.css"
-import React, { useState } from "react"
-import axios from "axios"
+import React, { Component } from "react"
+import axios from "../services/axios"
 import Main from "../template/Main"
 import Input from "../form/Input"
 
+import {resetStorages} from "../helpers/LocalStorageHelpers"
 
-const Signup = (props) => {
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [country, setCountry] = useState("")
-    const [password, setPassword] = useState("")
-    const [invalidFields, setInvalidFields] = useState([0, 0, 0])
 
-    const submitForm = (e) => {
+export default class Signup extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            name: "",
+            email: "",
+            country: "",
+            password: "",
+            invalidFields: [0, 0, 0],
+        }
+        this.translate = this.props.translate
+    }
+
+    handleSubmit = async (e) => {
         e.preventDefault()
-        localStorage.setItem("Token", "")
+        resetStorages()
         document.getElementById("loading").style.visibility = 'visible'
-        const url = `${process.env.REACT_APP_API_BASE_URL}/accounts/signup`
-        let confirmAccountUrl = window.location.href.replace("signup", "confirmaccount")
-        axios.post(url, {name, email, password, country, confirmAccountUrl})
-        .then(response => {
-            if(response.data.success){
-                document.getElementById("errorStatus").innerHTML = response.data.message
-            } else{
-                document.getElementById("errorStatus").innerHTML = response.data.errors[0].message
+        let response = await this.postAccount()
+        
+        if(!response){
+            document.getElementById("errorStatus").innerHTML = this.translate('SERVER_ERROR')
+        } else if(response.data && response.data.success){
+            document.getElementById("errorStatus").classList.remove("text-danger")
+            document.getElementById("errorStatus").classList.add("text-success")
+            document.getElementById("errorStatus").innerHTML = this.translate("SIGNUP_SUCCESS")
+        } else if (response.data && response.data.errors){
+            let serverResponseStatus = response.data.errors[0].state 
+            let errorMessage = ""
+            if(serverResponseStatus === "in_use"){
+                errorMessage = this.translate("SIGNUP_IN_USE")
+            } else {
+                errorMessage = this.translate("SIGNUP_COULDNT_CREATE")
             }
-        })
-        .catch(error => {
+            document.getElementById("errorStatus").innerHTML = errorMessage
+        }
+        document.getElementById("loading").style.visibility = 'hidden'
+    }
+
+    postAccount = async () => {
+        let confirmAccountUrl = window.location.href.replace("signup", "confirmaccount")
+        let {name, email, password, country} = this.state
+        let response
+        try {
+            response = await axios.post("/accounts/signup", {name, email, password, country, confirmAccountUrl})
+        } catch (error) {
             console.log(error)
-            document.getElementById("errorStatus").innerHTML = "Something went wrong with the server"
-        })
-        .finally(()=> document.getElementById("loading").style.visibility = 'hidden')
+            response = null
+        }
+        return response
+        
     }
 
-    const checkInputEmpty = input => input.length === 0 ? "Field can't be empty" : ""
+    checkInputEmpty = input => input.length === 0 ? this.translate('FORM_FIELD_CANT_BE_EMPTY') : ""
 
-    const checkErrorStatusEmpty = (fieldPosition, errorStatusEmpty) => {
-        let newInvalidFields = invalidFields
+    checkErrorStatusEmpty = (fieldPosition, errorStatusEmpty) => {
+        let newInvalidFields = this.state.invalidFields
         newInvalidFields[fieldPosition] = errorStatusEmpty === "" ? 1 : 0
-        setInvalidFields(newInvalidFields)
+        this.setState({invalidFields: newInvalidFields})
     }
 
-    const updateName = (e) => {
+    updateName = (e) => {
         let name = e.target.value
-        e.target.nextSibling.innerHTML = checkInputEmpty(name) 
-        checkErrorStatusEmpty(0, e.target.nextSibling.innerHTML)
-        setName(name)
+        e.target.nextSibling.innerHTML = this.checkInputEmpty(name) 
+        this.checkErrorStatusEmpty(0, e.target.nextSibling.innerHTML)
+        this.setState({name})
     }
 
-    const updateEmail = (e) => {
+    updateEmail = (e) => {
         let email = e.target.value
-        e.target.nextSibling.innerHTML = checkInputEmpty(email) 
-        checkErrorStatusEmpty(1, e.target.nextSibling.innerHTML)
-        setEmail(email)
+        e.target.nextSibling.innerHTML = this.checkInputEmpty(email) 
+        this.checkErrorStatusEmpty(1, e.target.nextSibling.innerHTML)
+        this.setState({email})
     }
     
-    const updateCountry = (e) => {
+    updateCountry = (e) => {
         let country = e.target.value
         if (country !== "usa" && country !== "brazil") country = ""
-        e.target.nextSibling.innerHTML = checkInputEmpty(country) 
-        checkErrorStatusEmpty(2, e.target.nextSibling.innerHTML)
-        setCountry(country)
+        e.target.nextSibling.innerHTML = this.checkInputEmpty(country) 
+        this.checkErrorStatusEmpty(2, e.target.nextSibling.innerHTML)
+        this.setState({country})
     }
 
-    const updatePassword = (e) => {
+    updatePassword = (e) => {
         let password = e.target.value
-        e.target.nextSibling.innerHTML = checkInputEmpty(password)
-        checkErrorStatusEmpty(3, e.target.nextSibling.innerHTML)
-        setPassword(password)
+        e.target.nextSibling.innerHTML = this.checkInputEmpty(password)
+        this.checkErrorStatusEmpty(3, e.target.nextSibling.innerHTML)
+        this.setState({password})
     }
     
-    const clearForm = (e) => {
-        setEmail("")
-        setPassword("")
+    clearForm = (e) => {
+        this.setState({
+            name: "",
+            email: "",
+            country: "",
+            password: "",
+            invalidFields: [0, 0, 0]
+        })
         for(let i = 0; i < document.getElementsByTagName("small").length; i++){
             document.getElementsByTagName("small")[i].innerHTML = ""
         }
-        setInvalidFields([0, 0, 0])
     }
-
-    return (
-        <Main className="form" icon="sign-in" title="Signup" subtitle="Create an account">
-            <div className="p-3 mt-3">
-                <form method="post" onSubmit={e=> submitForm(e)}>
-                    <span className="text-danger" id="errorStatus"></span>
-                    <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <Input type="text" name="name" id="name" className="form-control" onChange={(e)=>updateName(e)} value={name} />
-                        <small className="text-danger"></small>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <Input type="email" name="email" id="email" className="form-control" onChange={(e)=>updateEmail(e)} value={email} />
-                        <small className="text-danger"></small>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="country">Country</label>
-                        <select name="country" id="country" className="form-control" onChange={(e)=>updateCountry(e)} value={country} >
-                            <option value="" defaultValue>Select Your Country</option>
-                            <option value="brazil" >Brazil</option>
-                            <option value="usa">U.S.A</option>
-                        </select>
-                        <small className="text-danger">&nbsp;</small>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <Input type="password" name="password" id="password" className="form-control" value={password} onChange={(e)=>updatePassword(e)} />
-                        <small className="text-danger"></small>
-                    </div>
-                    <div className="form-group">
-                        <Input type="reset" className="btn m-2" onClick={e=>clearForm()} value="Clear"/>
-                        <Input type="submit" className="btn m-2" disabled={invalidFields.filter((field)=> field).length < 4} value="Submit"/>
-                        <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
-                    </div>
-                </form>
-            </div>
-        </Main>
-    )
+    render(){
+        return (
+            <Main className="form" icon="user-plus" title={this.translate('SIGNUP_TITLE')} subtitle={this.translate('SIGNUP_SUBTITLE')}>
+                <div className="p-3 mt-3">
+                    <form method="post" onSubmit={e=> this.handleSubmit(e)}>
+                        <span className="text-danger" id="errorStatus"></span>
+                        <div className="form-group">
+                            <label htmlFor="name">{this.translate('FORM_LABEL_NAME')}</label>
+                            <Input type="text" name="name" placeholder={this.translate('FORM_PLACEHOLDER_NAME')} id="name" className="form-control" onChange={(e)=>this.updateName(e)} value={this.state.name} />
+                            <small className="text-danger"></small>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="email">{this.translate('FORM_LABEL_EMAIL')}</label>
+                            <Input type="email" name="email" placeholder={this.translate('FORM_PLACEHOLDER_EMAIL')} id="email" className="form-control" onChange={(e)=>this.updateEmail(e)} value={this.state.email} />
+                            <small className="text-danger"></small>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="country"></label>
+                            <select name="country" id="country" className="form-control" onChange={(e)=>this.updateCountry(e)} value={this.state.country} >
+                                <option value="" defaultValue>{this.translate('FORM_LABEL_COUNTRY')}</option>
+                                <option value="brazil">{this.translate('FORM_OPTION_BRAZIL')}</option>
+                                <option value="usa">{this.translate('FORM_OPTION_USA')}</option>
+                            </select>
+                            <small className="text-danger">&nbsp;</small>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">{this.translate('FORM_LABEL_PASSWORD')}</label>
+                            <Input type="password" name="password" placeholder={this.translate('FORM_PLACEHOLDER_PASSWORD')} id="password" className="form-control" onChange={(e)=>this.updatePassword(e)} value={this.state.password} />
+                            <small className="text-danger"></small>
+                        </div>
+                        <div className="form-group">
+                            <Input type="reset" className="btn m-2" onClick={e=>this.clearForm()} value={this.translate('FORM_BUTTON_CLEAR')}/>
+                            <Input type="submit" className="btn m-2" disabled={this.state.invalidFields.filter((field)=> field).length < 4} value={this.translate('FORM_BUTTON_SUBMIT')}/>
+                            <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
+                        </div>
+                    </form>
+                </div>
+            </Main>
+        )
+    }
 } 
-
-export default Signup
     

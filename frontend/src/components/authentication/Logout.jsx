@@ -1,10 +1,11 @@
 import React from "react"
 import Main from "../template/Main"
+import LocalStorageHelpers from "../helpers/LocalStorageHelpers"
 
 const Logout = (props) => {
 
     const handleYes = () => {
-        localStorage.removeItem("Token")
+        LocalStorageHelpers.resetStorages()
         props.history.push("/")
         window.location.reload()
     }
