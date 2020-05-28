@@ -22,7 +22,7 @@ const Router = props => (
         <PrivateRoute path="/transaction/form" component={TransactionForm} />
         <PrivateRoute path="/transaction/list" component={TransactionsList} />
         <PrivateRoute path="/transaction" component={Transactions} />
-        <Redirect from="*" to="/" />
+        <Redirect from="*" to="/transaction" />
     </Switch>
 )
 

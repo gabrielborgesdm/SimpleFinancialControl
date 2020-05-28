@@ -7,7 +7,7 @@ import Input from "../form/Input"
 import TextArea from "../form/TextArea"
 import CountryHelpers from "../helpers/CountryHelpers"
 
-const TransactionForm = () => {
+const TransactionForm = (props) => {
 
     const token = localStorage.getItem("Token") 
     const baseUrl = process.env.REACT_APP_API_BASE_URL
@@ -68,14 +68,8 @@ const TransactionForm = () => {
         .then(response => {
             if(response.data.success){
                 clearForm(e)
-                let newStatus = 
-                {
-                    className: "text-success", 
-                    message: <span>
-                        Transaction posted with success! Check it out by <a className="p-0 text-info" href="/transaction/">clicking here</a>
-                    </span>
-                }
-                setSubmitStatus(newStatus)
+                props.history.push("/transaction")
+                window.location.reload()
             } else{
                 console.log(response.data.errors)
                 let newStatus = {className: "text-danger", message: response.data.errors[0].message}

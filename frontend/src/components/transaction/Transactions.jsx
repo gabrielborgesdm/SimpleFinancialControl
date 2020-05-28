@@ -1,10 +1,11 @@
 import "./Transactions.css"
 import "./TransactionsList.css"
-import React, { Component } from "react"
 
-import axios from "axios"
+import React, { Component } from "react"
 import 'jquery'
 import 'popper.js'
+
+import axios from "../services/axios"
 
 import Main from "../template/Main"
 
@@ -21,11 +22,6 @@ import IncomeLines from "../charts/IncomesLines"
 
 import CountryHelpers from "../helpers/CountryHelpers"
 
-
-const token = localStorage.getItem("Token")
-const baseUrl = process.env.REACT_APP_API_BASE_URL
-axios.defaults.headers["Authorization"] = `Bearer ${token}`
-
 class TransactionsList extends Component{
     constructor(props){
         super(props)
@@ -40,10 +36,11 @@ class TransactionsList extends Component{
             expensesAmount: 0,
             country: CountryHelpers.getCountry()
         }
+        this.translate = this.props.translate
     }
 
     componentDidMount(){
-        axios.get(`${baseUrl}/transaction`)
+        axios.get(`/transaction`)
         .then(response => {
             if(response.data.success){
                 let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
@@ -107,9 +104,7 @@ class TransactionsList extends Component{
     }
 
     filterTransactionsWithDate = (startDate, endDate) => {
-        
         let transactions = this.state.fetchedTransactions
-        
         transactions = transactions.filter(transaction => {
             let check = true
             check = transaction.transactionDate >= startDate ? check : false 
@@ -118,24 +113,25 @@ class TransactionsList extends Component{
         })
         this.getWealth(transactions) 
     }
+
     render(){
         return(
-        <Main icon="money" title="Transactions" subtitle={`Visualize your Transaction's records.`}>
+        <Main icon="money" title={this.translate('TRANSACTIONS_TITLE')} subtitle={this.translate('TRANSACTIONS_SUBTITLE')}>
             <div className="p-3 mt-3">
                 <div className="row text-center">
-                    <h1 className="col-12 col-sm text-dark-green">Wealth</h1>
+                    <h1 className="col-12 col-sm text-dark-green">{this.translate('TRANSACTIONS_WEALTH')}</h1>
                     <div className="col align-self-center">
-                        <h5 className="text-light-red">Expenses</h5>
+                        <h5 className="text-light-red">{this.translate('TRANSACTIONS_EXPENSES')}</h5>
                         <span>{CountryHelpers.getFormattedCoinText(this.state.expensesAmount) }</span> 
                     </div>
                     <div className="col align-self-center">
-                        <h5 className="text-dark-green">Balance</h5>
+                        <h5 className="text-dark-green">{this.translate('TRANSACTIONS_BALANCE')}</h5>
                         <span className={this.state.balanceAmount >= 0 ? "text-light-blue" : "text-light-red"}>
                             {CountryHelpers.getFormattedCoinText(this.state.balanceAmount) }    
                         </span> 
                     </div>
                     <div className="col align-self-center">
-                        <h5 className="text-light-blue">Incomes</h5>
+                        <h5 className="text-light-blue">{this.translate('TRANSACTIONS_INCOMES')}</h5>
                         <span>{CountryHelpers.getFormattedCoinText(this.state.incomesAmount) } </span> 
                     </div>
                     
@@ -144,9 +140,9 @@ class TransactionsList extends Component{
             <div className="p-3 mt-3">
                 <div className="row px-3 d-flex justify-content-between">
                     <a className=" text-light-blue align-self-center" href="/transaction/list">
-                        <i className="fa fa-eye"></i> See Transaction's Details
+                        <i className="fa fa-eye"></i> {this.translate('TRANSACTIONS_SEE_DETAILS')}
                     </a>
-                    <DateDropdown transactions={this.state.transactions} selectDateFilter={this.selectDateFilter} transactionType="all" />
+                    <DateDropdown transactions={this.state.transactions} selectDateFilter={this.selectDateFilter} translate={this.translate} transactionType="all" />
                 </div>
             </div>
             {this.state.transactions.length > 0 ? (
@@ -155,17 +151,17 @@ class TransactionsList extends Component{
                         <div className="p-3 mt-3">
                             <div className="row">
                                 <div className="col border-bottom pb-2">
-                                    <h2 className="text-dark-green">Incomes x Expenses</h2>      
+                                    <h2 className="text-dark-green">{this.translate('TRANSACTIONS_INCOMES_X_EXPENSES')}</h2>      
                                 </div>
                             </div>
                             
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
-                                    <h5 className="col-12 text-center">Grouped By Date</h5>
+                                    <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
                                     <TransactionsBars transactions={this.state.incomesAndExpenses}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
-                                    <h5 className="col-12 text-center">Grouped By Date</h5>
+                                    <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
                                     <TransactionsLines transactions={this.state.incomesAndExpenses}/>
                                 </div>  
                             </div>
@@ -177,17 +173,17 @@ class TransactionsList extends Component{
                             
                             <div className="row">
                                 <div className="col border-bottom pb-2">
-                                    <h2 className="text-dark-green">Expenses</h2>      
+                                    <h2 className="text-dark-green">{this.translate('TRANSACTIONS_EXPENSES')}</h2>      
                                 </div>
                             </div>
                             
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
-                                    <h5 className="col-12 text-center">Grouped by Categories</h5>
+                                    <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_CATEGORIES')}</h5>
                                     <ExpensesDoughnut expenses={this.state.expenses}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
-                                    <h5 className="col-12 text-center">Grouped By Date</h5>
+                                    <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
                                     <ExpensesLines expenses={this.state.expenses} />
                                 </div>  
                             </div>
@@ -197,17 +193,17 @@ class TransactionsList extends Component{
                         <div className="p-3 mt-3">
                             <div className="row">
                                 <div className="col border-bottom pb-2">
-                                    <h2 className="text-dark-green">Incomes</h2>      
+                                    <h2 className="text-dark-green">{this.translate('TRANSACTIONS_INCOMES')}</h2>      
                                 </div>
                             </div>
                             
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
-                                    <h5 className="col-12 text-center">Grouped by Categories</h5>
+                                    <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_CATEGORIES')}</h5>
                                     <IncomesDoughnut incomes={this.state.incomes}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
-                                    <h5 className="col-12 text-center">Grouped By Date</h5>
+                                    <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
                                     <IncomeLines incomes={this.state.incomes} />
                                 </div>  
                             </div>
@@ -217,7 +213,7 @@ class TransactionsList extends Component{
             ) : (
                 <div className="p-3 mt-3">
                     <a className="my-4 text-light-blue" href="/transaction/form">
-                    <i className="fa fa-plus"></i> Add a Record
+                    <i className="fa fa-plus"></i> {this.translate('TRANSACTIONS_A_TRANSACTION')}
                     </a>
                 </div>
             )}

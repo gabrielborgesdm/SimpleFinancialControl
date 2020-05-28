@@ -115,13 +115,9 @@ class TransactionsLines extends Component{
             options: {
                 plugins: {
                     datalabels: {
-                        color: "#fff",
-                        backgroundColor: "#000",
-                        borderRadius: 5,
-                        anchor: "end",
-                        align: "top",
+                       
                         formatter: function(value, context) {
-                            return `${CountryHelpers.getStringMasked(value)}`;
+                            return ``;
                         }
                     }
                     

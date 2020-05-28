@@ -29,7 +29,7 @@ export default class Login extends Component {
             document.getElementById("loading").style.visibility = 'hidden'
         } else if(response.data && response.data.success){
             setStorages(response.data)
-            this.props.history.push("/transactions")
+            this.props.history.push("/transaction")
             window.location.reload()
         } else if (response.data && response.data.errors && response.data.errors.length > 0){
             let serverResponseStatus = response.data.errors[0].state 

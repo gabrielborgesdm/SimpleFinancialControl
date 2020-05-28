@@ -118,8 +118,8 @@ class TransactionsBars extends Component{
                         color: "#fff",
                         backgroundColor: "#000",
                         borderRadius: 5,
-                        anchor: "end",
-                        align: "top",
+                        anchor: "start",
+                        align: "bottom",
                         formatter: function(value, context) {
                             return `${CountryHelpers.getStringMasked(value)}`;
                         }
