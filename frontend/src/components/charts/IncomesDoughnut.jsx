@@ -30,6 +30,7 @@ class IncomesDoughnut extends Component{
             '#1a090d',
             '#6b6570',
         ]
+        this.translate = this.props.translate
     }
 
     componentDidMount(){
@@ -56,7 +57,7 @@ class IncomesDoughnut extends Component{
     buildIncomesInfo = () => {
         this.incomes.forEach((transaction)=>{
             if(this.incomesLabel.indexOf(transaction["category"]) === -1){
-                this.incomesLabel.push(transaction["category"])
+                this.incomesLabel.push(this.getCategory(transaction["category"]))
                 this.incomesData.push(transaction.amount)
                 this.incomesSum += transaction.amount 
             } else {
@@ -65,6 +66,52 @@ class IncomesDoughnut extends Component{
                 this.incomesSum += transaction.amount 
             }
         })
+    }
+
+    getCategory = (key) => {
+        let category
+        switch(key){
+            case "others": 
+                category = this.translate('CHARTS_CATEGORY_OTHERS')
+                break
+            case "food": 
+                category = this.translate('CHARTS_CATEGORY_FOOD')
+                break
+            case "shopping": 
+                category = this.translate('CHARTS_CATEGORY_SHOPPING')
+                break
+            case "housing": 
+                category = this.translate('CHARTS_CATEGORY_HOUSING')
+                break
+            case "transportation": 
+                category = this.translate('CHARTS_CATEGORY_TRANSPORTATION')
+                break
+            case "vehicle": 
+                category = this.translate('CHARTS_CATEGORY_VEHICLE')
+                break
+            case "entertainment": 
+                category = this.translate('CHARTS_CATEGORY_ENTERTAINMENT')
+                break
+            case "technology": 
+                category = this.translate('CHARTS_CATEGORY_TECHNOLOGY')
+                break
+            case "education": 
+                category = this.translate('CHARTS_CATEGORY_EDUCATION')
+                break
+            case "investments": 
+                category = this.translate('CHARTS_CATEGORY_INVESTMENTS')
+                break
+            case "expenses": 
+                category = this.translate('CHARTS_CATEGORY_EXPENSES')
+                break
+            case "work": 
+                category = this.translate('CHARTS_CATEGORY_WORK')
+                break
+            default: 
+                category = key
+                break
+        }
+        return category
     }
 
     renderChart = () => {
@@ -89,7 +136,7 @@ class IncomesDoughnut extends Component{
             },
             options: {
                 legend: {
-                    display: document.getElementsByTagName("body")[0].clientWidth <= 568 ? false: true,
+                    display: false,
                 },
                 plugins: {
                     datalabels: {
@@ -106,8 +153,9 @@ class IncomesDoughnut extends Component{
                 },
                 tooltips: {
                     callbacks: {
-                        label: function(tooltipItem, data) {
-                            return CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']]);
+                        label: (tooltipItem, data) => {
+                            let category = `${this.incomesLabel[tooltipItem['index']]}`
+                            return [category, `${CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']])}`]
                         },
                     }
                 },
@@ -118,10 +166,22 @@ class IncomesDoughnut extends Component{
     getClientWidth = () => document.getElementsByTagName("body")[0].clientWidth
 
     render = () =>  
-        <div id="incomesCanvasDiv">
-            <canvas id="incomesDoughnut" className="canvas"></canvas>
-        </div>
-     
+        <React.Fragment>
+            <div id="incomesCanvasDiv">
+                <canvas id="incomesDoughnut" className="canvas"></canvas>
+            </div>
+            <div className="col-12">
+                <div className="row d-flex justify-content-center">
+                    {this.incomesLabel.map((income, index)=>
+                        <div className="p-2" key={income + index}>
+                            <div className="d-inline-block mr-1 doughnut_legend" style={{backgroundColor: this.incomesColor[index]}}>&nbsp;</div>
+                            <div className="d-inline-block"><small>{income}</small></div>
+                        </div> 
+                    )}
+                </div>
+            </div>
+
+        </React.Fragment>
 }
 
 export default IncomesDoughnut

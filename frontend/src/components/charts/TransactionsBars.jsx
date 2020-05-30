@@ -13,6 +13,7 @@ class TransactionsBars extends Component{
         this.transactionsDates = []
         this.expenses = []
         this.incomes = []
+        this.translate = this.props.translate
     }
     
     componentDidMount(){
@@ -101,13 +102,13 @@ class TransactionsBars extends Component{
                 labels: this.transactionsDates,
                 datasets: [{
                     backgroundColor: "#107e7d",
-                    label: 'Incomes',
+                    label: this.translate('CHARTS_MONTLY_INCOMES'),
                     data: this.incomes,
 
                 },
                 {
                     backgroundColor: "#dc3545",
-                    label: 'Expenses',
+                    label: this.translate('CHARTS_MONTLY_EXPENSES'),
                     data: this.expenses,
 
                 }]
@@ -115,13 +116,12 @@ class TransactionsBars extends Component{
             options: {
                 plugins: {
                     datalabels: {
-                        color: "#fff",
-                        backgroundColor: "#000",
-                        borderRadius: 5,
-                        anchor: "start",
-                        align: "bottom",
+                        color: "#000",
+                        anchor: "end",
+                        align: "top",
                         formatter: function(value, context) {
-                            return `${CountryHelpers.getStringMasked(value)}`;
+                            value = value > 0 ? CountryHelpers.getStringMasked(value) : null
+                            return value || null;
                         }
                     }
                     

@@ -10,6 +10,7 @@ class IncomesLines extends Component{
     constructor(props){
         super(props)
         this.incomes = []
+        this.translate = this.props.translate
     }
     
     componentDidMount(){
@@ -78,7 +79,7 @@ class IncomesLines extends Component{
                 datasets: [{
                     borderColor: "#107e7d",
                     fill: false,
-                    label: 'Monthly Incomes',
+                    label: this.translate('CHARTS_MONTLY_INCOMES'),
                     data: this.incomesValues,
 
                 }]
@@ -86,13 +87,8 @@ class IncomesLines extends Component{
             options: {
                 plugins: {
                     datalabels: {
-                        color: "#fff",
-                        backgroundColor: "#000",
-                        borderRadius: 5,
-                        anchor: "end",
-                        align: "top",
                         formatter: function(value, context) {
-                            return `${CountryHelpers.getStringMasked(value)}`;
+                            return ``;
                         }
                     },
                     

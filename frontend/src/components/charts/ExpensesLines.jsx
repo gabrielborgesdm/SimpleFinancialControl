@@ -6,7 +6,10 @@ import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 class ExpensesLines extends Component{
-    
+    constructor(props){
+        super(props)
+        this.translate = this.props.translate
+    }
     componentDidMount(){
         this.expenses = this.props.expenses
         this.initChart()
@@ -74,7 +77,7 @@ class ExpensesLines extends Component{
                 datasets: [{
                     borderColor: "#dc3545",
                     fill: false,
-                    label: 'Monthly Expenses',
+                    label: this.translate("CHARTS_MONTLY_EXPENSES"),
                     data: this.expensesValues,
 
                 }]
@@ -82,13 +85,8 @@ class ExpensesLines extends Component{
             options: {
                 plugins: {
                     datalabels: {
-                        color: "#fff",
-                        backgroundColor: "#000",
-                        borderRadius: 5,
-                        anchor: "end",
-                        align: "top",
                         formatter: function(value, context) {
-                            return `${CountryHelpers.getStringMasked(value)}`;
+                            return ``;
                         }
                     },
                     

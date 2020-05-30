@@ -13,6 +13,8 @@ class TransactionsLines extends Component{
         this.transactionsDates = []
         this.expenses = []
         this.incomes = []
+        this.translate = this.props.translate
+
     }
     
     componentDidMount(){
@@ -100,14 +102,14 @@ class TransactionsLines extends Component{
                 datasets: [{
                     borderColor: "#107e7d",
                     fill: false,
-                    label: 'Monthly Incomes',
+                    label: this.translate('CHARTS_MONTLY_INCOMES'),
                     data: this.incomes,
 
                 },
                 {
                     borderColor: "#dc3545",
                     fill: false,
-                    label: 'Monthly Expenses',
+                    label: this.translate('CHARTS_MONTLY_EXPENSES'),
                     data: this.expenses,
 
                 }]

@@ -120,17 +120,17 @@ class TransactionsList extends Component{
             <div className="p-3 mt-3">
                 <div className="row text-center">
                     <h1 className="col-12 col-sm text-dark-green">{this.translate('TRANSACTIONS_WEALTH')}</h1>
-                    <div className="col align-self-center">
+                    <div className="col-12 col-sm py-2 py-sm-0 align-self-center">
                         <h5 className="text-light-red">{this.translate('TRANSACTIONS_EXPENSES')}</h5>
                         <span>{CountryHelpers.getFormattedCoinText(this.state.expensesAmount) }</span> 
                     </div>
-                    <div className="col align-self-center">
+                    <div className="col-12 col-sm py-2 py-sm-0 align-self-center">
                         <h5 className="text-dark-green">{this.translate('TRANSACTIONS_BALANCE')}</h5>
                         <span className={this.state.balanceAmount >= 0 ? "text-light-blue" : "text-light-red"}>
                             {CountryHelpers.getFormattedCoinText(this.state.balanceAmount) }    
                         </span> 
                     </div>
-                    <div className="col align-self-center">
+                    <div className="col-12 col-sm py-2 py-sm-0 align-self-center">
                         <h5 className="text-light-blue">{this.translate('TRANSACTIONS_INCOMES')}</h5>
                         <span>{CountryHelpers.getFormattedCoinText(this.state.incomesAmount) } </span> 
                     </div>
@@ -162,11 +162,11 @@ class TransactionsList extends Component{
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
-                                    <TransactionsBars transactions={this.state.incomesAndExpenses}/>
+                                    <TransactionsBars translate={this.translate} transactions={this.state.incomesAndExpenses}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
-                                    <TransactionsLines transactions={this.state.incomesAndExpenses}/>
+                                    <TransactionsLines translate={this.translate} transactions={this.state.incomesAndExpenses}/>
                                 </div>  
                             </div>
                         </div>
@@ -184,16 +184,16 @@ class TransactionsList extends Component{
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_CATEGORIES')}</h5>
-                                    <ExpensesDoughnut expenses={this.state.expenses}/>
+                                    <ExpensesDoughnut translate={this.translate} expenses={this.state.expenses}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
-                                    <ExpensesLines expenses={this.state.expenses} />
+                                    <ExpensesLines translate={this.translate} expenses={this.state.expenses} />
                                 </div>  
                             </div>
                         </div>
                     )}
-                    {this.state.incomes.length > 0 && (
+                    { this.state.incomes.length > 0 &&(
                         <div className="p-3 mt-3">
                             <div className="row">
                                 <div className="col border-bottom pb-2">
@@ -204,22 +204,29 @@ class TransactionsList extends Component{
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_CATEGORIES')}</h5>
-                                    <IncomesDoughnut incomes={this.state.incomes}/>
+                                    <IncomesDoughnut translate={this.translate} incomes={this.state.incomes}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
-                                    <IncomeLines incomes={this.state.incomes} />
+                                    <IncomeLines translate={this.translate} incomes={this.state.incomes} />
                                 </div>  
                             </div>
                         </div>
                     )}
                 </React.Fragment>
             ) : (
-                <div className="p-3 mt-3">
-                    <a className="my-4 text-light-blue" href="/transaction/form">
-                    <i className="fa fa-plus"></i> {this.translate('TRANSACTIONS_A_TRANSACTION')}
-                    </a>
-                </div>
+                <React.Fragment>
+                    <div className="p-3 mt-3">
+                        <span className="text-dark-blue">
+                            {this.translate("TRANSACTIONS_NO_TRANSACTIONS")}
+                        </span>        
+                    </div>
+                    <div className="p-3 mt-3">
+                        <a className="my-4 text-light-blue" href="/transaction/form">
+                        <i className="fa fa-plus"></i> {this.translate('TRANSACTIONS_ADD_TRANSACTION')}
+                        </a>
+                    </div>
+                </React.Fragment>
             )}
             
         </Main>)
