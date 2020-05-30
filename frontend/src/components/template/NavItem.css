@@ -11,9 +11,27 @@ a.nav-items:hover {
 }
 
 @media(max-width: 1222px) {
-    a {
+    a.nav-items {
         display: inline;
         padding: 10px;
         margin: 0;
+    }
+}
+
+@media  (max-width: 576px) {
+    a.nav-items{
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        width: 70px !important;
+        height: 50px !important;
+        border-radius: 5px;
+    }
+
+    a i{
+        vertical-align: middle;
     }
 }

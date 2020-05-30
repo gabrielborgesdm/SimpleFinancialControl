@@ -138,11 +138,15 @@ class TransactionsList extends Component{
                 </div>
             </div>
             <div className="p-3 mt-3">
-                <div className="row px-3 d-flex justify-content-between">
-                    <a className=" text-light-blue align-self-center" href="/transaction/list">
-                        <i className="fa fa-eye"></i> {this.translate('TRANSACTIONS_SEE_DETAILS')}
-                    </a>
-                    <DateDropdown transactions={this.state.transactions} selectDateFilter={this.selectDateFilter} translate={this.translate} transactionType="all" />
+                <div className="row">
+                    <div className="col-12 col-sm-8 py-1 py-sm-0 d-flex justify-content-center justify-content-sm-start align-items-center">
+                        <a className=" text-light-blue text-center text-sm-left" href="/transaction/list">
+                            <i className="fa fa-eye"></i> {this.translate('TRANSACTIONS_SEE_DETAILS')}
+                        </a>
+                    </div>
+                    <div className="col-12 col-sm-4 py-1 py-sm-0 d-flex justify-content-center justify-content-sm-end align-items-center">
+                        <DateDropdown transactions={this.state.transactions} selectDateFilter={this.selectDateFilter} translate={this.translate} transactionType="all" />
+                    </div>
                 </div>
             </div>
             {this.state.transactions.length > 0 ? (

@@ -156,12 +156,12 @@ const TransactionForm = (props) => {
             <div className="p-3 mt-3">
                 <span className={`mx-auto my-5 ${submitStatus.className}`}>{submitStatus.message}&nbsp;</span>
                 <form method="post" onSubmit={e=> submitForm(e)}>
-                    <div className="form-group d-inline-block pl-sm-0 pr-sm-3 col-12 col-sm-6 ">
+                    <div className="form-group d-inline-block px-0 pl-sm-0 pr-sm-3 col-12 col-sm-6 ">
                         <label htmlFor="amount">Amount</label>
                         {CountryHelpers.getCoinInput(updateAmount, amount)}                    
                         <small id="transaction_amount_small" className="text-danger">&nbsp;</small>
                     </div>
-                    <div className="form-group d-inline-block pl-sm-3 pr-0 col-12 col-sm-6">
+                    <div className="form-group d-inline-block px-0 pl-sm-3 pr-0 col-12 col-sm-6">
                         <label htmlFor="category">Category</label>
                         <select name="category" id="category" className="form-control" onChange={(e)=>updateCategory(e)} value={category} >
                             <option value="others" defaultValue>Others</option>
