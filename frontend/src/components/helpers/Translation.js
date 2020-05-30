@@ -141,7 +141,7 @@ class Translation {
     }
 
     translate = (key) => {
-        //this.language = "pt-BR"
+        this.language = "pt-BR"
         //this.language = "en-US"
         let translation = this.json[this.language][key] || null
         return translation || key

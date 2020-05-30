@@ -33,6 +33,9 @@ export default class Signup extends Component{
             document.getElementById("errorStatus").classList.add("text-success")
             document.getElementById("errorStatus").innerHTML = this.translate("SIGNUP_SUCCESS")
         } else if (response.data && response.data.errors){
+
+            document.getElementById("errorStatus").classList.remove("text-success")
+            document.getElementById("errorStatus").classList.add("text-danger")
             let serverResponseStatus = response.data.errors[0].state 
             let errorMessage = ""
             if(serverResponseStatus === "in_use"){

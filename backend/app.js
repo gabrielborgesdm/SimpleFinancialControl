@@ -8,7 +8,10 @@ const routes = require('./src/routes')
 
 const app = express()
 let connectionError = false
-mongoose.connect(process.env.DATABASE_ACCESS_LINK, 
+let link = process.env.DATABASE_ACCESS_LINK
+let port = process.env.PORT || 8080
+if(!link) throw "Mongo Database acccess link is empty, create an .env file and inform it as DATABASE_ACCESS_LINK=[link]"
+mongoose.connect(link, 
 {
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -23,8 +26,8 @@ if(!connectionError){
     app.use(express.static(__dirname))
     app.use(express.json())
     app.use(routes)
-    app.listen(process.env.PORT)
-    console.log("Server started on Port", process.env.PORT)
+    app.listen(port)
+    console.log("Server started on port", process.env.PORT)
 }
 
 

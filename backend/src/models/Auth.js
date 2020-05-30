@@ -46,6 +46,14 @@ module.exports = {
             account = false
         }
         return account
+    },
+
+    async removeAccount(filter){
+        try {
+            await Account.deleteOne({ $and: [filter]})
+        } catch (error) {
+            console.log(error)
+        }
     }
         
 }

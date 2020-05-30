@@ -74,7 +74,13 @@ const signUp = async function(req, res){
     }
     
     let account = (response.checkSuccess()) ? await createAccount(userInput, response) : false
-    if (response.checkSuccess()) sendEmailConfirmation(account, confirmAccountUrl)
+    if (response.checkSuccess()) {
+        let success = await sendEmailConfirmation(account, confirmAccountUrl)
+        if(!success) {
+            await removeAccount(account)
+            response.addError("activation", "couldnt_activate", "It wasn't possible to send the activation e-mail")
+        }
+    } 
     return res.json(response.getParams())
 }
 
@@ -89,9 +95,15 @@ const createAccount = async (userInput, response) =>{
     return account
 }
 
-const sendEmailConfirmation = (account, url) => {
+const removeAccount = async (account) =>{
+    let {_id} = account
+    await Auth.removeAccount({_id})
+}
+
+const sendEmailConfirmation = async (account, url) => {
     const token = HashAndToken.generateToken({"_id": account._id})
-    MailerController.sendEmailConfirmation(account.name, account.email, token, url)
+    let success = await MailerController.sendEmailConfirmation(account.name, account.email, token, url)
+    return success
 }
 
 const confirmEmail = async (req, res) => {
