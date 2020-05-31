@@ -19,6 +19,15 @@ class Translation {
                 FORM_OPTION_BRAZIL: "Brazil - R$",
                 FORM_OPTION_USA: "U.S.A - $",
 
+                TABLE_DETAILS: "Detalhes",
+                TABLE_AMOUNT: "Quantidade",
+                TABLE_CATEGORY: "Categoria",
+                TABLE_TYPE: "Tipo",
+                TABLE_DATE: "Data",
+                TABLE_ACTIONS: "Ações",
+
+                ICON_LOADING: "Carregando",
+
                 HOME_TITLE: "Início",
                 HOME_SUBTITLE: "Simplifique as suas finanças",
                 HOME_WELCOME: "Bem Vindo(a)!",
@@ -57,6 +66,19 @@ class Translation {
                 TRANSACTIONS_NO_TRANSACTIONS: "Ainda não há transações cadastradas.",
                 TRANSACTIONS_ADD_TRANSACTION: "Adicionar Transação",
 
+                DATE_DROPDOWN_LAST_WEEK: "Última Semana",
+                DATE_DROPDOWN_LAST_MONTH: "Último Mês",
+                DATE_DROPDOWN_LAST_YEAR: "Último Ano",
+                DATE_DROPDOWN_CUSTOM_DATE: "Data Customizada",
+                DATE_DROPDOWN_ALL_ENTRIES: "Todos Registros",
+                DATE_DROPDOWN_FILTER_BY_DATE: "Filtrar por data",
+                DATE_DROPDOWN_START_DATE: "Data Inicial",
+                DATE_DROPDOWN_END_DATE: "Data Final",
+                DATE_DROPDOWN_START_DATE_CANT_BE_EMPTY: "Data Inicial não pode estar vazia",
+                DATE_DROPDOWN_END_DATE_CANT_BE_EMPTY: "Data Final não pode estar vazia",
+                DATE_DROPDOWN_CLOSE: "Fechar",
+                DATE_DROPDOWN_SAVE: "Salvar",
+
                 CHARTS_MONTLY_EXPENSES: "Despesas mensais",
                 CHARTS_MONTLY_INCOMES: "Receitas mensais",
                 CHARTS_CATEGORY: "Categoria",
@@ -73,18 +95,41 @@ class Translation {
                 CHARTS_CATEGORY_EXPENSES: "Despesas",
                 CHARTS_CATEGORY_WORK: "Trabalho",
 
-                DATE_DROPDOWN_LAST_WEEK: "Última Semana",
-                DATE_DROPDOWN_LAST_MONTH: "Último Mês",
-                DATE_DROPDOWN_LAST_YEAR: "Último Ano",
-                DATE_DROPDOWN_CUSTOM_DATE: "Data Customizada",
-                DATE_DROPDOWN_ALL_ENTRIES: "Todos Registros",
-                DATE_DROPDOWN_FILTER_BY_DATE: "Filtrar por data",
-                DATE_DROPDOWN_START_DATE: "Data Inicial",
-                DATE_DROPDOWN_END_DATE: "Data Final",
-                DATE_DROPDOWN_START_DATE_CANT_BE_EMPTY: "Data Inicial não pode estar vazia",
-                DATE_DROPDOWN_END_DATE_CANT_BE_EMPTY: "Data Final não pode estar vazia",
-                DATE_DROPDOWN_CLOSE: "Fechar",
-                DATE_DROPDOWN_SAVE: "Salvar",
+                TRANSACTIONS_LIST_TITLE: "Transações Detalhadas",
+                TRANSACTIONS_LIST_SUBTITLE: "Visualize e gerencie suas transações",
+                TRANSACTIONS_LIST_WARNING_DELETE_RECORD: "Você tem certeza que deseja apagar esta transação?",
+                TRANSACTIONS_LIST_COULDNT_DELETE_RECORD: "Não foi possível apagar esta transação.",
+                TRANSACTIONS_LIST_NO_DESCRIPTION: "Sem descrição",
+                TRANSACTIONS_LIST_FILTER: "Filtre suas transações",
+                TRANSACTIONS_LIST_INCOME: "Receita",
+                TRANSACTIONS_LIST_EXPENSE: "Despesa",
+
+                TRANSACTIONS_FORM_SUBMITED_WITH_SUCCESS: "Transação submetida com sucesso!",
+                TRANSACTIONS_FORM_COULDNT_BE_SUBMITED: "Não foi possível submeter a transação, tente novamente mais tarde.",
+                TRANSACTIONS_FORM_FIELD_NEEDS_BE_GREATER_THAN_ZERO: "O campo precisa ser maior do que zero",
+                TRANSACTIONS_FORM_TITLE: "Transações",
+                TRANSACTIONS_FORM_SUBTITLE: "Adicione ou edite suas transações",
+                TRANSACTIONS_FORM_AMOUNT: "Quantidade",
+                TRANSACTIONS_FORM_CATEGORY: "Categoria",
+                TRANSACTIONS_FORM_EXPENSE: "Despesa",
+                TRANSACTIONS_FORM_INCOME: "Receita",
+                TRANSACTIONS_FORM_DETAILS: "Detalhes (Opcional)",
+                TRANSACTIONS_FORM_DATE: "Data",
+                TRANSACTIONS_FORM_PLACEHOLDER_DETAILS: "Detalhes sobre a transação",
+
+                TRANSACTIONS_LOGOUT_TITLE: "Sair",
+                TRANSACTIONS_LOGOUT_SUBTITLE: "Sair de sua conta",
+                TRANSACTIONS_LOGOUT_ARE_YOU_SURE_YOU_WANT_TO_LEAVE: "Você tem certeza que deseja sair de sua conta?",
+                TRANSACTIONS_LOGOUT_YES: "SIM",
+
+                CONFIRM_ACCOUNT_DENIED: "Acesso Negado, tente novamente na mesma rede em que você criou a sua conta",
+                CONFIRM_ACCOUNT_SOMETHING_WENT_WRONG: "Aconteceu algo de errado",
+                CONFIRM_ACCOUNT_ACTIVATING_ACCOUNT: "Ativando conta",
+                CONFIRM_ACCOUNT_ACTIVATED_ACCOUNT: "Conta ativada com sucesso",
+                CONFIRM_ACCOUNT_LOGIN: "Entrar",
+                CONFIRM_ACCOUNT_SIGNUP: "Cadastrar",
+                CONFIRM_ACCOUNT_ACCOUNT_TITLE: "Ativação da Conta",
+                CONFIRM_ACCOUNT_ACCOUNT_SUBTITLE: "Você consiguirá utilizar conta após sua ativação",
 
             },
 
@@ -103,6 +148,15 @@ class Translation {
                 FORM_LABEL_COUNTRY: "Country (Currency Type)",
                 FORM_OPTION_BRAZIL: "Brazil - R$",
                 FORM_OPTION_USA: "U.S.A - $",
+                
+                TABLE_DETAILS: "Details",
+                TABLE_AMOUNT: "Amount",
+                TABLE_CATEGORY: "Category",
+                TABLE_TYPE: "Type",
+                TABLE_DATE: "Date",
+                TABLE_ACTIONS: "Actions",
+
+                ICON_LOADING: "Loading",
                 
                 HOME_TITLE: "Home",
                 HOME_SUBTITLE: "Simplify your finances",
@@ -142,6 +196,19 @@ class Translation {
                 TRANSACTIONS_NO_TRANSACTIONS: "There are no transactions registered.",
                 TRANSACTIONS_ADD_TRANSACTION: "Add a Transaction",
 
+                DATE_DROPDOWN_LAST_WEEK: "Last Week",
+                DATE_DROPDOWN_LAST_MONTH: "Last Month",
+                DATE_DROPDOWN_LAST_YEAR: "Last Year",
+                DATE_DROPDOWN_CUSTOM_DATE: "Custom Date",
+                DATE_DROPDOWN_ALL_ENTRIES: "All Entries",
+                DATE_DROPDOWN_FILTER_BY_DATE: "Filter By Date",
+                DATE_DROPDOWN_START_DATE: "Start Date",
+                DATE_DROPDOWN_END_DATE: "End Date",
+                DATE_DROPDOWN_START_DATE_CANT_BE_EMPTY: "Start Date can't be empty",
+                DATE_DROPDOWN_END_DATE_CANT_BE_EMPTY: "End Date can't be empty",
+                DATE_DROPDOWN_CLOSE: "Close",
+                DATE_DROPDOWN_SAVE: "Save",
+
                 CHARTS_MONTLY_EXPENSES: "Monthly Expenses",
                 CHARTS_MONTLY_INCOMES: "Monthly Incomes",
                 CHARTS_CATEGORY: "Category",
@@ -158,25 +225,48 @@ class Translation {
                 CHARTS_CATEGORY_EXPENSES: "Expenses",
                 CHARTS_CATEGORY_WORK: "Work",
 
+                TRANSACTIONS_LIST_TITLE: "Detailed Transactions",
+                TRANSACTIONS_LIST_SUBTITLE: "Visualize and Manage your Transactions",
+                TRANSACTIONS_LIST_WARNING_DELETE_RECORD: "Are you sure you want to delete this record?",
+                TRANSACTIONS_LIST_COULDNT_DELETE_RECORD: "It wasn't possible to delete this transaction.",
+                TRANSACTIONS_LIST_NO_DESCRIPTION: "No description",
+                TRANSACTIONS_LIST_FILTER: "Filter your transactions",
+                TRANSACTIONS_LIST_INCOME: "Income",
+                TRANSACTIONS_LIST_EXPENSE: "Expense",
+                
+                TRANSACTIONS_FORM_SUBMITED_WITH_SUCCESS: "Transaction posted with success!",
+                TRANSACTIONS_FORM_COULDNT_BE_SUBMITED: "The transaction couldn't be submited, try again later.",
+                TRANSACTIONS_FORM_FIELD_NEEDS_BE_GREATER_THAN_ZERO: "The field needs to be greater than zero",
+                TRANSACTIONS_FORM_TITLE: "Transactions",
+                TRANSACTIONS_FORM_SUBTITLE: "Add or update a Transaction",
+                TRANSACTIONS_FORM_AMOUNT: "Amount",
+                TRANSACTIONS_FORM_CATEGORY: "Category",
+                TRANSACTIONS_FORM_EXPENSE: "Expense",
+                TRANSACTIONS_FORM_INCOME: "Income",
+                TRANSACTIONS_FORM_DETAILS: "Details (Optional)",
+                TRANSACTIONS_FORM_DATE: "Date",
+                TRANSACTIONS_FORM_PLACEHOLDER_DETAILS: "Details about the transaction",
 
-                DATE_DROPDOWN_LAST_WEEK: "Last Week",
-                DATE_DROPDOWN_LAST_MONTH: "Last Month",
-                DATE_DROPDOWN_LAST_YEAR: "Last Year",
-                DATE_DROPDOWN_CUSTOM_DATE: "Custom Date",
-                DATE_DROPDOWN_ALL_ENTRIES: "All Entries",
-                DATE_DROPDOWN_FILTER_BY_DATE: "Filter By Date",
-                DATE_DROPDOWN_START_DATE: "Start Date",
-                DATE_DROPDOWN_END_DATE: "End Date",
-                DATE_DROPDOWN_START_DATE_CANT_BE_EMPTY: "Start Date can't be empty",
-                DATE_DROPDOWN_END_DATE_CANT_BE_EMPTY: "End Date can't be empty",
-                DATE_DROPDOWN_CLOSE: "Close",
-                DATE_DROPDOWN_SAVE: "Save",
+                TRANSACTIONS_LOGOUT_TITLE: "Logout",
+                TRANSACTIONS_LOGOUT_SUBTITLE: "Log out your account",
+                TRANSACTIONS_LOGOUT_ARE_YOU_SURE_YOU_WANT_TO_LEAVE: "Are you sure you want to sign out of your account?",
+                TRANSACTIONS_LOGOUT_YES: "YES",
+
+                CONFIRM_ACCOUNT_DENIED: "Access denied, try again with the same internet connection you created your account",
+                CONFIRM_ACCOUNT_SOMETHING_WENT_WRONG: "Something went wrong",
+                CONFIRM_ACCOUNT_ACTIVATING_ACCOUNT: "Activating account",
+                CONFIRM_ACCOUNT_ACTIVATED_ACCOUNT: "Account activated with success",
+                CONFIRM_ACCOUNT_LOGIN: "Log in",
+                CONFIRM_ACCOUNT_SIGNUP: "Sign Up",
+                CONFIRM_ACCOUNT_ACCOUNT_TITLE: "Account Activation",
+                CONFIRM_ACCOUNT_ACCOUNT_SUBTITLE: "You will be able to use your account after its activation",
+
             }
         }
     }
 
     translate = (key) => {
-        this.language = "pt-BR"
+        //this.language = "pt-BR"
         //this.language = "en-US"
         let translation = this.json[this.language][key] || null
         return translation || key

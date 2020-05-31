@@ -7,6 +7,8 @@ const setStorages = (data) => {
     localStorage.setItem("country", country)
 }
 
+const getToken = () => localStorage.getItem("Token")
+
 const resetStorages = () => {
     localStorage.removeItem("Token")
     localStorage.removeItem("name")
@@ -16,5 +18,6 @@ const resetStorages = () => {
 
 module.exports = {
     setStorages,
-    resetStorages
+    resetStorages,
+    getToken
 }

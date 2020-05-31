@@ -39,16 +39,22 @@ class TransactionsList extends Component{
         this.translate = this.props.translate
     }
 
+    getTransactions = async () => {
+        let response = null
+        try {
+            response = await axios.get("/transaction")
+        } catch (error) {
+            console.log(error)
+        }
+        if(response && response.data && response.data.success){
+            let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
+            this.setState({fetchedTransactions: transactions}) 
+            this.getWealth(transactions)
+        }
+    }
+
     componentDidMount(){
-        axios.get(`/transaction`)
-        .then(response => {
-            if(response.data.success){
-                let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
-                this.setState({fetchedTransactions: transactions}) 
-                this.getWealth(transactions)
-            }
-        })
-        .catch(error => console.log(error)) 
+        this.getTransactions()
     }
 
     abstractObjectFromTransactionsQuery = (query) => {

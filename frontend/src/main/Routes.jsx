@@ -16,8 +16,8 @@ const Router = props => (
         <Route exact path="/"  render={(props) => <Home {...props} translate={translate}/>} />
         <Route path="/login" render={(props) => <Login {...props} translate={translate}/>} />
         <Route path="/signup" render={(props) => <Signup {...props} translate={translate}/>}/>
-        <Route path="/logout" component={Logout} />
-        <Route path="/confirmaccount/:token" component={ConfirmAccount} />
+        <Route path="/confirmaccount/:token" render={(props) => <ConfirmAccount {...props} translate={translate}/>}/>
+        <PrivateRoute path="/logout" component={Logout} />
         <PrivateRoute path="/transaction/form/:id" component={TransactionForm} />
         <PrivateRoute path="/transaction/form" component={TransactionForm} />
         <PrivateRoute path="/transaction/list" component={TransactionsList} />

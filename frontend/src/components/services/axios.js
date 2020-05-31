@@ -5,7 +5,7 @@ const token = localStorage.getItem("Token")
 
 let options = {}
 if(baseURL) options["baseURL"] = baseURL
-if(token) options["Authorization"] = `Bearer ${token}`
+if(token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
 let axiosInstance = axios.create(options)
 
 export default axiosInstance

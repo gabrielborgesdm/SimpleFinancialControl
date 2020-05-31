@@ -98,6 +98,7 @@ class ExpensesDoughnut extends Component{
         }
         return category
     }
+    
     buildExpensesInfo = () => {
         this.expenses.forEach((transaction)=>{
             if(this.expensesLabel.indexOf(transaction["category"]) === -1){

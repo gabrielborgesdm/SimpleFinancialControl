@@ -102,7 +102,7 @@ const removeAccount = async (account) =>{
 
 const sendEmailConfirmation = async (account, url) => {
     const token = HashAndToken.generateToken({"_id": account._id})
-    let success = await MailerController.sendEmailConfirmation(account.name, account.email, token, url)
+    let success = await MailerController.sendEmailConfirmation(account.name, account.email, account.country, token, url)
     return success
 }
 
@@ -113,7 +113,7 @@ const confirmEmail = async (req, res) => {
         const accountConfirmed = await Auth.confirmAccount({_id})
         if (accountConfirmed) response.addParams({"message": "Account confirmed, go back and log in your account"})
     } else {
-        response.addError("authorization", "denied", "Access denied, make sure your using the same device you created your account to activate it")
+        response.addError("authorization", "denied", "Access denied, try again with the same device you created your account")
     }
    res.json(response.getParams())
 }

@@ -16,6 +16,15 @@ export default class CountryHelpers extends Component{
         return value
     }
 
+    static getFormatedDate = (date) => {
+        date = new Date(date).toISOString().split('T')[0] 
+        if(this.getCountry() === "brazil"){
+            date = date.split("-")
+            date = `${date[2]}/${date[1]}/${date[0]}`
+        } 
+        return date
+    }
+
 
     static getCoinSign = () => {
         let coin = "$"
@@ -45,11 +54,10 @@ export default class CountryHelpers extends Component{
     }
 
     static getCoinInput = (onChangeFunction, amount = null) => {
-        if(amount) amount = parseFloat(amount)
         if(this.getCountry() === "brazil"){
-           return <CurrencyFormat placeholder="Amount of money spent" thousandSeparator="." value={amount}  decimalScale={2} decimalSeparator="," prefix={'R$ '} onValueChange={(values)=>onChangeFunction(values.value)} name="amount" id="amount" className="form-control"/>
+           return <CurrencyFormat placeholder="Amount of money spent" thousandSeparator="." value={amount}  decimalScale={2} decimalSeparator="," prefix={'R$ '} onValueChange={(values)=>onChangeFunction(values.formattedValue)} name="amount" id="amount" className="form-control"/>
         } else {
-            return <CurrencyFormat placeholder="Amount of money spent" thousandSeparator="," value={amount}  decimalScale={2} decimalSeparator="." prefix={'$ '} onValueChange={(values)=>onChangeFunction(values.value)} name="amount" id="amount" className="form-control"/>
+            return <CurrencyFormat placeholder="Amount of money spent" thousandSeparator="," value={amount}  decimalScale={2} decimalSeparator="." prefix={'$ '} onValueChange={(values)=>onChangeFunction(values.formattedValue)} name="amount" id="amount" className="form-control"/>
         }
     }
 

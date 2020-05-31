@@ -1,12 +1,9 @@
 import "./TransactionsList.css"
 import React, { Component } from "react"
-import axios from "axios"
+import axios from "../services/axios"
 import Main from "../template/Main"
 import CountryHelpers from "../helpers/CountryHelpers"
 
-const token = localStorage.getItem("Token")
-const baseUrl = process.env.REACT_APP_API_BASE_URL
-axios.defaults.headers["Authorization"] = `Bearer ${token}`
 
 class TransactionsList extends Component{
     constructor(props){
@@ -15,6 +12,7 @@ class TransactionsList extends Component{
             transactions: [],
             transactionsList: []
         }
+        this.translate = this.props.translate
     }
 
     buildTransactionsTable(transactions){
@@ -46,6 +44,7 @@ class TransactionsList extends Component{
         this.buildTransactionsTable(transactions)
     }
     filter(filter){
+        filter = filter.toLowerCase()
         let { transactions } = this.state
         const trueIfFiltered = (transaction) => {
 
@@ -59,53 +58,111 @@ class TransactionsList extends Component{
         this.buildTransactionsTable(filter !== "" ? filteredTransactions : transactions)
     }
 
-    deleteTransaction = (id) => {
-        if (!window.confirm("Are you sure you want to delete this record?")) return
-        axios.delete(`${process.env.REACT_APP_API_BASE_URL}/transaction/${id}`)
-        .then(response => {
-            if(response.data.success){
-                let newTransactions = this.state.transactions
-                newTransactions = newTransactions.filter((transaction)=>transaction._id !== id)
-                this.setState({transactions:newTransactions})
-                this.buildTransactionsTable(newTransactions)
-            } else {
-                alert(response.data.errors[0].message)
-            }
-        })
-        .catch(error => console.log(error))
+    deleteTransaction = async (id) => {
+        if (!window.confirm(this.translate('TRANSACTIONS_LIST_WARNING_DELETE_RECORD'))) return
+        let response = null
+        try {
+            response = await axios.delete(`/transaction/${id}`)
+        } catch (error) {
+            console.log(error)
+        }
+       
+        if(response && response.data.success){
+            let newTransactions = this.state.transactions
+            newTransactions = newTransactions.filter((transaction)=>transaction._id !== id)
+            this.setState({transactions:newTransactions})
+            this.buildTransactionsTable(newTransactions)
+        } else {
+            alert(this.translate('TRANSACTIONS_LIST_COULDNT_DELETE_RECORD'))
+        }
+
     }
 
     abstractObjectFromTransactionsQuery(query){
         let transactions = []
         Object.values(query).forEach((queryElement, index)=>{
             let {_id, amount, category, details, transactionType, transactionDate} = queryElement
-            transactionDate = new Date(transactionDate).toISOString().split('T')[0] 
-            details = details || "No description"
+            details = details || this.translate('TRANSACTIONS_LIST_NO_DESCRIPTION')
+            category = this.getCategory(category)
+            transactionDate = CountryHelpers.getFormatedDate(transactionDate)
+            amount = CountryHelpers.getStringMasked(amount)
+            transactionType = transactionType === "income" ? this.translate('TRANSACTIONS_LIST_INCOME') : this.translate('TRANSACTIONS_LIST_EXPENSE')
             let transaction = {order: index + 1, _id, amount, category, details, transactionType, transactionDate}
             transactions.push(transaction)
         })
         return transactions
     }
+
+    getCategory = (key) => {
+        let category
+        switch(key){
+            case "others": 
+                category = this.translate('CHARTS_CATEGORY_OTHERS')
+                break
+            case "food": 
+                category = this.translate('CHARTS_CATEGORY_FOOD')
+                break
+            case "shopping": 
+                category = this.translate('CHARTS_CATEGORY_SHOPPING')
+                break
+            case "housing": 
+                category = this.translate('CHARTS_CATEGORY_HOUSING')
+                break
+            case "transportation": 
+                category = this.translate('CHARTS_CATEGORY_TRANSPORTATION')
+                break
+            case "vehicle": 
+                category = this.translate('CHARTS_CATEGORY_VEHICLE')
+                break
+            case "entertainment": 
+                category = this.translate('CHARTS_CATEGORY_ENTERTAINMENT')
+                break
+            case "technology": 
+                category = this.translate('CHARTS_CATEGORY_TECHNOLOGY')
+                break
+            case "education": 
+                category = this.translate('CHARTS_CATEGORY_EDUCATION')
+                break
+            case "investments": 
+                category = this.translate('CHARTS_CATEGORY_INVESTMENTS')
+                break
+            case "expenses": 
+                category = this.translate('CHARTS_CATEGORY_EXPENSES')
+                break
+            case "work": 
+                category = this.translate('CHARTS_CATEGORY_WORK')
+                break
+            default: 
+                category = key
+                break
+        }
+        return category
+    }
+    getTransactions = async () => {
+        let response = null
+        try {
+            response = await axios.get("/transaction")
+        } catch (error) {
+            console.log(error)
+        }
+        if(response && response.data && response.data.success){
+            let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
+            this.setState({transactions: transactions}) 
+            this.buildTransactionsTable(transactions)
+        }
+    }
     componentDidMount(){
-        axios.get(`${baseUrl}/transaction`)
-        .then(response => {
-            if(response.data.success){
-                let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
-                this.setState({transactions: transactions}) 
-                this.buildTransactionsTable(transactions)
-            }
-        })
-        .catch(error => console.log(error)) 
+        this.getTransactions()
     }
    
     render(){
         return(
-        <Main icon="money" title="Transactions" subtitle="List your Transactions">
+        <Main icon="money" title={this.translate('TRANSACTIONS_LIST_TITLE')} subtitle={this.translate('TRANSACTIONS_LIST_SUBTITLE')}>
             <div className="p-0 p-md-3 mt-3">
                 <div className="p-1 p-md-3 mt-3">
                     <form className="row ">
                         <div className="form-group col-12">
-                            <input onKeyUp={e=>this.filter(e.target.value)} className="form-control" type="text" placeholder="Filter"/>
+                            <input onChange={e=>this.filter(e.target.value)} className="form-control" type="text" placeholder={this.translate('TRANSACTIONS_LIST_FILTER')}/>
                         </div>
                     </form>
                     <div className="table-responsive">
@@ -113,12 +170,12 @@ class TransactionsList extends Component{
                             <thead>
                                 <tr className="text-center">
                                     <th># <i onClick={e=>this.sort(e, "order", 0)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Details <i onClick={e=>this.sort(e, "details", 1)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Amount <i  onClick={e=>this.sort(e, "amount", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Category <i onClick={e=>this.sort(e, "category", 3)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Type <i onClick={e=>this.sort(e, "transactionType", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th>Date <i onClick={e=>this.sort(e, "transactionDate", 5)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                    <th colSpan="2">Actions</th>
+                                    <th>{this.translate('TABLE_DETAILS')} <i onClick={e=>this.sort(e, "details", 1)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>{this.translate('TABLE_AMOUNT')} <i  onClick={e=>this.sort(e, "amount", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>{this.translate('TABLE_CATEGORY')} <i onClick={e=>this.sort(e, "category", 3)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>{this.translate('TABLE_TYPE')} <i onClick={e=>this.sort(e, "transactionType", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th>{this.translate('TABLE_DATE')} <i onClick={e=>this.sort(e, "transactionDate", 5)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                    <th colSpan="2">{this.translate('TABLE_ACTIONS')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,7 +186,7 @@ class TransactionsList extends Component{
                                             <td>{transaction.order}</td>
                                             <td>{transaction.details}</td>
                                             <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>
-                                                {CountryHelpers.getFormattedCoinText(transaction.amount)}
+                                                {transaction.amount}
                                             </td>
                                             <td>{transaction.category}</td>
                                             <td>{transaction.transactionType}</td>
@@ -138,10 +195,10 @@ class TransactionsList extends Component{
                                             <td><i onClick={e=>this.deleteTransaction(transaction._id)} className="fa fa-trash"></i></td>
                                         </tr>
                                     )) : (
-                                        <tr><td colSpan="7">There aren't any transactions</td></tr>
+                                        <tr><td colSpan="7">{this.translate('TRANSACTIONS_NO_TRANSACTIONS')}</td></tr>
                                     )
                                 ) : (
-                                    <tr><td colSpan="7">Loading <i className="fa fa-spinner fa-spin"></i></td></tr>
+                                    <tr><td colSpan="7">{this.translate('ICON_LOADING')} <i className="fa fa-spinner fa-spin"></i></td></tr>
                                 )}
                             </tbody>
                         </table>
