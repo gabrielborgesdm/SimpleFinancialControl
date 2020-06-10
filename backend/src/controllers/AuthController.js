@@ -123,27 +123,30 @@ const passwordRecovery = async (req, res) =>  {
     const response = new ResponseBuilder()
     let account
     const ip = HashAndToken.getIp(req)
-    let {email, frontendRecoverURL} = req.body
+    let {email, country, frontendRecoverURL} = req.body
     let inputObject = await validate.validateInputArray([
         ["email", "email", email],
-        ["frontendRecoverURL", "string", frontendRecoverURL]
+        ["country", "string", country],
     ])
     if(inputObject.errors) {
         response.addMultipleErrors(inputObject.errors)
     } else{
         email = inputObject.email
-        frontendRecoverURL = inputObject.frontendRecoverURL
+        country = inputObject.country
     }
     if(response.checkSuccess()){
         account = await Auth.getAccount({email})
-        if (!account.isActive) response.addError("account", "needs confirmation", "Your account needs to be confirmed")
-        if(!account) response.addError("account", "nonexistent", "Account does not exist")
-    }
-    if(response.checkSuccess()){
-        const token = HashAndToken.generateToken({"ip": ip, "_id": account._id})
-        MailerController.sendRecoverPassword(account.name, email, token, frontendRecoverURL)
-        response.addParams({"message": "Access your e-mail to recover your password"})
-        
+        if(!account) {
+            response.addError("account", "nonexistent", "Account does not exist")   
+        } else {
+            if (!account.isActive) {
+                response.addError("account", "inactive", "Your account needs to be activated/confirmed")
+            } else {
+                const token = HashAndToken.generateToken({"ip": ip, "_id": account._id})
+                MailerController.sendRecoverPassword(account.name, email, country, token, frontendRecoverURL)
+                response.addParams({"message": "Access your e-mail to recover your password"})
+            }
+        }   
     }
     res.json(response.getParams())
 }
@@ -159,7 +162,7 @@ const recoverPassword = async (req, res) =>  {
     } else{
         password = userInput.password
         account = await Auth.getAccount({_id})
-        if (!account.isActive) response.addError("account", "needs confirmation", "Your account needs to be confirmed")
+        if (!account.isActive) response.addError("account", "inactive", "Your account needs to be activated/confirmed")
     }
     if(response.checkSuccess()) {
         let hash = await HashAndToken.hashPassword(password)
@@ -167,7 +170,7 @@ const recoverPassword = async (req, res) =>  {
         if(updateAccount) {
             response.addParams({"message": "Account updated with success"})
         } else {
-            response.addError("account", "couldn't update", "It wasn't possible to update your account")
+            response.addError("account", "couldnt_update", "It wasn't possible to update your account")
         }
     }     
     return res.json(response.getParams())

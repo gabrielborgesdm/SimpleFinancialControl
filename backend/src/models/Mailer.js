@@ -4,12 +4,7 @@ const hbs = require("nodemailer-express-handlebars")
 class Mailer {
     constructor () {
         let transport = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            secure: false,
-            tls: {
-                ciphers:'SSLv3'
-             },
+            service: "gmail",
             auth: {
                user: process.env.EMAIL_USER,
                pass: process.env.EMAIL_PASSWORD

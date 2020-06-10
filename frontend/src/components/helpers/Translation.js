@@ -15,6 +15,9 @@ class Translation {
                 FORM_PLACEHOLDER_EMAIL: "Digite o seu e-mail",
                 FORM_LABEL_PASSWORD: "Senha",
                 FORM_PLACEHOLDER_PASSWORD: "Digite a sua senha",
+                FORM_LABEL_REPEAT_THE_PASSWORD: "Repita a Senha",
+                FORM_PASSWORD_MUST_BE_THE_SAME: "As senhas Precisam ser iguais",
+                FORM_FORGOT_YOUR_PASSWORD: "Esqueceu a sua senha?",
                 FORM_LABEL_COUNTRY: "País (Tipo da moeda)",
                 FORM_OPTION_BRAZIL: "Brazil - R$",
                 FORM_OPTION_USA: "U.S.A - $",
@@ -131,6 +134,14 @@ class Translation {
                 CONFIRM_ACCOUNT_ACCOUNT_TITLE: "Ativação da Conta",
                 CONFIRM_ACCOUNT_ACCOUNT_SUBTITLE: "Você consiguirá utilizar conta após sua ativação",
 
+                RECOVER_PASSWORD_TITLE: "Recupere a sua senha",
+                RECOVER_PASSWORD_NEW_PASSWORD: "Nova senha",
+                RECOVER_PASSWORD_SUBTITLE: "Recupere a sua senha se você a perdeu",
+                RECOVER_PASSWORD_PASSWORDS_MUST_BE_THE_SAME: "As senhas precisam ser Iguais",
+                RECOVER_PASSWORD_ACCESS_EMAIL_TO_RECOVER_PASSWORD: "Acesse o seu e-mail para recuperar a sua senha.",
+                RECOVER_PASSWORD_NOT_POSSIBLE_TO_CHANGE_PASSWORD: "Não foi possível mudar a sua senha.",
+                RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS_DO_YOU_WANT_LOGIN: "Senha alterada com sucesso, você deseja entrar em sua conta?"
+
             },
 
             "en-US": {
@@ -144,6 +155,9 @@ class Translation {
                 FORM_LABEL_EMAIL: "E-mail",
                 FORM_PLACEHOLDER_EMAIL: "Enter your e-mail",
                 FORM_LABEL_PASSWORD: "Password",
+                FORM_LABEL_REPEAT_THE_PASSWORD: "Repeat the Password",
+                FORM_PASSWORD_MUST_BE_THE_SAME: "Passwords must be the same",
+                FORM_FORGOT_YOUR_PASSWORD: "Forgot your password?",
                 FORM_PLACEHOLDER_PASSWORD: "Enter your Password",
                 FORM_LABEL_COUNTRY: "Country (Currency Type)",
                 FORM_OPTION_BRAZIL: "Brazil - R$",
@@ -260,6 +274,14 @@ class Translation {
                 CONFIRM_ACCOUNT_SIGNUP: "Sign Up",
                 CONFIRM_ACCOUNT_ACCOUNT_TITLE: "Account Activation",
                 CONFIRM_ACCOUNT_ACCOUNT_SUBTITLE: "You will be able to use your account after its activation",
+                
+                RECOVER_PASSWORD_TITLE: "Recover your password",
+                RECOVER_PASSWORD_NEW_PASSWORD: "New password",
+                RECOVER_PASSWORD_SUBTITLE: "Recover your password if you lost it.",
+                RECOVER_PASSWORD_PASSWORDS_MUST_BE_THE_SAME: "The passwords must be the same",
+                RECOVER_PASSWORD_ACCESS_EMAIL_TO_RECOVER_PASSWORD: "Access your e-mail to recover your password",
+                RECOVER_PASSWORD_NOT_POSSIBLE_TO_CHANGE_PASSWORD: "It wasn't possible to change your password",
+                RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS_DO_YOU_WANT_LOGIN: "Password updated with success! Do you want to log in?"
 
             }
         }

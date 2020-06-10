@@ -12,15 +12,15 @@ const sendEmailConfirmation = async (name, email, country, token, url) => {
     return success
 }
 
-const sendRecoverPassword = async (name, email, token, frontendRecoverURL) => {
+const sendRecoverPassword = async (name, email, country, token, frontendRecoverURL) => {
+    let subject = country === "brazil" ? "Recupere a sua senha" : "Recover your password"
+
     mailer.setFrom(process.env.EMAIL_USER)
     mailer.setTo(email)
-    mailer.setSubject("Recover your account.")
-    mailer.setHtmlTemplate("recoverPasswordTemplate")
+    mailer.setSubject(subject)
+    mailer.setHtmlTemplate(`${country}recoverPasswordTemplate`)
     mailer.setContext({name, "link": `${frontendRecoverURL}/${token}`})
     mailer.sendMessage()
-    let success = await mailer.sendMessage()
-    return success
 }
 
 module.exports = {

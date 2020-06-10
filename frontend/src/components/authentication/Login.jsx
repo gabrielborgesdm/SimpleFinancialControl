@@ -105,6 +105,11 @@ export default class Login extends Component {
                         <small className="text-danger"></small>
                     </div>
                     <div className="form-group">
+                        <a className=" text-light-blue text-center text-sm-left" href="/recoverpassword">
+                            {this.translate('FORM_FORGOT_YOUR_PASSWORD')}
+                        </a>
+                    </div>
+                    <div className="form-group">
                         <Input type="reset" className="btn m-2" onClick={e=>this.clearForm()} value={this.translate('FORM_BUTTON_CLEAR')}/>
                         <Input type="submit" className="btn m-2" disabled={this.state.invalidFields.filter((field)=> field).length < 2} value={this.translate('FORM_BUTTON_SUBMIT')}/>
                         <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
