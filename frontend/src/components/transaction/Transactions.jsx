@@ -151,7 +151,7 @@ class TransactionsList extends Component{
                         </a>
                     </div>
                     <div className="col-12 col-sm-4 py-1 py-sm-0 d-flex justify-content-center justify-content-sm-end align-items-center">
-                        <DateDropdown transactions={this.state.transactions} selectDateFilter={this.selectDateFilter} translate={this.translate} transactionType="all" />
+                        <DateDropdown transactions={this.state.transactions} selectDateFilter={this.selectDateFilter} translate={this.translate} />
                     </div>
                 </div>
             </div>

@@ -4,6 +4,8 @@ import axios from "../services/axios"
 import Main from "../template/Main"
 import CountryHelpers from "../helpers/CountryHelpers"
 
+import DateDropdown from "../template/DateDropdown"
+
 import  $ from 'jquery'
 import 'popper.js'
 
@@ -45,6 +47,7 @@ class TransactionsList extends Component{
         }
         this.buildTransactionsTable(transactions)
     }
+
     filter(filter){
         filter = filter.toLowerCase()
         let { transactions } = this.state
@@ -246,6 +249,28 @@ class TransactionsList extends Component{
         a.click()
     }
 
+    selectDateFilter = (startDate = null, endDate = null) => {
+        if(startDate && endDate){
+            this.filterTransactionsWithDate(startDate, endDate)
+        } else {
+            let {transactions} = this.state
+            this.setState({transactionsList: transactions}) 
+        }
+    }
+
+    filterTransactionsWithDate = (startDate, endDate) => {
+        let {transactions} = this.state
+        
+        transactions = transactions.filter(transaction => {
+            let check = true
+            check = new Date(transaction.transactionDate) >= new Date(startDate) ? check : false 
+            check = new Date(transaction.transactionDate) <= new Date(endDate) ? check : false
+            return check 
+        })
+        this.setState({transactionsList: transactions}) 
+    }
+
+
     componentDidMount(){
         this.getTransactions()
     }
@@ -259,7 +284,8 @@ class TransactionsList extends Component{
                         <form className="row ">
                             <div className="form-group col-12 d-flex flex-row">
                                 <input onChange={e=>this.filter(e.target.value)} className="form-control flex-grow-1" type="text" placeholder={this.translate('TRANSACTIONS_LIST_FILTER')}/>
-                                <div id="filter-icons">
+                                <div id="filter-icons" className={` ${this.state.transactionsList.length > 0 ? "" : "d-none"}`}>
+                                    <DateDropdown onlyIcon={true} dontFirstLoad={true} selectDateFilter={this.selectDateFilter} translate={this.translate} />
                                     <i className="fa fa-download" onClick={()=>this.toogleModal()} aria-hidden="true"></i>
                                 </div>
                             </div>

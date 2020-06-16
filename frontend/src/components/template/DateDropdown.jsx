@@ -17,9 +17,11 @@ export default class DateDropdown extends Component{
     }
     
     componentDidUpdate(prevProps){
-        if (prevProps.transactions !== this.props.transactions && this.state.firstLoad) {
-            this.handleDateClick("year")
-            this.setState({firstLoad: false})
+        if(!this.props.dontFirstLoad){
+            if (prevProps.transactions !== this.props.transactions && this.state.firstLoad) {
+                this.handleDateClick("year")
+                this.setState({firstLoad: false})
+            }
         }
     }
     toogleModal = () => {
@@ -83,7 +85,8 @@ export default class DateDropdown extends Component{
     render = () =>
     <React.Fragment>
         <div className="dropdown align-self-center">
-            <span className="text-dark-green">{this.state.dateFilterChoosen}</span>
+            {!this.props.onlyIcon && <span className="text-dark-green">{this.state.dateFilterChoosen}</span>}
+            
             <button className="btn btn-default text-dark-green dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i className="fa fa-calendar"></i>
             </button>
@@ -109,7 +112,7 @@ export default class DateDropdown extends Component{
                         </button>
                     </div>
                     <div className="modal-body">
-                        <form>
+                        
                             <div className="form-group row">
                                 <label htmlFor="startDate" className="col-sm-2 col-form-label">{this.translate('DATE_DROPDOWN_START_DATE')}</label>
                                 <div className="col-sm-10">
@@ -137,8 +140,7 @@ export default class DateDropdown extends Component{
                                     <small className="text-warning">{this.state.customEndDate === "" ? this.translate('DATE_DROPDOWN_END_DATE_CANT_BE_EMPTY') : " "}</small>
                                 </div>
                             </div>
-                            
-                        </form>
+                          
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-outline-light-red" data-dismiss="modal"><i className="fa fa-close"></i> {this.translate('DATE_DROPDOWN_CLOSE')}</button>
