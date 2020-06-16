@@ -25,3 +25,19 @@ th i:hover {
     cursor: pointer;
 }
 
+#filter-icons{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    right: 25px;
+}
+
+#filter-icons i{
+    cursor: pointer;
+    color: var(--bg-dark-green);
+}
+
+.download-files-button{
+    width: 150px;
+}

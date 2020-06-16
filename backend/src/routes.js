@@ -22,6 +22,8 @@ router.post('/transaction', TransactionController.postTransaction)
 router.put('/transaction/:id', TransactionController.updateTransaction)
 router.delete('/transaction/:id', TransactionController.deleteTransaction)
 
+router.post('/transaction/download', TransactionController.downloadTransactions)
+
 
 
 module.exports = router

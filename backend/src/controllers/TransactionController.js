@@ -2,6 +2,8 @@ const Transaction = require("../models/Transaction")
 const validate = require("./ValidateController")
 const ResponseBuilder = require("./ResponseBuilder")
 const Auth = require("../models/Auth")
+const fs = require('fs')
+
 
 const getTransactions = async (req, res) =>{
     const response = new ResponseBuilder()
@@ -17,6 +19,35 @@ const getTransactions = async (req, res) =>{
         response.addError("transactions", "operation failed", "It wasn't possible to get transactions")
     }
     return res.json(response.getParams())
+}
+
+const downloadTransactions = (req, res) =>{
+    let {transactions, fileName, fileType, country} = req.body
+   
+    let date = new Date().getTime()
+    let fileBase = `${__dirname}\\..\\..\\tmp\\files\\${date}_`
+   
+    let file = `${fileBase}_${fileName}.${fileType}`
+    
+    if(fileType === "json"){
+        transactions = JSON.stringify(transactions)
+        
+    } else if(fileType === "csv" || fileType === "xls"){
+        let newTransactions = ""
+        let separator = country === "brazil" ? ";" : ","
+        Object.keys(transactions[0]).forEach(value=>newTransactions += `${value}${separator}`)
+        newTransactions = newTransactions.slice(0, -1)
+        newTransactions += "\n"
+
+        transactions.forEach(transaction=>{
+            Object.values(transaction).forEach(value=>newTransactions += `${value}${separator}`)
+            newTransactions = newTransactions.slice(0, -1)
+            newTransactions += "\n"
+        })
+        transactions = newTransactions
+    }
+    fs.writeFileSync(file, transactions, 'utf8')
+    return res.download(file, fileName)
 }
 
 const postTransaction = async (req, res) =>{
@@ -112,5 +143,6 @@ module.exports = {
     getTransactions,
     postTransaction,
     updateTransaction,
-    deleteTransaction
+    deleteTransaction,
+    downloadTransactions
 }

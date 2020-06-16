@@ -146,11 +146,7 @@ class TransactionForm extends Component{
         let transactionDate = this.getTodayDate()
         
         let id = this.props.match.params.id
-        if (id) {
-            this.getTransaction(id)
-        } else {
-            console.log("hello")
-        }
+        if (id) this.getTransaction(id)
         this.setState({id, transactionDate})
     }
 
