@@ -57,9 +57,12 @@ class TransactionForm extends Component{
     submitForm = async (e) => {
         e.preventDefault()
         let {id, expense, amount, details, category, transactionDate} = this.state
+
         const method = id ? "put" : "post"
         const url = id ? `/transaction/${id}` : `/transaction`
-
+        
+        amount = this.validateAmount(amount)
+        console.log(amount)
         let newAmount= expense ? amount * -1 : amount
         document.getElementById("loading").style.visibility = 'visible'
         let response = null
@@ -83,6 +86,19 @@ class TransactionForm extends Component{
         this.setState({submitStatus})
         document.getElementById("loading").style.visibility = 'hidden'
     }
+
+    validateAmount = (amount) => {
+        if(localStorage.getItem("country") === "brazil"){
+            amount = amount.replace("R$", "")
+            amount = amount.replace(".", "")
+            amount = amount.replace(",", ".")
+        } else {
+            amount = amount.replace("$", "")
+        }
+        amount = parseFloat(amount)
+        return amount
+    }
+
     checkInputEmpty = input => input.length === 0 ? this.translate('FORM_FIELD_CANT_BE_EMPTY') : "&nbsp;"
 
     checkErrorStatusEmpty = (fieldPosition, errorStatusEmpty) => {

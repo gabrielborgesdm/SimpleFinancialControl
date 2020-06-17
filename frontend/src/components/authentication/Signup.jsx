@@ -4,6 +4,8 @@ import axios from "../services/axios"
 import Main from "../template/Main"
 import Input from "../form/Input"
 
+import StrongPasswordBar from "../template/StrongPasswordBar"
+
 import {resetStorages} from "../helpers/LocalStorageHelpers"
 
 
@@ -15,7 +17,9 @@ export default class Signup extends Component{
             email: "",
             country: "",
             password: "",
-            invalidFields: [0, 0, 0],
+            repeatPassword: "",
+            securityLevel: 0,
+            invalidFields: [0, 0, 0, 0],
         }
         this.translate = this.props.translate
     }
@@ -49,6 +53,7 @@ export default class Signup extends Component{
     }
 
     postAccount = async () => {
+        if(!this.checkAccountIsSecure()) return
         let confirmAccountUrl = window.location.href.replace("signup", "confirmaccount")
         let {name, email, password, country} = this.state
         let response
@@ -60,6 +65,17 @@ export default class Signup extends Component{
         }
         return response
         
+    }
+
+    checkAccountIsSecure = () => {
+        let isValid = true
+        let {name, email, country, password, repeatPassword, securityLevel} = this.state
+
+        if(!name || !email || !country || !password || !repeatPassword || securityLevel < 2)  isValid = false
+        if(password !== repeatPassword )  isValid = false
+
+        if(this.state.invalidFields.filter((field)=> field).length < 5) isValid = false
+        return isValid
     }
 
     checkInputEmpty = input => input.length === 0 ? this.translate('FORM_FIELD_CANT_BE_EMPTY') : ""
@@ -96,7 +112,26 @@ export default class Signup extends Component{
         let password = e.target.value
         e.target.nextSibling.innerHTML = this.checkInputEmpty(password)
         this.checkErrorStatusEmpty(3, e.target.nextSibling.innerHTML)
+        if(password !== "" && password.length <= 5){
+            e.target.nextSibling.innerHTML = this.translate('FORM_PASSWORD_MUST_HAVE_MORE_THAN_SIX_CHAR') 
+        } 
+        
+        if(password !== this.state.repeatPassword){
+            let repeatPasswordSmall = document.querySelector("#repeat-password-small")
+            repeatPasswordSmall.innerHTML = this.translate('FORM_PASSWORD_MUST_BE_THE_SAME')
+        }
+
         this.setState({password})
+    }
+    
+    updateRepeatPassword = (e) => {
+        let repeatPassword = e.target.value
+        e.target.nextSibling.innerHTML = this.checkInputEmpty(repeatPassword)
+        if(repeatPassword !== "" && this.state.password !== repeatPassword){
+            e.target.nextSibling.innerHTML = this.translate('FORM_PASSWORD_MUST_BE_THE_SAME') 
+        }
+        this.checkErrorStatusEmpty(4, e.target.nextSibling.innerHTML)
+        this.setState({repeatPassword})
     }
     
     clearForm = (e) => {
@@ -105,12 +140,22 @@ export default class Signup extends Component{
             email: "",
             country: "",
             password: "",
-            invalidFields: [0, 0, 0]
+            repeatPassword: "",
+            invalidFields: [0, 0, 0, 0],
+            securityLevel: 0
         })
         for(let i = 0; i < document.getElementsByTagName("small").length; i++){
             document.getElementsByTagName("small")[i].innerHTML = ""
         }
     }
+
+    updateSecurityLevel = (securityLevel) => {
+        if(this.state.password !== "" && securityLevel < 2) {
+            document.querySelector("#password-small").innerHTML = this.translate('FORM_PASSWORD_IS_INSECURE')
+        }
+        this.setState({securityLevel})
+    }
+
     render(){
         return (
             <Main className="form" icon="user-plus" title={this.translate('SIGNUP_TITLE')} subtitle={this.translate('SIGNUP_SUBTITLE')}>
@@ -139,11 +184,17 @@ export default class Signup extends Component{
                         <div className="form-group">
                             <label htmlFor="password">{this.translate('FORM_LABEL_PASSWORD')}</label>
                             <Input type="password" name="password" placeholder={this.translate('FORM_PLACEHOLDER_PASSWORD')} id="password" className="form-control" onChange={(e)=>this.updatePassword(e)} value={this.state.password} />
-                            <small className="text-danger"></small>
+                            <small id="password-small" className="text-danger"></small>
                         </div>
                         <div className="form-group">
+                            <label htmlFor="repeatPassword">{this.translate('FORM_LABEL_REPEAT_THE_PASSWORD')}</label>
+                            <Input type="password" name="repeatPassword" placeholder={this.translate('FORM_PLACEHOLDER_PASSWORD')} id="repeatPassword" className="form-control" onChange={(e)=>this.updateRepeatPassword(e)} value={this.state.repeatPassword} />
+                            <small id="repeat-password-small" className="text-danger"></small>
+                        </div>
+                        <StrongPasswordBar translate={this.translate} password={this.state.password} updateSecurityLevel={this.updateSecurityLevel} />
+                        <div className="form-group">
                             <Input type="reset" className="btn m-2" onClick={e=>this.clearForm()} value={this.translate('FORM_BUTTON_CLEAR')}/>
-                            <Input type="submit" className="btn m-2" disabled={this.state.invalidFields.filter((field)=> field).length < 4} value={this.translate('FORM_BUTTON_SUBMIT')}/>
+                            <Input type="submit" className="btn m-2" disabled={this.checkAccountIsSecure() ? "" : "disabled" } value={this.translate('FORM_BUTTON_SUBMIT')}/>
                             <i id="loading" className="fa fa-spinner fa-spin" style={{visibility:"hidden"}}></i>
                         </div>
                     </form>

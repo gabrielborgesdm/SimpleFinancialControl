@@ -17,6 +17,8 @@ class Translation {
                 FORM_PLACEHOLDER_PASSWORD: "Digite a sua senha",
                 FORM_LABEL_REPEAT_THE_PASSWORD: "Repita a Senha",
                 FORM_PASSWORD_MUST_BE_THE_SAME: "As senhas Precisam ser iguais",
+                FORM_PASSWORD_MUST_HAVE_MORE_THAN_SIX_CHAR: "A senha precisa ter pelos menos 6 carácteres",
+                FORM_PASSWORD_IS_INSECURE: "A senha é pouco segura",
                 FORM_FORGOT_YOUR_PASSWORD: "Esqueceu a sua senha?",
                 FORM_LABEL_COUNTRY: "País (Tipo da moeda)",
                 FORM_OPTION_BRAZIL: "Brazil - R$",
@@ -31,6 +33,11 @@ class Translation {
 
                 ICON_LOADING: "Carregando",
 
+                STRONG_PASSWORD_INSECURE: "Inseguro",
+                STRONG_PASSWORD_WEAK: "Fraco",
+                STRONG_PASSWORD_MEDIUM: "Médio",
+                STRONG_PASSWORD_STRONG: "Forte",
+                
                 HOME_TITLE: "Início",
                 HOME_SUBTITLE: "Simplifique as suas finanças",
                 HOME_WELCOME: "Bem Vindo(a)!",
@@ -157,6 +164,8 @@ class Translation {
                 FORM_LABEL_PASSWORD: "Password",
                 FORM_LABEL_REPEAT_THE_PASSWORD: "Repeat the Password",
                 FORM_PASSWORD_MUST_BE_THE_SAME: "Passwords must be the same",
+                FORM_PASSWORD_MUST_HAVE_MORE_THAN_SIX_CHAR: "Password must have at least 6 characters",
+                FORM_PASSWORD_IS_INSECURE: "Password is not secure",
                 FORM_FORGOT_YOUR_PASSWORD: "Forgot your password?",
                 FORM_PLACEHOLDER_PASSWORD: "Enter your Password",
                 FORM_LABEL_COUNTRY: "Country (Currency Type)",
@@ -172,6 +181,11 @@ class Translation {
 
                 ICON_LOADING: "Loading",
                 
+                STRONG_PASSWORD_INSECURE: "Insecure",
+                STRONG_PASSWORD_WEAK: "Weak",
+                STRONG_PASSWORD_MEDIUM: "Medium",
+                STRONG_PASSWORD_STRONG: "Strong",
+
                 HOME_TITLE: "Home",
                 HOME_SUBTITLE: "Simplify your finances",
                 HOME_WELCOME: "Welcome",
@@ -288,8 +302,7 @@ class Translation {
     }
 
     translate = (key) => {
-        //this.language = "pt-BR"
-        //this.language = "en-US"
+       
         let translation = this.json[this.language][key] || null
         return translation || key
     }

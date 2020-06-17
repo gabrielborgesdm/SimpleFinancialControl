@@ -284,9 +284,9 @@ class TransactionsList extends Component{
                         <form className="row ">
                             <div className="form-group col-12 d-flex flex-row">
                                 <input onChange={e=>this.filter(e.target.value)} className="form-control flex-grow-1" type="text" placeholder={this.translate('TRANSACTIONS_LIST_FILTER')}/>
-                                <div id="filter-icons" className={` ${this.state.transactionsList.length > 0 ? "" : "d-none"}`}>
+                                <div id="filter-icons">
                                     <DateDropdown onlyIcon={true} dontFirstLoad={true} selectDateFilter={this.selectDateFilter} translate={this.translate} />
-                                    <i className="fa fa-download" onClick={()=>this.toogleModal()} aria-hidden="true"></i>
+                                    <i className={`fa fa-download ${this.state.transactionsList.length > 0 ? "" : "d-none"}`} onClick={()=>this.toogleModal()}  aria-hidden="true"></i>
                                 </div>
                             </div>
                         </form>

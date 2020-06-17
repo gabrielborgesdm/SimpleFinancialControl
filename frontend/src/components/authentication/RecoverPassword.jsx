@@ -7,6 +7,7 @@ import axios from "../services/axios"
 import Main from "../template/Main"
 import Input from "../form/Input"
 
+import StrongPasswordBar from "../template/StrongPasswordBar"
 
 
 
@@ -21,6 +22,7 @@ class RecoverPassword extends Component {
             showLoginMessage: false,
             showCheckEmailMessage: false,
             email: "",
+            securityLevel: 0,
             token: null
         }
         this.translate = this.props.translate
@@ -71,7 +73,7 @@ class RecoverPassword extends Component {
 
     getCountryBasedOnLanguage = () => {
         let language = window.navigator.userLanguage || window.navigator.language
-        let country = language === "pt-BR" ? "brazil" : "usa"
+        let country = language.includes("pt") ? "brazil" : "usa"
         return country
     }
 
@@ -82,11 +84,12 @@ class RecoverPassword extends Component {
     }
 
     checkPasswordFormIsValid = () =>{
-        let {password, repeatPassword} = this.state
+        let {password, repeatPassword, securityLevel} = this.state
         let check = true
         if(password === "") check = false
         if(repeatPassword === "") check = false
         if(password !== repeatPassword) check = false
+        if(securityLevel < 2) check = false
         return check
     }
 
@@ -113,7 +116,45 @@ class RecoverPassword extends Component {
         }
     } 
 
-    
+    updatePassword = (e) => {
+        let password = e.target.value
+        if(password === "") {
+            e.target.nextSibling.innerHTML = this.translate('FORM_FIELD_CANT_BE_EMPTY')
+        } else if(password !== "" && password.length <= 5){
+            e.target.nextSibling.innerHTML = this.translate('FORM_PASSWORD_MUST_HAVE_MORE_THAN_SIX_CHAR') 
+        } else if (this.state.securityLevel < 2){
+            e.target.nextSibling.innerHTML = this.translate('FORM_PASSWORD_IS_INSECURE') 
+        } else {
+            e.target.nextSibling.innerHTML = ""
+        }
+        
+        if(password !== this.state.repeatPassword){
+            let repeatPasswordSmall = document.querySelector("#repeat-password-small")
+            repeatPasswordSmall.innerHTML = this.translate('FORM_PASSWORD_MUST_BE_THE_SAME')
+        }
+
+        this.setState({password})
+    }
+
+    updateRepeatPassword = (e) => {
+        let repeatPassword = e.target.value
+
+        if(repeatPassword === "") {
+            e.target.nextSibling.innerHTML = this.translate('FORM_FIELD_CANT_BE_EMPTY')
+        } else if(repeatPassword !== "" && this.state.password !== repeatPassword){
+            e.target.nextSibling.innerHTML = this.translate('FORM_PASSWORD_MUST_BE_THE_SAME') 
+        } else {
+            e.target.nextSibling.innerHTML = ""
+        }
+        this.setState({repeatPassword})
+    }
+
+    updateSecurityLevel = (securityLevel) => {
+        if(this.state.password !== "" && securityLevel < 2) {
+            document.querySelector("#password-small").innerHTML = this.translate('FORM_PASSWORD_IS_INSECURE')
+        }
+        this.setState({securityLevel})
+    }
     
     clearPasswordForm = () => {
         this.setState({password: "", repeatPassword: "", formStatus: {message: " ", className: ""}})
@@ -125,9 +166,6 @@ class RecoverPassword extends Component {
         this.setState({token})
     }
 
-
-    
-
     render = () =>
         <Main className="form" icon="sign-in" title={this.translate('RECOVER_PASSWORD_TITLE')} subtitle={this.translate('RECOVER_PASSWORD_SUBTITLE')}>
             <div className="p-3 mt-3">
@@ -138,13 +176,19 @@ class RecoverPassword extends Component {
                             
                             <div className="form-group">
                                 <label htmlFor="password">{this.translate('RECOVER_PASSWORD_NEW_PASSWORD')}</label>
-                                <Input type="password" name="password" placeholder={this.translate('FORM_PLACEHOLDER_PASSWORD')} id="password" className="form-control" value={this.state.password} onChange={(e)=>this.setState({password: e.target.value})} />
+                                <Input type="password" name="password" placeholder={this.translate('FORM_PLACEHOLDER_PASSWORD')} id="password" className="form-control" value={this.state.password} onChange={(e)=>this.updatePassword(e)} />
+                                <small id="password-small"className="text-danger"></small>
                             </div>
+
+                            
                             <div className="form-group">
                                 <label htmlFor="repeat_password">{this.translate('FORM_LABEL_REPEAT_THE_PASSWORD')}</label>
-                                <Input type="password" name="repeat_password" placeholder={this.translate('FORM_PLACEHOLDER_PASSWORD')} id="repeat_password" className="form-control" value={this.state.repeatPassword} onChange={(e)=>this.setState({repeatPassword: e.target.value})} />
-                                <small className="text-danger">{(this.state.repeatPassword !== "" && this.state.password !== this.state.repeatPassword) && `${this.translate('RECOVER_PASSWORD_PASSWORDS_MUST_BE_THE_SAME')}`}</small>
+                                <Input type="password" name="repeat_password" placeholder={this.translate('FORM_PLACEHOLDER_PASSWORD')} id="repeat_password" className="form-control" value={this.state.repeatPassword} onChange={(e)=>this.updateRepeatPassword(e)} />
+                                <small id="repeat-password-small" className="text-danger"></small>
                             </div>
+                            
+                            <StrongPasswordBar translate={this.translate} password={this.state.password} updateSecurityLevel={this.updateSecurityLevel} />
+
                             <div className="form-group">
                                 <Input type="reset" className="btn m-2" onClick={e=>this.clearPasswordForm()} value={this.translate('FORM_BUTTON_CLEAR')}/>
                                 <Input type="submit" className="btn m-2" disabled={this.checkPasswordFormIsValid() ? "" : "disabled"}  value={this.translate('FORM_BUTTON_SUBMIT')}/>
