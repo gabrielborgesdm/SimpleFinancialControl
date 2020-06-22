@@ -1,6 +1,7 @@
 import "./charts.css"
 import React, { Component } from "react"
 import CountryHelpers from "../helpers/CountryHelpers"
+import DateHelpers from "../helpers/DateHelpers"
 
 import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
@@ -22,13 +23,18 @@ class ExpensesLines extends Component{
     }
 
     initChart(){
-        this.groupByDate()
+        if(this.props.groupedBy === "week" || this.props.groupedBy === "month") {
+            this.groupByDay()
+        } else {
+            this.groupByMonth()
+        }
+
         this.expensesDates = this.expenses.map((expense)=>expense.date)
         this.expensesValues = this.expenses.map((expense)=>expense.amount)
         this.renderChart()
     }
     
-    groupByDate = () => {
+    groupByDay = () => {
         let expenses = this.expenses
         let groupedExpenses = []
         expenses = this.sortDate(expenses)
@@ -36,10 +42,32 @@ class ExpensesLines extends Component{
             let expenseGroup = {amount: 0}
             expenses.reduce((previous, after)=>{
                 let checkSameDate = true
-                if(this.getYear(expense["transactionDate"]) !== this.getYear(after["transactionDate"])) checkSameDate = false
-                if(this.getMonth(expense["transactionDate"]) !== this.getMonth(after["transactionDate"])) checkSameDate = false
+                if(DateHelpers.getDay(expense["transactionDate"]) !== DateHelpers.getDay(after["transactionDate"])) checkSameDate = false
                 if(checkSameDate){
-                    let date = `${this.getMonth(after["transactionDate"])}/${this.getYear(after["transactionDate"])}`
+                    let date = DateHelpers.getDayAndMonth(after["transactionDate"])
+                    let amount = expenseGroup.amount + after["amount"] * -1
+                    expenseGroup = {date, amount}
+                }
+                return after
+            }, {})
+            groupedExpenses.push(expenseGroup)
+        })
+        groupedExpenses = this.removeDuplicatedGroupedExpenses(groupedExpenses)
+        this.expenses = groupedExpenses
+    }
+    
+    groupByMonth = () => {
+        let expenses = this.expenses
+        let groupedExpenses = []
+        expenses = this.sortDate(expenses)
+        expenses.forEach((expense, index, expenses)=>{
+            let expenseGroup = {amount: 0}
+            expenses.reduce((previous, after)=>{
+                let checkSameDate = true
+                if(DateHelpers.getYear(expense["transactionDate"]) !== DateHelpers.getYear(after["transactionDate"])) checkSameDate = false
+                if(DateHelpers.getMonth(expense["transactionDate"]) !== DateHelpers.getMonth(after["transactionDate"])) checkSameDate = false
+                if(checkSameDate){
+                    let date = DateHelpers.getMonthAndYear(after["transactionDate"])
                     let amount = expenseGroup.amount + after["amount"] * -1
                     expenseGroup = {date, amount}
                 }
@@ -52,10 +80,6 @@ class ExpensesLines extends Component{
     }
     
     sortDate = transactions => transactions.sort((a, b) => a["transactionDate"] >= b["transactionDate"] ? 1 : -1)
-    
-    getYear = date => date.split("-")[0]
-    
-    getMonth = date => date.split("-")[1]
 
     removeDuplicatedGroupedExpenses = groupedExpenses => {
         groupedExpenses = groupedExpenses.map((expense=>JSON.stringify(expense)))

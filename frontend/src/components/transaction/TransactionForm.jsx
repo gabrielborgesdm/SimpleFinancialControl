@@ -89,6 +89,7 @@ class TransactionForm extends Component{
 
     validateAmount = (amount) => {
         if(localStorage.getItem("country") === "brazil"){
+            amount = String(amount)
             amount = amount.replace("R$", "")
             amount = amount.replace(".", "")
             amount = amount.replace(",", ".")

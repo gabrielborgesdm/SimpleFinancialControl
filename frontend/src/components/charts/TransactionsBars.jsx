@@ -5,6 +5,7 @@ import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 import CountryHelpers from "../helpers/CountryHelpers"
+import DateHelpers from "../helpers/DateHelpers"
 
 class TransactionsBars extends Component{
     constructor(props){
@@ -33,17 +34,21 @@ class TransactionsBars extends Component{
     }
 
     initChart(){
-        this.groupByDate()
+        if(this.props.groupedBy === "week" || this.props.groupedBy === "month") {
+            this.groupByDay()
+        } else {
+            this.groupByMonth()
+        }
+
         this.expenses = this.expenses.map((expense)=>expense.amount)
         this.incomes = this.incomes.map((income)=>income.amount)
 
         this.renderChart()
     }
     
-    groupByDate = () => {
+    groupByDay = () => {
         let transactions = this.props.transactions
         transactions = this.sortDate(transactions)
-
         let groupedIncomes = []
         let groupedExpenses = []
 
@@ -54,10 +59,9 @@ class TransactionsBars extends Component{
 
             transactions.reduce((previous, after)=>{
                 let checkSameDate = true
-                if(this.getYear(transaction["transactionDate"]) !== this.getYear(after["transactionDate"])) checkSameDate = false
-                if(this.getMonth(transaction["transactionDate"]) !== this.getMonth(after["transactionDate"])) checkSameDate = false
+                if(DateHelpers.getDay(transaction["transactionDate"]) !== DateHelpers.getDay(after["transactionDate"])) checkSameDate = false
                 if(checkSameDate){
-                    let date = `${this.getMonth(after["transactionDate"])}/${this.getYear(after["transactionDate"])}`
+                    let date = DateHelpers.getDayAndMonth(after["transactionDate"])
                     after["amount"] > 0 ? incomesGroup.amount += after["amount"] : expensesGroup.amount += after["amount"] * -1
                     incomesGroup.date = date
                     expensesGroup.date = date
@@ -75,12 +79,46 @@ class TransactionsBars extends Component{
         this.incomes = groupedIncomes
         this.expenses = groupedExpenses
     }
+
+    groupByMonth = () => {
+        let transactions = this.props.transactions
+        console.log("month", transactions)
+        transactions = this.sortDate(transactions)
+        let groupedIncomes = []
+        let groupedExpenses = []
+
+        
+        transactions.forEach((transaction, index, transactions)=>{
+            let incomesGroup = {amount: 0}
+            let expensesGroup = {amount: 0}
+
+            transactions.reduce((previous, after)=>{
+                let checkSameDate = true
+                if(DateHelpers.getYear(transaction["transactionDate"]) !== DateHelpers.getYear(after["transactionDate"])) checkSameDate = false
+                if(DateHelpers.getMonth(transaction["transactionDate"]) !== DateHelpers.getMonth(after["transactionDate"])) checkSameDate = false
+                
+                if(checkSameDate){
+                    let date = DateHelpers.getMonthAndYear(after["transactionDate"])
+                    after["amount"] > 0 ? incomesGroup.amount += after["amount"] : expensesGroup.amount += after["amount"] * -1
+                    incomesGroup.date = date
+                    expensesGroup.date = date
+                    this.transactionsDates.push(date)
+                }
+                return after
+            }, {})
+            
+            groupedIncomes.push(incomesGroup)
+            groupedExpenses.push(expensesGroup)
+        })
+        this.transactionsDates = [...new Set(this.transactionsDates)]
+        groupedIncomes = this.removeDuplicatedGroupedTransactions(groupedIncomes)
+        groupedExpenses = this.removeDuplicatedGroupedTransactions(groupedExpenses)
+        this.incomes = groupedIncomes
+        this.expenses = groupedExpenses
+    }
+
     
     sortDate = transactions => transactions.sort((a, b) => a["transactionDate"] >= b["transactionDate"] ? 1 : -1)
-    
-    getYear = date => date.split("-")[0]
-    
-    getMonth = date => date.split("-")[1]
 
     removeDuplicatedGroupedTransactions = groupedTransactions => {
         groupedTransactions = groupedTransactions.map((transaction=>JSON.stringify(transaction)))
@@ -117,11 +155,8 @@ class TransactionsBars extends Component{
                 plugins: {
                     datalabels: {
                         color: "#000",
-                        anchor: "end",
-                        align: "top",
                         formatter: function(value, context) {
-                            value = value > 0 ? CountryHelpers.getStringMasked(value) : null
-                            return value || null;
+                            return null;
                         }
                     }
                     

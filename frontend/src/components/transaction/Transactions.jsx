@@ -34,6 +34,7 @@ class TransactionsList extends Component{
             balanceAmount:0,
             incomesAmount: 0,
             expensesAmount: 0,
+            filterByDateValue: "",
             country: CountryHelpers.getCountry()
         }
         this.translate = this.props.translate
@@ -100,13 +101,13 @@ class TransactionsList extends Component{
         })
     }
 
-    selectDateFilter = (startDate = null, endDate = null) => {
+    selectDateFilter = (startDate = null, endDate = null, filterName) => {
         if(startDate && endDate){
             this.filterTransactionsWithDate(startDate, endDate)
         } else {
             this.getWealth(this.state.fetchedTransactions) 
         }
-        
+        this.setState({filterByDateValue: filterName})
     }
 
     filterTransactionsWithDate = (startDate, endDate) => {
@@ -168,11 +169,11 @@ class TransactionsList extends Component{
                             <div className="row mt-5">
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0">
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
-                                    <TransactionsBars translate={this.translate} transactions={this.state.incomesAndExpenses}/>
+                                    <TransactionsBars translate={this.translate} groupedBy={this.state.filterByDateValue} transactions={this.state.incomesAndExpenses}/>
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
-                                    <TransactionsLines translate={this.translate} transactions={this.state.incomesAndExpenses}/>
+                                    <TransactionsLines translate={this.translate} groupedBy={this.state.filterByDateValue} transactions={this.state.incomesAndExpenses}/>
                                 </div>  
                             </div>
                         </div>
@@ -194,7 +195,7 @@ class TransactionsList extends Component{
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
-                                    <ExpensesLines translate={this.translate} expenses={this.state.expenses} />
+                                    <ExpensesLines translate={this.translate} groupedBy={this.state.filterByDateValue} expenses={this.state.expenses} />
                                 </div>  
                             </div>
                         </div>
@@ -214,7 +215,7 @@ class TransactionsList extends Component{
                                 </div>
                                 <div className="p-0 col-12 col-md-6 my-4 my-md-0"> 
                                     <h5 className="col-12 text-center">{this.translate('TRANSACTIONS_GROUPED_BY_DATE')}</h5>
-                                    <IncomeLines translate={this.translate} incomes={this.state.incomes} />
+                                    <IncomeLines translate={this.translate} groupedBy={this.state.filterByDateValue} incomes={this.state.incomes} />
                                 </div>  
                             </div>
                         </div>

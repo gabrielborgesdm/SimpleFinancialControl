@@ -5,6 +5,7 @@ export default class CountryHelpers extends Component{
     static getCountry = () => localStorage.getItem("country") || null
 
     static getStringMasked = (value) => {
+        value = parseFloat(value)
         if(this.getCountry() === "brazil"){
             value = value.toFixed(2)
             value = value.replace(".",",");
@@ -55,9 +56,9 @@ export default class CountryHelpers extends Component{
 
     static getCoinInput = (onChangeFunction, amount = null) => {
         if(this.getCountry() === "brazil"){
-           return <CurrencyFormat placeholder="Amount of money spent" thousandSeparator="." value={amount}  decimalScale={2} decimalSeparator="," prefix={'R$ '} onValueChange={(values)=>onChangeFunction(values.formattedValue)} name="amount" id="amount" className="form-control"/>
+           return <CurrencyFormat placeholder="Insira a quantidade de dinheiro" thousandSeparator="." value={amount}  decimalScale={2} decimalSeparator="," prefix={'R$ '} onValueChange={(values)=>onChangeFunction(values.formattedValue)} name="amount" id="amount" className="form-control"/>
         } else {
-            return <CurrencyFormat placeholder="Amount of money spent" thousandSeparator="," value={amount}  decimalScale={2} decimalSeparator="." prefix={'$ '} onValueChange={(values)=>onChangeFunction(values.formattedValue)} name="amount" id="amount" className="form-control"/>
+            return <CurrencyFormat placeholder="Enter the amount of money" thousandSeparator="," value={amount}  decimalScale={2} decimalSeparator="." prefix={'$ '} onValueChange={(values)=>onChangeFunction(values.formattedValue)} name="amount" id="amount" className="form-control"/>
         }
     }
 

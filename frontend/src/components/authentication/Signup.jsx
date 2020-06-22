@@ -173,13 +173,13 @@ export default class Signup extends Component{
                             <small className="text-danger"></small>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="country"></label>
+                            <label htmlFor="country">{this.translate('FORM_LABEL_COUNTRY')}</label>
                             <select name="country" id="country" className="form-control" onChange={(e)=>this.updateCountry(e)} value={this.state.country} >
                                 <option value="" defaultValue>{this.translate('FORM_LABEL_COUNTRY')}</option>
                                 <option value="brazil">{this.translate('FORM_OPTION_BRAZIL')}</option>
                                 <option value="usa">{this.translate('FORM_OPTION_USA')}</option>
                             </select>
-                            <small className="text-danger">&nbsp;</small>
+                            <small className="text-danger"></small>
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">{this.translate('FORM_LABEL_PASSWORD')}</label>

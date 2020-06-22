@@ -33,6 +33,19 @@ class Translation {
 
                 ICON_LOADING: "Carregando",
 
+                MONTH_SHORT_JAN: "jan",
+                MONTH_SHORT_FEB: "fev",
+                MONTH_SHORT_MAR: "mar",
+                MONTH_SHORT_APR: "abr",
+                MONTH_SHORT_MAY: "mai",
+                MONTH_SHORT_JUN: "jun",
+                MONTH_SHORT_JUL: "jul",
+                MONTH_SHORT_AUG: "ago",
+                MONTH_SHORT_SEP: "set",
+                MONTH_SHORT_OCT: "out",
+                MONTH_SHORT_NOV: "nov",
+                MONTH_SHORT_DEC: "dez",
+
                 STRONG_PASSWORD_INSECURE: "Inseguro",
                 STRONG_PASSWORD_WEAK: "Fraco",
                 STRONG_PASSWORD_MEDIUM: "Médio",
@@ -78,7 +91,7 @@ class Translation {
 
                 DATE_DROPDOWN_LAST_WEEK: "Última Semana",
                 DATE_DROPDOWN_LAST_MONTH: "Último Mês",
-                DATE_DROPDOWN_LAST_YEAR: "Último Ano",
+                DATE_DROPDOWN_LAST_YEAR: "Últimos 12 meses",
                 DATE_DROPDOWN_CUSTOM_DATE: "Data Customizada",
                 DATE_DROPDOWN_ALL_ENTRIES: "Todos Registros",
                 DATE_DROPDOWN_FILTER_BY_DATE: "Filtrar por data",
@@ -181,6 +194,19 @@ class Translation {
 
                 ICON_LOADING: "Loading",
                 
+                MONTH_SHORT_JAN: "jan",
+                MONTH_SHORT_FEB: "feb",
+                MONTH_SHORT_MAR: "mar",
+                MONTH_SHORT_APR: "apr",
+                MONTH_SHORT_MAY: "may",
+                MONTH_SHORT_JUN: "jun",
+                MONTH_SHORT_JUL: "jul",
+                MONTH_SHORT_AUG: "aug",
+                MONTH_SHORT_SEP: "sep",
+                MONTH_SHORT_OCT: "oct",
+                MONTH_SHORT_NOV: "nov",
+                MONTH_SHORT_DEC: "dec",
+
                 STRONG_PASSWORD_INSECURE: "Insecure",
                 STRONG_PASSWORD_WEAK: "Weak",
                 STRONG_PASSWORD_MEDIUM: "Medium",
@@ -226,7 +252,7 @@ class Translation {
 
                 DATE_DROPDOWN_LAST_WEEK: "Last Week",
                 DATE_DROPDOWN_LAST_MONTH: "Last Month",
-                DATE_DROPDOWN_LAST_YEAR: "Last Year",
+                DATE_DROPDOWN_LAST_YEAR: "Last 12 months",
                 DATE_DROPDOWN_CUSTOM_DATE: "Custom Date",
                 DATE_DROPDOWN_ALL_ENTRIES: "All Entries",
                 DATE_DROPDOWN_FILTER_BY_DATE: "Filter By Date",

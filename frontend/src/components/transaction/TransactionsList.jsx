@@ -14,7 +14,8 @@ class TransactionsList extends Component{
         super(props)
         this.state = {
             transactions: [],
-            transactionsList: []
+            transactionsList: [],
+            filter: ""
         }
         this.translate = this.props.translate
     }
@@ -48,9 +49,15 @@ class TransactionsList extends Component{
         this.buildTransactionsTable(transactions)
     }
 
-    filter(filter){
+    updateFilter = (filter) => {
+        this.setState({filter})
+        this.filter(filter)
+    }
+
+    filter(filter, transactions = null){
         filter = filter.toLowerCase()
-        let { transactions } = this.state
+        if(!transactions) transactions = this.state.transactions
+
         const trueIfFiltered = (transaction) => {
 
             let filtered = Object.values(transaction).filter((item)=>{
@@ -90,9 +97,11 @@ class TransactionsList extends Component{
             details = details || this.translate('TRANSACTIONS_LIST_NO_DESCRIPTION')
             category = this.getCategory(category)
             transactionDate = CountryHelpers.getFormatedDate(transactionDate)
+            let amountValue = amount
             amount = CountryHelpers.getStringMasked(amount)
+            let transactionTypeValue = transactionType
             transactionType = transactionType === "income" ? this.translate('TRANSACTIONS_LIST_INCOME') : this.translate('TRANSACTIONS_LIST_EXPENSE')
-            let transaction = {order: index + 1, _id, amount, category, details, transactionType, transactionDate}
+            let transaction = {order: index + 1, _id, amountValue, amount, category, details, transactionTypeValue, transactionType, transactionDate}
             transactions.push(transaction)
         })
         return transactions
@@ -254,22 +263,33 @@ class TransactionsList extends Component{
             this.filterTransactionsWithDate(startDate, endDate)
         } else {
             let {transactions} = this.state
-            this.setState({transactionsList: transactions}) 
+            this.filter(this.state.filter, transactions)
         }
     }
 
     filterTransactionsWithDate = (startDate, endDate) => {
         let {transactions} = this.state
-        
         transactions = transactions.filter(transaction => {
             let check = true
-            check = new Date(transaction.transactionDate) >= new Date(startDate) ? check : false 
-            check = new Date(transaction.transactionDate) <= new Date(endDate) ? check : false
+            
+            let transactionDate = this.validateTransactionDate(transaction.transactionDate)
+            startDate = new Date(startDate)
+            endDate = new Date(endDate)
+
+            check = transactionDate >= startDate ? check : false 
+            check = transactionDate <= endDate ? check : false
             return check 
         })
-        this.setState({transactionsList: transactions}) 
+        this.filter(this.state.filter, transactions)
     }
 
+    validateTransactionDate = (transactionDate) => {
+        if(CountryHelpers.getCountry() === "brazil"){
+            transactionDate = transactionDate.split("/")
+            transactionDate = `${transactionDate[2]}-${transactionDate[1]}-${transactionDate[0]}`
+        }
+        return new Date(transactionDate)
+    }
 
     componentDidMount(){
         this.getTransactions()
@@ -283,7 +303,7 @@ class TransactionsList extends Component{
                     <div className="p-1 p-md-3 mt-3">
                         <form className="row ">
                             <div className="form-group col-12 d-flex flex-row">
-                                <input onChange={e=>this.filter(e.target.value)} className="form-control flex-grow-1" type="text" placeholder={this.translate('TRANSACTIONS_LIST_FILTER')}/>
+                                <input onChange={e=>this.updateFilter(e.target.value)} defaultValue={this.state.filter} className="form-control flex-grow-1" type="text" placeholder={this.translate('TRANSACTIONS_LIST_FILTER')}/>
                                 <div id="filter-icons">
                                     <DateDropdown onlyIcon={true} dontFirstLoad={true} selectDateFilter={this.selectDateFilter} translate={this.translate} />
                                     <i className={`fa fa-download ${this.state.transactionsList.length > 0 ? "" : "d-none"}`} onClick={()=>this.toogleModal()}  aria-hidden="true"></i>
@@ -296,7 +316,7 @@ class TransactionsList extends Component{
                                     <tr className="text-center">
                                         <th># <i onClick={e=>this.sort(e, "order", 0)} name="arrow" className="fa fa-arrow-right"></i></th>
                                         <th>{this.translate('TABLE_DETAILS')} <i onClick={e=>this.sort(e, "details", 1)} name="arrow" className="fa fa-arrow-right"></i></th>
-                                        <th>{this.translate('TABLE_AMOUNT')} <i  onClick={e=>this.sort(e, "amount", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
+                                        <th>{this.translate('TABLE_AMOUNT')} <i  onClick={e=>this.sort(e, "amountValue", 2)} name="arrow" className="fa fa-arrow-right"></i></th>
                                         <th>{this.translate('TABLE_CATEGORY')} <i onClick={e=>this.sort(e, "category", 3)} name="arrow" className="fa fa-arrow-right"></i></th>
                                         <th>{this.translate('TABLE_TYPE')} <i onClick={e=>this.sort(e, "transactionType", 4)} name="arrow" className="fa fa-arrow-right"></i></th>
                                         <th>{this.translate('TABLE_DATE')} <i onClick={e=>this.sort(e, "transactionDate", 5)} name="arrow" className="fa fa-arrow-right"></i></th>
@@ -310,7 +330,7 @@ class TransactionsList extends Component{
                                             <tr key={transaction._id}>
                                                 <td>{transaction.order}</td>
                                                 <td>{transaction.details}</td>
-                                                <td className={`text-white ${transaction.amount > 0 ? "bg-dark-blue" : "bg-light-red"}`}>
+                                                <td className={`text-white ${transaction.transactionTypeValue === "income" ? "bg-dark-blue" : "bg-light-red"}`}>
                                                     {transaction.amount}
                                                 </td>
                                                 <td>{transaction.category}</td>

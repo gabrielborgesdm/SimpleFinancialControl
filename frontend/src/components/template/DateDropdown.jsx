@@ -35,21 +35,26 @@ export default class DateDropdown extends Component{
         let month = endDate.getMonth()
         let year = endDate.getFullYear()
         let dateFilterChoosen
+        let filterValue = ""
         switch(dateString){
             case "week":
                 day -=7
                 dateFilterChoosen = this.translate('DATE_DROPDOWN_LAST_WEEK')
+                filterValue = "week"
                 break
             case "month":
                 month -= 1
                 dateFilterChoosen = this.translate('DATE_DROPDOWN_LAST_MONTH')
+                filterValue = "month"
                 break
             case "year":
                 year -= 1
                 dateFilterChoosen = this.translate('DATE_DROPDOWN_LAST_YEAR')
+                filterValue = "year"
                 break
             case "custom":
                 this.toogleModal()
+                filterValue = "custom"
             break
             default: 
                 this.setState({startDate: "", endDate: ""})
@@ -60,11 +65,11 @@ export default class DateDropdown extends Component{
             let startDate = new Date(year, month, day)
             this.setState({startDate: this.parseDate(startDate), endDate: this.parseDate(endDate)}, ()=> {
                 this.setState({dateFilterChoosen})
-                this.props.selectDateFilter(this.state.startDate, this.state.endDate )
+                this.props.selectDateFilter(this.state.startDate, this.state.endDate, filterValue)
             })
         } else if(dateString === "all"){
             this.setState({dateFilterChoosen: this.translate('DATE_DROPDOWN_ALL_ENTRIES')})
-            this.props.selectDateFilter(null, null )
+            this.props.selectDateFilter(null, null, "all")
         }
     }
 
@@ -76,7 +81,7 @@ export default class DateDropdown extends Component{
             customStartDate = this.parseDate(new Date(customStartDate))
             customEndDate = this.parseDate(new Date(customEndDate))
             let dateFilterChoosen = `${customStartDate} / ${customEndDate}`
-            this.props.selectDateFilter(customStartDate, customEndDate)
+            this.props.selectDateFilter(customStartDate, customEndDate, "custom")
             this.setState({dateFilterChoosen})
             this.toogleModal()
         }

@@ -101,12 +101,12 @@ class ExpensesDoughnut extends Component{
     
     buildExpensesInfo = () => {
         this.expenses.forEach((transaction)=>{
-            if(this.expensesLabel.indexOf(transaction["category"]) === -1){
+            if(this.expensesLabel.indexOf(this.getCategory(transaction["category"])) === -1){
                 this.expensesLabel.push(this.getCategory(transaction["category"]))
                 this.expensesData.push(transaction.amount * -1)
                 this.expensesSum += transaction.amount * -1
             } else {
-                let indexOfExpense = this.expensesLabel.indexOf(transaction["category"])
+                let indexOfExpense = this.expensesLabel.indexOf(this.getCategory(transaction["category"]))
                 this.expensesData[indexOfExpense] += transaction.amount * -1
                 this.expensesSum += transaction.amount * -1
             }
@@ -150,6 +150,7 @@ class ExpensesDoughnut extends Component{
                         anchor: "end",
                         align: "start",
                         formatter: (value, context) =>{
+                            if((value * 100 / expensesSum) < 3) return null
                             return `${(value * 100 / expensesSum).toFixed(0)}%`;
                         }
                     },

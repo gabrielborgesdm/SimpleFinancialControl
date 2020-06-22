@@ -6,6 +6,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 import CountryHelpers from "../helpers/CountryHelpers"
 
+import DateHelpers from "../helpers/DateHelpers"
+
 class TransactionsLines extends Component{
     constructor(props){
         super(props)
@@ -34,14 +36,20 @@ class TransactionsLines extends Component{
     }
 
     initChart(){
-        this.groupByDate()
+
+        if(this.props.groupedBy === "week" || this.props.groupedBy === "month") {
+            this.groupByDay()
+        } else {
+            this.groupByMonth()
+        }
+        
         this.expenses = this.expenses.map((expense)=>expense.amount)
         this.incomes = this.incomes.map((income)=>income.amount)
 
         this.renderChart()
     }
     
-    groupByDate = () => {
+    groupByDay = () => {
         let { transactions } = this
         transactions = this.sortDate(transactions)
         let groupedIncomes = []
@@ -54,10 +62,45 @@ class TransactionsLines extends Component{
 
             transactions.reduce((previous, after)=>{
                 let checkSameDate = true
-                if(this.getYear(transaction["transactionDate"]) !== this.getYear(after["transactionDate"])) checkSameDate = false
-                if(this.getMonth(transaction["transactionDate"]) !== this.getMonth(after["transactionDate"])) checkSameDate = false
+                if(DateHelpers.getDay(transaction["transactionDate"]) !== DateHelpers.getDay(after["transactionDate"])) checkSameDate = false
                 if(checkSameDate){
-                    let date = `${this.getMonth(after["transactionDate"])}/${this.getYear(after["transactionDate"])}`
+                    let date = DateHelpers.getDayAndMonth(after["transactionDate"])
+                    after["amount"] > 0 ? incomesGroup.amount += after["amount"] : expensesGroup.amount += after["amount"] * -1
+                    incomesGroup.date = date
+                    expensesGroup.date = date
+                    this.transactionsDates.push(date)
+                }
+                return after
+            }, {})
+            
+            groupedIncomes.push(incomesGroup)
+            groupedExpenses.push(expensesGroup)
+        })
+        this.transactionsDates = [...new Set(this.transactionsDates)]
+        groupedIncomes = this.removeDuplicatedGroupedTransactions(groupedIncomes)
+        groupedExpenses = this.removeDuplicatedGroupedTransactions(groupedExpenses)
+        this.incomes = groupedIncomes
+        this.expenses = groupedExpenses
+    }
+    
+    groupByMonth = () => {
+        let { transactions } = this
+        transactions = this.sortDate(transactions)
+        let groupedIncomes = []
+        let groupedExpenses = []
+
+        
+        transactions.forEach((transaction, index, transactions)=>{
+            let incomesGroup = {amount: 0}
+            let expensesGroup = {amount: 0}
+
+            transactions.reduce((previous, after)=>{
+                let checkSameDate = true
+                if(DateHelpers.getYear(transaction["transactionDate"]) !== DateHelpers.getYear(after["transactionDate"])) checkSameDate = false
+                if(DateHelpers.getMonth(transaction["transactionDate"]) !== DateHelpers.getMonth(after["transactionDate"])) checkSameDate = false
+                
+                if(checkSameDate){
+                    let date = DateHelpers.getMonthAndYear(after["transactionDate"])
                     after["amount"] > 0 ? incomesGroup.amount += after["amount"] : expensesGroup.amount += after["amount"] * -1
                     incomesGroup.date = date
                     expensesGroup.date = date
@@ -77,10 +120,6 @@ class TransactionsLines extends Component{
     }
     
     sortDate = transactions => transactions.sort((a, b) => a["transactionDate"] >= b["transactionDate"] ? 1 : -1)
-    
-    getYear = date => date.split("-")[0]
-    
-    getMonth = date => date.split("-")[1]
 
     removeDuplicatedGroupedTransactions = groupedTransactions => {
         groupedTransactions = groupedTransactions.map((transaction=>JSON.stringify(transaction)))
@@ -128,7 +167,7 @@ class TransactionsLines extends Component{
                 tooltips: {
                     callbacks: {
                         label: function(tooltipItem, data) {
-                            return CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']]);
+                            return CountryHelpers.getStringMasked(tooltipItem.value);
                         },
                     }
                 },

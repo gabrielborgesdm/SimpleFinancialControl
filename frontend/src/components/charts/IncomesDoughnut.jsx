@@ -56,12 +56,12 @@ class IncomesDoughnut extends Component{
 
     buildIncomesInfo = () => {
         this.incomes.forEach((transaction)=>{
-            if(this.incomesLabel.indexOf(transaction["category"]) === -1){
+            if(this.incomesLabel.indexOf(this.getCategory(transaction["category"])) === -1){
                 this.incomesLabel.push(this.getCategory(transaction["category"]))
                 this.incomesData.push(transaction.amount)
                 this.incomesSum += transaction.amount 
             } else {
-                let indexOfExpense = this.incomesLabel.indexOf(transaction["category"])
+                let indexOfExpense = this.incomesLabel.indexOf(this.getCategory(transaction["category"]))
                 this.incomesData[indexOfExpense] += transaction.amount 
                 this.incomesSum += transaction.amount 
             }
@@ -146,6 +146,7 @@ class IncomesDoughnut extends Component{
                         anchor: "end",
                         align: "start",
                         formatter: function(value, context) {
+                            if((value * 100 / incomesSum) < 3) return null
                             return `${(value * 100 / incomesSum).toFixed(0)}%`;
                         }
                     },

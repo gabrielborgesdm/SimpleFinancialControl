@@ -4,6 +4,8 @@ import React, { Component } from "react"
 import Chart  from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
+import DateHelpers from "../helpers/DateHelpers"
+
 import CountryHelpers from "../helpers/CountryHelpers"
 
 class IncomesLines extends Component{
@@ -23,13 +25,18 @@ class IncomesLines extends Component{
 
     initChart(){
         this.incomes = this.props.incomes
-        this.groupByDate()
+        
+        if(this.props.groupedBy === "week" || this.props.groupedBy === "month") {
+            this.groupByDay()
+        } else {
+            this.groupByMonth()
+        }
+
         this.incomesDates = this.incomes.map((income)=>income.date)
         this.incomesValues = this.incomes.map((income)=>income.amount)
         this.renderChart()
     }    
-    
-    groupByDate = () => {
+    groupByDay = () => {
         let incomes = this.incomes
         let groupedIncomes = []
         incomes = this.sortDate(incomes)
@@ -37,11 +44,10 @@ class IncomesLines extends Component{
             let incomeGroup = {amount: 0}
             incomes.reduce((previous, after)=>{
                 let checkSameDate = true
-                if(this.getYear(income["transactionDate"]) !== this.getYear(after["transactionDate"])) checkSameDate = false
-                if(this.getMonth(income["transactionDate"]) !== this.getMonth(after["transactionDate"])) checkSameDate = false
+                if(DateHelpers.getDay(income["transactionDate"]) !== DateHelpers.getDay(after["transactionDate"])) checkSameDate = false
                 if(checkSameDate){
-                    let date = `${this.getMonth(after["transactionDate"])}/${this.getYear(after["transactionDate"])}`
-                    let amount = incomeGroup.amount + after["amount"] 
+                    let date = DateHelpers.getDayAndMonth(after["transactionDate"])
+                    let amount = incomeGroup.amount + after["amount"]
                     incomeGroup = {date, amount}
                 }
                 return after
@@ -52,12 +58,31 @@ class IncomesLines extends Component{
         this.incomes = groupedIncomes
     }
     
-    sortDate = incomes => incomes.sort((a, b) => a["incomeDate"] >= b["incomeDate"] ? 1 : -1)
+    groupByMonth = () => {
+        let incomes = this.incomes
+        let groupedIncomes = []
+        incomes = this.sortDate(incomes)
+        incomes.forEach((income, index, incomes)=>{
+            let incomeGroup = {amount: 0}
+            incomes.reduce((previous, after)=>{
+                let checkSameDate = true
+                if(DateHelpers.getYear(income["transactionDate"]) !== DateHelpers.getYear(after["transactionDate"])) checkSameDate = false
+                if(DateHelpers.getMonth(income["transactionDate"]) !== DateHelpers.getMonth(after["transactionDate"])) checkSameDate = false
+                if(checkSameDate){
+                    let date = DateHelpers.getMonthAndYear(after["transactionDate"])
+                    let amount = incomeGroup.amount + after["amount"]
+                    incomeGroup = {date, amount}
+                }
+                return after
+            }, {})
+            groupedIncomes.push(incomeGroup)
+        })
+        groupedIncomes = this.removeDuplicatedGroupedIncomes(groupedIncomes)
+        this.incomes = groupedIncomes
+    }
     
-    getYear = date => date.split("-")[0]
+    sortDate = incomes => incomes.sort((a, b) => new Date(a["transactionDate"]) >= new Date(b["transactionDate"]) ? 1 : -1)
     
-    getMonth = date => date.split("-")[1]
-
     removeDuplicatedGroupedIncomes = groupedIncomes => {
         groupedIncomes = groupedIncomes.map((income=>JSON.stringify(income)))
         let withoutDuplicate = [...new Set(groupedIncomes)]
