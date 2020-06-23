@@ -3,12 +3,15 @@ const AuthController = require("./controllers/AuthController")
 const TransactionController = require("./controllers/TransactionController")
 const HashAndTokenController = require("./controllers/HashAndTokenController")
 
+var ExpressBrute = require('express-brute')
+var bruteforce = require("./models/schemas/BruteforceStore")
+
 const router = express.Router()
 
-router.post('/accounts/signin', AuthController.signIn)
-router.post('/accounts/signup', AuthController.signUp)
-router.get('/accounts/confirmEmail/:token', AuthController.confirmEmail)
-router.post('/accounts/passwordRecovery/', AuthController.passwordRecovery)
+router.post('/accounts/signin', bruteforce.prevent, AuthController.signIn)
+router.post('/accounts/signup', bruteforce.prevent, AuthController.signUp)
+router.get('/accounts/confirmEmail/:token', bruteforce.prevent, AuthController.confirmEmail)
+router.post('/accounts/passwordRecovery/', bruteforce.prevent, AuthController.passwordRecovery)
 
 router.all("/*", HashAndTokenController.authenticateToken)
 
