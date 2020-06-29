@@ -5,7 +5,6 @@
 - [x] API REST developed to be used with both the web and mobile applications.
 - [x] Using [Mongo](https://www.mongodb.com/) through [Mongoose](https://mongoosejs.com/) in order to store the application related data.
 - [x] Using [Redis](https://redis.io/) to store jobs and other server processing related issues.
-- [x] Using Redis DB through [Mongoose](https://mongoosejs.com/).
 - [x] It uses [Bcrypt](https://www.npmjs.com/package/bcrypt) in order to hash the user's password and [JSON Web Tokens](https://jwt.io/) in order to authorizate access to the dashboard panel.
 - [x] [Nodemailer](https://nodemailer.com/about/) to deliver account related E-mails.
 - [x] [Bull Queue Jobs](https://github.com/OptimalBits/bull) running in a separated server and integrated with Nodemailer to avoid the risk of losing any e-mails or any future implemented processes that can eventually fail.
