@@ -104,7 +104,7 @@ class IncomesLines extends Component{
                 datasets: [{
                     borderColor: "#107e7d",
                     fill: false,
-                    label: this.translate('CHARTS_MONTLY_INCOMES'),
+                    label: (this.props.groupedBy === "week" || this.props.groupedBy === "month") ? this.translate('CHARTS_DAILY_INCOMES') : this.translate('CHARTS_MONTHLY_INCOMES'),
                     data: this.incomesValues,
 
                 }]

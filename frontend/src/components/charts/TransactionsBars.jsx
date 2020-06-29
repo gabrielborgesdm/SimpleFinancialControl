@@ -140,13 +140,13 @@ class TransactionsBars extends Component{
                 labels: this.transactionsDates,
                 datasets: [{
                     backgroundColor: "#107e7d",
-                    label: this.translate('CHARTS_MONTLY_INCOMES'),
+                    label: (this.props.groupedBy === "week" || this.props.groupedBy === "month") ? this.translate('CHARTS_DAILY_INCOMES') : this.translate('CHARTS_MONTHLY_INCOMES'),
                     data: this.incomes,
 
                 },
                 {
                     backgroundColor: "#dc3545",
-                    label: this.translate('CHARTS_MONTLY_EXPENSES'),
+                    label: (this.props.groupedBy === "week" || this.props.groupedBy === "month") ? this.translate('CHARTS_DAILY_EXPENSES') : this.translate('CHARTS_MONTHLY_EXPENSES'),
                     data: this.expenses,
 
                 }]
@@ -164,7 +164,7 @@ class TransactionsBars extends Component{
                 tooltips: {
                     callbacks: {
                         label: function(tooltipItem, data) {
-                            return CountryHelpers.getStringMasked(data['datasets'][0]['data'][tooltipItem['index']]);
+                            return CountryHelpers.getStringMasked(tooltipItem.value);
                         },
                     }
                 },

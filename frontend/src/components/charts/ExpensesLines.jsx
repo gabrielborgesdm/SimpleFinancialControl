@@ -101,7 +101,7 @@ class ExpensesLines extends Component{
                 datasets: [{
                     borderColor: "#dc3545",
                     fill: false,
-                    label: this.translate("CHARTS_MONTLY_EXPENSES"),
+                    label: (this.props.groupedBy === "week" || this.props.groupedBy === "month") ? this.translate('CHARTS_DAILY_EXPENSES') : this.translate('CHARTS_MONTHLY_EXPENSES'),
                     data: this.expensesValues,
 
                 }]
