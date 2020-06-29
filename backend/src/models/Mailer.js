@@ -1,15 +1,11 @@
 const nodemailer = require("nodemailer")
+const mailConfig = require("../configs/mail")
 const path = require("path")
 const hbs = require("nodemailer-express-handlebars")
+
 class Mailer {
     constructor () {
-        let transport = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-               user: process.env.EMAIL_USER,
-               pass: process.env.EMAIL_PASSWORD
-            }
-        })
+        let transport = nodemailer.createTransport(mailConfig)
 
         let hbsData = {
             viewEngine: {

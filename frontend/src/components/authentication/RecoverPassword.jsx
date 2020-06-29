@@ -122,15 +122,17 @@ class RecoverPassword extends Component {
             e.target.nextSibling.innerHTML = this.translate('FORM_FIELD_CANT_BE_EMPTY')
         } else if(password !== "" && password.length <= 5){
             e.target.nextSibling.innerHTML = this.translate('FORM_PASSWORD_MUST_HAVE_MORE_THAN_SIX_CHAR') 
-        } else if (this.state.securityLevel < 2){
-            e.target.nextSibling.innerHTML = this.translate('FORM_PASSWORD_IS_INSECURE') 
         } else {
             e.target.nextSibling.innerHTML = ""
         }
         
+        let repeatPasswordSmall = document.querySelector("#repeat-password-small")
+
         if(password !== this.state.repeatPassword){
-            let repeatPasswordSmall = document.querySelector("#repeat-password-small")
+            repeatPasswordSmall = document.querySelector("#repeat-password-small")
             repeatPasswordSmall.innerHTML = this.translate('FORM_PASSWORD_MUST_BE_THE_SAME')
+        } else {
+            repeatPasswordSmall.innerHTML = ""
         }
 
         this.setState({password})

@@ -59,6 +59,7 @@ export default class Signup extends Component{
         let response
         try {
             response = await axios.post("/accounts/signup", {name, email, password, country, confirmAccountUrl})
+            console.log(response.data)
         } catch (error) {
             console.log(error)
             response = null
@@ -110,15 +111,21 @@ export default class Signup extends Component{
 
     updatePassword = (e) => {
         let password = e.target.value
+        
         e.target.nextSibling.innerHTML = this.checkInputEmpty(password)
         this.checkErrorStatusEmpty(3, e.target.nextSibling.innerHTML)
+        
         if(password !== "" && password.length <= 5){
             e.target.nextSibling.innerHTML = this.translate('FORM_PASSWORD_MUST_HAVE_MORE_THAN_SIX_CHAR') 
         } 
         
+        let repeatPasswordSmall = document.querySelector("#repeat-password-small")
+
         if(password !== this.state.repeatPassword){
-            let repeatPasswordSmall = document.querySelector("#repeat-password-small")
+            repeatPasswordSmall = document.querySelector("#repeat-password-small")
             repeatPasswordSmall.innerHTML = this.translate('FORM_PASSWORD_MUST_BE_THE_SAME')
+        } else {
+            repeatPasswordSmall.innerHTML = ""
         }
 
         this.setState({password})

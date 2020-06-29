@@ -1,11 +1,12 @@
 const Auth = require("../models/Auth")
 
+const Queue = require("../lib/Queue")
+
 const HashAndToken = require("./HashAndTokenController")
-const MailerController = require("./MailerController")
 const ResponseBuilder = require("./ResponseBuilder")
 const validate = require("./ValidateController")
 
-const getAccount = async function(req, res){
+const getAccount = async (req, res) => {
     const response = new ResponseBuilder()
     const account = await Auth.getAccount({"_id": req.user._id})
     if(account){
@@ -21,7 +22,7 @@ const getAccount = async function(req, res){
     return res.json(response.getParams())
 }
 
-const signIn = async function(req, res){
+const signIn = async (req, res) => {
     const response = new ResponseBuilder()
     const { email, password } = req.body
     let userInput = await validate.validateInputArray([
@@ -56,7 +57,7 @@ const login = async (account, userInput, req, response) =>{
     } 
 }
 
-const signUp = async function(req, res){
+const signUp = async (req, res) => {
     const response = new ResponseBuilder()
     let {name, email, password, country, confirmAccountUrl} = req.body
     let userInput = await validate.validateInputArray([
@@ -73,13 +74,11 @@ const signUp = async function(req, res){
         userInput = false
     }
     
-    let account = (response.checkSuccess()) ? await createAccount(userInput, response) : false
+   let account = (response.checkSuccess()) ? await createAccount(userInput, response) : false
     if (response.checkSuccess()) {
-        let success = await sendEmailConfirmation(account, confirmAccountUrl)
-        if(!success) {
-            await removeAccount(account)
-            response.addError("activation", "couldnt_activate", "It wasn't possible to send the activation e-mail")
-        }
+        const token = HashAndToken.generateToken({"_id": account._id})
+        let data = {name: account.name, email: account.email, country: account.country, token, url: confirmAccountUrl}
+        await Queue.add("ConfirmationEmail", data)
     } 
     return res.json(response.getParams())
 }
@@ -98,12 +97,6 @@ const createAccount = async (userInput, response) =>{
 const removeAccount = async (account) =>{
     let {_id} = account
     await Auth.removeAccount({_id})
-}
-
-const sendEmailConfirmation = async (account, url) => {
-    const token = HashAndToken.generateToken({"_id": account._id})
-    let success = await MailerController.sendEmailConfirmation(account.name, account.email, account.country, token, url)
-    return success
 }
 
 const confirmEmail = async (req, res) => {
@@ -143,7 +136,8 @@ const passwordRecovery = async (req, res) =>  {
                 response.addError("account", "inactive", "Your account needs to be activated/confirmed")
             } else {
                 const token = HashAndToken.generateToken({"ip": ip, "_id": account._id})
-                MailerController.sendRecoverPassword(account.name, email, country, token, frontendRecoverURL)
+                let data = {name: account.name, email, country, token, frontendRecoverURL}
+                await Queue.add("RecoverPasswordEmail", data)
                 response.addParams({"message": "Access your e-mail to recover your password"})
             }
         }   
