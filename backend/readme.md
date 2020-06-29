@@ -3,7 +3,7 @@
 
 ### Features ###
 - [x] API REST developed to be used with both the web and mobile applications.
-- [x] Using [Mongo](https://www.mongodb.com/) through [Mongoose](https://mongoosejs.com/) in order to store the application related data.
+- [x] Using [Mongo DB](https://www.mongodb.com/) and [Mongoose](https://mongoosejs.com/) in order to store the application related data.
 - [x] Using [Redis](https://redis.io/) to store jobs and other server processing related issues.
 - [x] It uses [Bcrypt](https://www.npmjs.com/package/bcrypt) in order to hash the user's password and [JSON Web Tokens](https://jwt.io/) in order to authorizate access to the dashboard panel.
 - [x] [Nodemailer](https://nodemailer.com/about/) to deliver account related E-mails.
