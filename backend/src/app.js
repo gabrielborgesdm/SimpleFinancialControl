@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
-//const Bullboard = require('bull-board')
+const Bullboard = require('bull-board')
 const Queue = require("./lib/Queue")
 const cors = require('cors')
 
@@ -10,8 +10,8 @@ const routes = require('./routes')
 
 const app = express()
 
-/* Bullboard.setQueues(Queue.queues.map(queue=>queue.bull))
-app.use('/admin/queues', Bullboard.UI) */
+Bullboard.setQueues(Queue.queues.map(queue=>queue.bull))
+app.use('/admin/queues', Bullboard.UI) 
 
 let connectionError = false
 let link = process.env.DATABASE_ACCESS_LINK
