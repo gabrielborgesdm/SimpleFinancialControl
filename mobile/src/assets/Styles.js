@@ -9,18 +9,33 @@ export const styles = StyleSheet.create({...components, ...{
     flex: 1,
     backgroundColor: "#fff"
   },
+
   minimalistInputGroup: {
     flexDirection: "row",
-    marginVertical: 10,
+    marginVertical: 5,
     marginHorizontal: 30,
   },
+
+  minimalistRadioGroup: {
+    flexDirection: "row",
+    marginVertical: 5,
+    marginHorizontal: 30,
+    justifyContent: "center",
+  },
+
+  minimalistRadioControl: {
+    flexDirection: "row",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    justifyContent: "center",
+  },
+
   minimalistInputControl: {
     flexGrow: 1,
     flexDirection: "row",
     borderBottomWidth: 1,
     paddingLeft: 25,
     borderColor: colors.lightGrey,
-    
   },
 
   minimalistInputIcon: {
@@ -36,27 +51,30 @@ export const styles = StyleSheet.create({...components, ...{
     alignItems: "center",
     justifyContent: "center",
     height: 50,
+    bottom: 0,
+    right: 0,
+    left: 0,
     borderRadius: 3
     
   },
+
   lightGreyLogoView: {
     alignSelf: "center",
     justifyContent: "center",
-    height: dimensions.quarterWidth + 50,
-    width: dimensions.quarterWidth + 50,
-    ...components.mtLg,
+    height: dimensions.quarterWidth,
+    width: dimensions.quarterWidth,
+    ...components.my3,
     borderRadius: 200,
     backgroundColor: colors.lightGrey,
     borderColor: colors.lightGrey,
 
   },
+
   lightGreyLogoImage: {
-    width: dimensions.quarterWidth,
-    height: dimensions.quarterWidth,
+    width: dimensions.quarterWidth - 50,
+    height: dimensions.quarterWidth - 50,
     resizeMode: "contain",
     alignSelf: "center"
   }
-
-
 }})
   

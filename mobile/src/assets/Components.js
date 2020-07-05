@@ -18,10 +18,11 @@ export const colors  = {
 }
   
 export const spacing = {
-    sSm: 10,
-    sMd: 20,
-    sLg: 30,
-    sXl: 40
+    s1: 5,
+    s2: 10,
+    s3: 20,
+    s4: 30,
+    s5: 40
 }
 
 export const fonts = {
@@ -35,41 +36,54 @@ export const components = {
     positionAbsolute: { position: "absolute" },
 
     flex1: { flex: 1 },
+    dNone: { display: "none" },
+    dFlex: { display: "flex" },
 
     bottom0: { bottom: 0 },
     right0: { right: 0 },
     left0: { left: 0 },
     top0: { top: 0 },
 
-    mxSm: { marginHorizontal: spacing.sSm },
-    mxMd: { marginHorizontal: spacing.sMd },
-    mxLg: { marginHorizontal: spacing.sLg },
-    mxXl: { marginHorizontal: spacing.sXl },
-    
-    mySm: { marginVertical: spacing.sSm },
-    myMd: { marginVertical: spacing.sMd },
-    myLg: { marginVertical: spacing.sLg },
-    myXl: { marginVertical: spacing.sXl },
+    opacityHigh: { opacity: 1 },
+    opacityLow: { opacity: 0.7 },
 
-    mtSm: { marginTop: spacing.sSm },
-    mtMd: { marginTop: spacing.sMd },
-    mtLg: { marginTop: spacing.sLg },
-    mtXl: { marginTop: spacing.sXl },
+    alignCenter: { alignSelf: "center" },
+
+    mx1: { marginHorizontal: spacing.s1 },
+    mx2: { marginHorizontal: spacing.s2 },
+    mx3: { marginHorizontal: spacing.s3 },
+    mx4: { marginHorizontal: spacing.s4 },
+    mx5: { marginHorizontal: spacing.s5 },
     
-    mrSm: { marginRight: spacing.sSm },
-    mrMd: { marginRight: spacing.sMd },
-    mrLg: { marginRight: spacing.sLg },
-    mrXl: { marginRight: spacing.sXl },
+    my1: { marginHorizontal: spacing.s1 },
+    my2: { marginVertical: spacing.s2 },
+    my3: { marginVertical: spacing.s3 },
+    my4: { marginVertical: spacing.s4 },
+    my5: { marginVertical: spacing.s5 },
+
+    mt1: { marginTop: spacing.s1 },
+    mt2: { marginTop: spacing.s2 },
+    mt3: { marginTop: spacing.s3 },
+    mt4: { marginTop: spacing.s4 },
+    mt5: { marginTop: spacing.s5 },
     
-    mbSm: { marginBottom: spacing.sSm },
-    mbMd: { marginBottom: spacing.sMd },
-    mbLg: { marginBottom: spacing.sLg },
-    mbXl: { marginBottom: spacing.sXl },
+    mr1: { marginRight: spacing.s1 },
+    mr2: { marginRight: spacing.s2 },
+    mr3: { marginRight: spacing.s3 },
+    mr4: { marginRight: spacing.s4 },
+    mr5: { marginRight: spacing.s5 },
     
-    mlSm: { marginLeft: spacing.sSm },
-    mlMd: { marginLeft: spacing.sMd },
-    mlLg: { marginLeft: spacing.sLg },
-    mlXl: { marginLeft: spacing.sXl },
+    mb1: { marginBottom: spacing.s1 },
+    mb2: { marginBottom: spacing.s2 },
+    mb3: { marginBottom: spacing.s3 },
+    mb4: { marginBottom: spacing.s4 },
+    mb5: { marginBottom: spacing.s5 },
+    
+    ml1: { marginLeft: spacing.s1 },
+    ml2: { marginLeft: spacing.s2 },
+    ml3: { marginLeft: spacing.s3 },
+    ml4: { marginLeft: spacing.s4 },
+    ml5: { marginLeft: spacing.s5 },
     
     textLeft: { textAlign: "left" },
     textCenter: { textAlign: "center" },
