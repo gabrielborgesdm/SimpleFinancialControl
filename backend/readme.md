@@ -16,3 +16,8 @@
 3. Run `npm init` to initiate the project
 4. Run `npm install` to install all the packages
 5. Run `npm run dev` to run both apps and jobs servers
+
+
+### Hints ###
+1. In order to setup your Redis DB easily you can run the following command
+```docker run --name redis -p 6379:6379 -d -t redis:alpine```
