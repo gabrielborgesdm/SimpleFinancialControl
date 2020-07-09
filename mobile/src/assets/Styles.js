@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native'
 import {dimensions, components, colors, spacing, fonts } from "./Components" 
+import { color } from 'react-native-reanimated'
 export {dimensions, colors, spacing, fonts } 
 
   
@@ -7,7 +8,11 @@ export const styles = StyleSheet.create({...components, ...{
   /* AUTHENTICATION */
   signUpContainer: {
     flex: 1,
-    backgroundColor: "#fff"
+    alignItems: "center", 
+    alignContent: "center", 
+    justifyContent: "center", 
+    flexGrow: 1,
+    backgroundColor: colors.lightBlue,
   },
 
   minimalistInputGroup: {
@@ -25,8 +30,8 @@ export const styles = StyleSheet.create({...components, ...{
 
   minimalistRadioControl: {
     flexDirection: "row",
-    paddingVertical: 10,
-    paddingHorizontal: 30,
+    paddingVertical: 15,
+    paddingHorizontal: 35,
     justifyContent: "center",
   },
 
@@ -44,13 +49,13 @@ export const styles = StyleSheet.create({...components, ...{
     color: colors.darkGrey
   },
   
-  buttonGradient: {
+  buttonMinimalist: {
     flexGrow: 1,
     flexDirection: "row",
     backgroundColor: colors.yellow,
     alignItems: "center",
     justifyContent: "center",
-    height: 50,
+    paddingVertical: 18,
     bottom: 0,
     right: 0,
     left: 0,
@@ -58,23 +63,11 @@ export const styles = StyleSheet.create({...components, ...{
     
   },
 
-  lightGreyLogoView: {
-    alignSelf: "center",
-    justifyContent: "center",
-    height: dimensions.quarterWidth,
-    width: dimensions.quarterWidth,
-    ...components.my3,
-    borderRadius: 200,
-    backgroundColor: colors.lightGrey,
-    borderColor: colors.lightGrey,
-
-  },
-
   lightGreyLogoImage: {
-    width: dimensions.quarterWidth - 50,
-    height: dimensions.quarterWidth - 50,
+    width: dimensions.quarterWidth + 50,
+    height: dimensions.quarterWidth + 50,
     resizeMode: "contain",
-    alignSelf: "center"
+    alignSelf: "center",
   }
 }})
   
