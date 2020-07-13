@@ -15,11 +15,11 @@ module.exports = {
       mailer.setSubject(subject);
       mailer.setHtmlTemplate(`${country}ConfirmAccountTemplate`);
       mailer.setContext({ name, link: url + "/" + token });
-      let success = await mailer.sendMessage(); 
-      if(success){
-        done()
+      let info = await mailer.sendMessage(); 
+      if(info.error){
+        done(new Error('Error sending the confirmation e-mail:', info.message))
       } else {
-        done(new Error('Error sending the confirmation e-mail'))
+        done()
       }
   },
 };

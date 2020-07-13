@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({...components, ...{
     backgroundColor: colors.yellow,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 18,
+    paddingVertical: 15,
     bottom: 0,
     right: 0,
     left: 0,

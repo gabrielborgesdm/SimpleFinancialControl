@@ -30,7 +30,7 @@ class Mailer {
 
 
     async sendMessage() {
-        let info
+        let info = {error: false, message: ""}
         try {
             info = await this.transport.sendMail({
                 from: this.from,
@@ -41,8 +41,9 @@ class Mailer {
                 context: this.context
             }) 
         } catch (error) {
+            info.error = true
+            info.message = error
             console.log(error)
-            info = false
         }
         return info
     }

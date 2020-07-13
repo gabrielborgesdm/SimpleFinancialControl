@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
+import Welcome from './components/pages/Authentication/Welcome'
 import SignUp from './components/pages/Authentication/SignUp'
 
 export default class App extends Component {
@@ -13,6 +14,7 @@ export default class App extends Component {
         return (
         <NavigationContainer>
             <Stack.Navigator >
+                <Stack.Screen name="welcome" options={{ headerShown: false, title: "Welcome" }} component={Welcome} />
                 <Stack.Screen name="signUp" options={{ headerShown: false, title: "Sign Up" }} component={SignUp} />
             </Stack.Navigator>
         </NavigationContainer>

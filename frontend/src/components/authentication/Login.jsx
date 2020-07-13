@@ -1,14 +1,13 @@
 import "./Auth.css"
 import React, {Component} from "react"
-
+import { withRouter } from 'react-router'
 import {setStorages, resetStorages} from "../helpers/LocalStorageHelpers"
 import axios from "../services/axios"
 
 import Main from "../template/Main"
 import Input from "../form/Input"
 
-
-export default class Login extends Component {
+class Login extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -105,7 +104,7 @@ export default class Login extends Component {
                         <small className="text-danger"></small>
                     </div>
                     <div className="form-group">
-                        <a className=" text-light-blue text-center text-sm-left" href="/recoverpassword">
+                        <a className=" text-light-blue text-center text-sm-left" href="recoverpassword">
                             {this.translate('FORM_FORGOT_YOUR_PASSWORD')}
                         </a>
                     </div>
@@ -120,3 +119,5 @@ export default class Login extends Component {
         )
     }
 } 
+
+export default withRouter(Login)

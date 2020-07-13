@@ -3,9 +3,8 @@ import React, { Component } from "react"
 import axios from "../services/axios"
 import Main from "../template/Main"
 import Input from "../form/Input"
-
+import $ from "jquery"
 import StrongPasswordBar from "../template/StrongPasswordBar"
-
 import {resetStorages} from "../helpers/LocalStorageHelpers"
 
 
@@ -26,6 +25,7 @@ export default class Signup extends Component{
 
     handleSubmit = async (e) => {
         e.preventDefault()
+       
         resetStorages()
         document.getElementById("loading").style.visibility = 'visible'
         let response = await this.postAccount()
@@ -36,6 +36,8 @@ export default class Signup extends Component{
             document.getElementById("errorStatus").classList.remove("text-danger")
             document.getElementById("errorStatus").classList.add("text-success")
             document.getElementById("errorStatus").innerHTML = this.translate("SIGNUP_SUCCESS")
+            this.clearForm()
+        
         } else if (response.data && response.data.errors){
 
             document.getElementById("errorStatus").classList.remove("text-success")
@@ -49,8 +51,14 @@ export default class Signup extends Component{
             }
             document.getElementById("errorStatus").innerHTML = errorMessage
         }
+       
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $("#errorStatus").offset().top - 50
+        }, 200)
+
         document.getElementById("loading").style.visibility = 'hidden'
     }
+
 
     postAccount = async () => {
         if(!this.checkAccountIsSecure()) return

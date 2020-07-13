@@ -27,9 +27,11 @@ export const spacing = {
 }
 
 export const fonts = {
-    fSm: 12,
-    fMd: 18,
-    fLg: 28,
+    f1: 5,
+    f2: 10,
+    f3: 20,
+    f4: 30,
+    f5: 40,
     fPrimary: Platform.OS === 'ios' ? "Arial" : "Verdana"
 }
 
@@ -104,12 +106,27 @@ export const components = {
     },
 
     h1: {
-        fontSize: fonts.fLg,
+        fontSize: fonts.f5,
         fontFamily: colors.primary,
     },
     
     h2: {
-        fontSize: fonts.fMd,
+        fontSize: fonts.f4,
+        fontFamily: fonts.fPrimary,
+    },
+    
+    h3: {
+        fontSize: fonts.f3,
+        fontFamily: fonts.fPrimary,
+    },
+    
+    h4: {
+        fontSize: fonts.f2,
+        fontFamily: fonts.fPrimary,
+    },
+    
+    h5: {
+        fontSize: fonts.f1,
         fontFamily: fonts.fPrimary,
     },
 }

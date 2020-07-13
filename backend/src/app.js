@@ -2,7 +2,6 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
-const Bullboard = require('bull-board')
 const Queue = require("./lib/Queue")
 const cors = require('cors')
 
@@ -10,12 +9,13 @@ const routes = require('./routes')
 
 const app = express()
 
+/*const Bullboard = require('bull-board')
 Bullboard.setQueues(Queue.queues.map(queue=>queue.bull))
-app.use('/admin/queues', Bullboard.UI) 
+app.use('/api/admin/queues', Bullboard.UI)  */
 
 let connectionError = false
 let link = process.env.DATABASE_ACCESS_LINK
-let port = process.env.PORT || 8080
+let port = process.env.PORT || 8081
 if(!link) throw "Mongo Database acccess link is empty, create an .env file and inform it as DATABASE_ACCESS_LINK=[link]"
 mongoose.connect(link, 
 {

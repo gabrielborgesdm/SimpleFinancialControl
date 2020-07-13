@@ -15,11 +15,11 @@ module.exports = {
     mailer.setSubject(subject)
     mailer.setHtmlTemplate(`${country}recoverPasswordTemplate`)
     mailer.setContext({name, "link": `${frontendRecoverURL}/${token}`})
-    let success = await mailer.sendMessage(); 
-    if(success){
-      done()
+    let info = await mailer.sendMessage(); 
+    if(info.error){
+      done(new Error('Error sending the recover e-mail:', info.message))
     } else {
-      done(new Error('Error sending the recover e-mail'))
+      done()
     }
   },
 };
