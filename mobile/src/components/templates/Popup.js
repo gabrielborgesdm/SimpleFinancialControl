@@ -45,7 +45,7 @@ export default class Popup extends Component {
 
     getPopupStyle = (styleType) => this.getStyle(styleType, this.state.type)
 
-    getStyle = (styleType, popupType) => styles[`${styleType}_${popupType}`]
+    getStyle = (styleType, popupType) => {console.log(`${styleType}_${popupType}`); return styles[`${styleType}_${popupType}`]}
 
     getPopupIcon = () => <FontAwesomeIcon style={[styles.popupIcon, this.getPopupStyle("color")]} icon={ this.state.type === "success" ? faCheck : faExclamation} />
     
@@ -69,6 +69,8 @@ export default class Popup extends Component {
             }
              
         }
+
+        if(prevProps.type !== this.props.type) this.setState({type: this.props.type})
     }
 
     render = () =>

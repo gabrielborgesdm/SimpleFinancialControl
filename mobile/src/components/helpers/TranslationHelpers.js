@@ -11,6 +11,7 @@ export const translate = (key) => {
 export const getDisplayLanguage = () => {
     let language = NativeModules.I18nManager.localeIdentifier
     language = language.includes("pt") ? "pt_br" : "en_US"
+    language = "pt_BR"
     return language
 }
   

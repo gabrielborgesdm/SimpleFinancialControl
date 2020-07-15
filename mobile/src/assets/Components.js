@@ -11,6 +11,7 @@ export const colors  = {
     red: "#D33F49",
     black: "#201E1F",
     yellow: "#FFC857",
+    darkBlue: "#199a8b",
     lightBlue: "#21CEBA",
     lightGreen: "#6BEEAA",
     darkGreen: "#399A68",
@@ -27,11 +28,11 @@ export const spacing = {
 }
 
 export const fonts = {
-    f1: 5,
-    f2: 10,
+    f1: 12,
+    f2: 16,
     f3: 20,
-    f4: 30,
-    f5: 40,
+    f4: 22,
+    f5: 26,
     fPrimary: Platform.OS === 'ios' ? "Arial" : "Verdana"
 }
 
@@ -41,6 +42,7 @@ export const components = {
     flex1: { flex: 1 },
     dNone: { display: "none" },
     dFlex: { display: "flex" },
+    flexGrow1: { flexGrow: 1 },
 
     bottom0: { bottom: 0 },
     right0: { right: 0 },
@@ -50,7 +52,19 @@ export const components = {
     opacityHigh: { opacity: 1 },
     opacityLow: { opacity: 0.7 },
 
+    
+
     alignCenter: { alignSelf: "center" },
+
+    fullWidthImage: { width: dimensions.fullWidth, height: dimensions.fullWidth},
+    halfWidthImage: { width: dimensions.halfWidth, height: dimensions.halfWidth},
+
+
+    m1: { margin: spacing.s1 },
+    m2: { margin: spacing.s2 },
+    m3: { margin: spacing.s3 },
+    m4: { margin: spacing.s4 },
+    m5: { margin: spacing.s5 },
 
     mx1: { marginHorizontal: spacing.s1 },
     mx2: { marginHorizontal: spacing.s2 },
@@ -87,10 +101,53 @@ export const components = {
     ml3: { marginLeft: spacing.s3 },
     ml4: { marginLeft: spacing.s4 },
     ml5: { marginLeft: spacing.s5 },
+
+    p1: { padding: spacing.s1 },
+    p2: { padding: spacing.s2 },
+    p3: { padding: spacing.s3 },
+    p4: { padding: spacing.s4 },
+    p5: { padding: spacing.s5 },
+
+    px1: { paddingHorizontal: spacing.s1 },
+    px2: { paddingHorizontal: spacing.s2 },
+    px3: { paddingHorizontal: spacing.s3 },
+    px4: { paddingHorizontal: spacing.s4 },
+    px5: { paddingHorizontal: spacing.s5 },
     
-    textLeft: { textAlign: "left" },
-    textCenter: { textAlign: "center" },
-    textRight: { textAlign: "right" },
+    py1: { paddingHorizontal: spacing.s1 },
+    py2: { paddingVertical: spacing.s2 },
+    py3: { paddingVertical: spacing.s3 },
+    py4: { paddingVertical: spacing.s4 },
+    py5: { paddingVertical: spacing.s5 },
+
+    pt1: { paddingTop: spacing.s1 },
+    pt2: { paddingTop: spacing.s2 },
+    pt3: { paddingTop: spacing.s3 },
+    pt4: { paddingTop: spacing.s4 },
+    pt5: { paddingTop: spacing.s5 },
+    
+    pr1: { paddingRight: spacing.s1 },
+    pr2: { paddingRight: spacing.s2 },
+    pr3: { paddingRight: spacing.s3 },
+    pr4: { paddingRight: spacing.s4 },
+    pr5: { paddingRight: spacing.s5 },
+    
+    pb1: { paddingBottom: spacing.s1 },
+    pb2: { paddingBottom: spacing.s2 },
+    pb3: { paddingBottom: spacing.s3 },
+    pb4: { paddingBottom: spacing.s4 },
+    pb5: { paddingBottom: spacing.s5 },
+    
+    pl1: { paddingLeft: spacing.s1 },
+    pl2: { paddingLeft: spacing.s2 },
+    pl3: { paddingLeft: spacing.s3 },
+    pl4: { paddingLeft: spacing.s4 },
+    pl5: { paddingLeft: spacing.s5 },
+    
+    bgYellow: { backgroundColor: colors.yellow },
+    bgLightGrey: { backgroundColor: colors.lightGrey },
+    bgDarkGrey: { backgroundColor: colors.darkGrey },
+    
     textBlack: { color: colors.black },
     textRed: { color: colors.red },
     textYellow: { color: colors.yellow },
@@ -99,34 +156,32 @@ export const components = {
     textLightGrey: { color: colors.lightGrey },
     textDarkGrey: { color: colors.darkGrey },
     textWhite: { color: "#fff" },
+    
+    textLeft: { textAlign: "left" },
+    textCenter: { textAlign: "center" },
+    textRight: { textAlign: "right" },
+    
+    textUppercase: { textTransform: "uppercase" },
+    textBold: { fontWeight: "bold" },
+    textUnderline: { textDecorationLine: "underline" },
+    
+    textXs: {fontSize: fonts.f5},
+    textSm: {fontSize: fonts.f4},
+    textMd: {fontSize: fonts.f3},
+    textLg: {fontSize: fonts.f2},
+    textXl: {fontSize: fonts.f1},
 
-    borderRounded: {
-        borderWidth: 0,
-        borderRadius: 100,
-    },
+    h1: {fontSize: fonts.f5, fontWeight: "bold"},
+    h2: {fontSize: fonts.f4, fontWeight: "bold"},
+    h3: {fontSize: fonts.f3, fontWeight: "bold"},
+    h4: {fontSize: fonts.f2, fontWeight: "bold"},
+    h5: {fontSize: fonts.f1, fontWeight: "bold"},
+    
+    h1: {fontSize: fonts.f5, fontWeight: "bold"},
+    h2: {fontSize: fonts.f4, fontWeight: "bold"},
+    h3: {fontSize: fonts.f3, fontWeight: "bold"},
+    h4: {fontSize: fonts.f2, fontWeight: "bold"},
+    h5: {fontSize: fonts.f1, fontWeight: "bold"},
 
-    h1: {
-        fontSize: fonts.f5,
-        fontFamily: colors.primary,
-    },
-    
-    h2: {
-        fontSize: fonts.f4,
-        fontFamily: fonts.fPrimary,
-    },
-    
-    h3: {
-        fontSize: fonts.f3,
-        fontFamily: fonts.fPrimary,
-    },
-    
-    h4: {
-        fontSize: fonts.f2,
-        fontFamily: fonts.fPrimary,
-    },
-    
-    h5: {
-        fontSize: fonts.f1,
-        fontFamily: fonts.fPrimary,
-    },
+    borderRounded: {borderWidth: 0, borderRadius: 100},
 }

@@ -52,15 +52,13 @@ export const styles = StyleSheet.create({...components, ...{
   buttonMinimalist: {
     flexGrow: 1,
     flexDirection: "row",
-    backgroundColor: colors.yellow,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 15,
     bottom: 0,
     right: 0,
     left: 0,
-    borderRadius: 3
-    
+    borderRadius: 3,
   },
 
   lightGreyLogoImage: {

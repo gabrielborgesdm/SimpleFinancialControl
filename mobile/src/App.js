@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import Welcome from './components/pages/Authentication/Welcome'
 import SignUp from './components/pages/Authentication/SignUp'
 
+
 export default class App extends Component {
 
     render = () => {

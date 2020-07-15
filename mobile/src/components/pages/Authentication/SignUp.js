@@ -9,7 +9,7 @@ import { validateEmail, validatePassword, validateRepeatedPassword } from "../..
 import Popup from "../../templates/Popup"
 import ShortLogo from "../../../assets/img/short-logo2.png"
 import { styles, colors, dimensions } from "../../../assets/Styles"
-const { h1, minimalistInputControl, minimalistRadioControl, flex1, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
+const { h1, bgYellow, minimalistInputControl, minimalistRadioControl, flex1, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
 minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, signUpContainer, alignCenter, my2,mb4, my4, opacityHigh, opacityLow
 } = styles
 
@@ -23,7 +23,8 @@ export default class SignUp extends Component {
             password: "",
             repeatedPassword: "",
             country: getDisplayLanguage() === "pt_BR" ? "brazil" : "usa",
-            errorMessage: "",
+            statusMessage: "",
+            statusType: "warning",
         }
     }
     
@@ -36,7 +37,7 @@ export default class SignUp extends Component {
         if (!this.checkField("password", password, repeatedPassword)) return
         if (!this.checkField("repeatedPassword", password, repeatedPassword)) return
 
-        this.setState({errorMessage: ""})
+        this.setState({statusMessage: ""})
         console.log("all good")
     }
     
@@ -63,8 +64,8 @@ export default class SignUp extends Component {
         
         if(!validate.status){
             check = false
-            let errorMessage = validate.messages[0]
-            this.setState({ errorMessage })
+            let statusMessage = validate.messages[0]
+            this.setState({ statusMessage })
         }
 
         return check
@@ -73,7 +74,7 @@ export default class SignUp extends Component {
     render = () => (
         <ScrollView contentContainerStyle={signUpContainer}>
             <KeyboardAvoidingView style={{width: "100%"}}>
-                <Popup type="success" message={this.state.errorMessage} />
+                <Popup type={this.state.statusType} message={this.state.statusMessage} />
                 <Text style={[h1, mb4, textCenter, textDarkGrey]}>{translate('SIGNUP_TITLE')}</Text>
                 <View style={my4}>
                     <Image source={ShortLogo} style={lightGreyLogoImage} />
@@ -142,7 +143,7 @@ export default class SignUp extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={[minimalistInputGroup]}>
-                    <TouchableOpacity onPress={this.handleSignUpSubmit} disabled={this.checkSignUpEmptyFields()} style={[ buttonMinimalist, this.checkSignUpEmptyFields() ? opacityLow : opacityHigh]}>
+                    <TouchableOpacity onPress={this.handleSignUpSubmit} disabled={this.checkSignUpEmptyFields()} style={[ buttonMinimalist, bgYellow, this.checkSignUpEmptyFields() ? opacityLow : opacityHigh]}>
                         <Text style={[textDarkGrey]}>{translate("CREATE_ACCOUNT")}</Text>
                     </TouchableOpacity>
                 </View>
