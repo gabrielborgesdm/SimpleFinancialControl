@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import { View, Text, StyleSheet, Animated } from "react-native"
+import { Dimensions, Text, StyleSheet, Animated } from "react-native"
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faExclamation, faCheck } from '@fortawesome/free-solid-svg-icons'
 
@@ -45,19 +45,14 @@ export default class Popup extends Component {
 
     getPopupStyle = (styleType) => this.getStyle(styleType, this.state.type)
 
-    getStyle = (styleType, popupType) => {console.log(`${styleType}_${popupType}`); return styles[`${styleType}_${popupType}`]}
+    getStyle = (styleType, popupType) => styles[`${styleType}_${popupType}`]
 
     getPopupIcon = () => <FontAwesomeIcon style={[styles.popupIcon, this.getPopupStyle("color")]} icon={ this.state.type === "success" ? faCheck : faExclamation} />
     
     setNewMessage = () => {
-        this.setState({message: this.props.message}, ()=>{
+        this.setState({message: this.props.message, type: this.getPopupType()}, ()=>{
             this.slideIn()
         })
-    }
-
-    componentDidMount(prevProps){
-        this.setState({message: this.props.message})
-        this.setState({ type: this.getPopupType()})
     }
     
     componentDidUpdate(prevProps){
@@ -91,7 +86,8 @@ export default class Popup extends Component {
 
 const styles = StyleSheet.create({
     popupView: {
-        padding: 20,
+        maxWidth: Dimensions.get("screen").width - 20,
+        padding: 10,
         backgroundColor: "#fff",
         borderTopLeftRadius: 15,
         borderBottomLeftRadius: 15,
@@ -109,21 +105,11 @@ const styles = StyleSheet.create({
     color_warning: { color: "#47484a" },
 
     message: {
-        alignSelf: "center",
-        textAlign: "right"
+        maxWidth: "95%"
     },
 
     popupIcon: {
         alignSelf: "center",
-        marginRight: 10,
-    },
-
-    closeButton: {
-        alignSelf: "center",
-        padding: 2
-    },
-    closeIcon: {
-        alignSelf: "center",
-        color: "#D33F49",
+        marginHorizontal: 5
     }
 })

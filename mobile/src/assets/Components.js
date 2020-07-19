@@ -56,7 +56,7 @@ export const components = {
 
     alignCenter: { alignSelf: "center" },
 
-    fullWidthImage: { width: dimensions.fullWidth, height: dimensions.fullWidth},
+    fullWidthImage: { width: dimensions.fullWidth - 50, height: dimensions.fullWidth - 50},
     halfWidthImage: { width: dimensions.halfWidth, height: dimensions.halfWidth},
 
 
@@ -165,17 +165,11 @@ export const components = {
     textBold: { fontWeight: "bold" },
     textUnderline: { textDecorationLine: "underline" },
     
-    textXs: {fontSize: fonts.f5},
-    textSm: {fontSize: fonts.f4},
+    textXs: {fontSize: fonts.f1},
+    textSm: {fontSize: fonts.f2},
     textMd: {fontSize: fonts.f3},
-    textLg: {fontSize: fonts.f2},
-    textXl: {fontSize: fonts.f1},
-
-    h1: {fontSize: fonts.f5, fontWeight: "bold"},
-    h2: {fontSize: fonts.f4, fontWeight: "bold"},
-    h3: {fontSize: fonts.f3, fontWeight: "bold"},
-    h4: {fontSize: fonts.f2, fontWeight: "bold"},
-    h5: {fontSize: fonts.f1, fontWeight: "bold"},
+    textLg: {fontSize: fonts.f4},
+    textXl: {fontSize: fonts.f5},
     
     h1: {fontSize: fonts.f5, fontWeight: "bold"},
     h2: {fontSize: fonts.f4, fontWeight: "bold"},

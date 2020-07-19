@@ -1,14 +1,15 @@
 import React, { Component } from "react"
 import { View, Text, KeyboardAvoidingView, TextInput, Image, TouchableOpacity, ScrollView} from "react-native"
-import LinearGradient from 'react-native-linear-gradient'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUser, faEnvelope, faLock, faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons'
 
-import { translate, getDisplayLanguage } from "../../helpers/TranslationHelpers"
+import axios from "../../services/axios"
 import { validateEmail, validatePassword, validateRepeatedPassword } from "../../helpers/ValidationHelpers"
+import { translate, getDisplayLanguage } from "../../helpers/TranslationHelpers"
+import {WEBSITE_URL} from "react-native-dotenv"
 import Popup from "../../templates/Popup"
 import ShortLogo from "../../../assets/img/short-logo2.png"
-import { styles, colors, dimensions } from "../../../assets/Styles"
+import { styles } from "../../../assets/Styles"
 const { h1, bgYellow, minimalistInputControl, minimalistRadioControl, flex1, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
 minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, signUpContainer, alignCenter, my2,mb4, my4, opacityHigh, opacityLow
 } = styles
@@ -26,19 +27,6 @@ export default class SignUp extends Component {
             statusMessage: "",
             statusType: "warning",
         }
-    }
-    
-    handleSignUpSubmit = () => {
-        if (this.checkSignUpEmptyFields()) return
-        
-        let { name, email, password, repeatedPassword, country} = this.state
-        
-        if (!this.checkField("email", email)) return
-        if (!this.checkField("password", password, repeatedPassword)) return
-        if (!this.checkField("repeatedPassword", password, repeatedPassword)) return
-
-        this.setState({statusMessage: ""})
-        console.log("all good")
     }
     
     checkSignUpEmptyFields = () => {
@@ -70,11 +58,80 @@ export default class SignUp extends Component {
 
         return check
     }
+
+    validateSignUpFields = (email, password, repeatedPassword) => {
+        let checkIsValid = true
+        if (!this.checkField("email", email)) checkIsValid = false
+        if (!this.checkField("password", password, repeatedPassword)) checkIsValid = false
+        if (!this.checkField("repeatedPassword", password, repeatedPassword)) checkIsValid = false
+
+        if(checkIsValid) this.setState({statusMessage: ""})
+        return checkIsValid
+    }   
+
+    clearStatusMessage = () => this.setState({statusType: "warning", statusMessage: ""})
+
+    handleSignUpSubmit = async () => {
+
+        if (this.checkSignUpEmptyFields()) return
+        
+        let { name, email, password, repeatedPassword, country} = this.state
+
+        
+        if(!this.validateSignUpFields(email, password, repeatedPassword)) return
+
+        let response = await this.postAccount(name, email, password, country)
+        this.handlePostAccountResponse(response) 
+    }
+
+    postAccount = async (name, email, password, country) => {
+        let confirmAccountUrl = `${WEBSITE_URL}/confirmaccount`
+        let response
+        try {
+            response = await axios.post("/accounts/signup", {name, email, password, country, confirmAccountUrl})
+            console.log(response, confirmAccountUrl)
+
+        } catch (error) {
+            console.log("teste", confirmAccountUrl, error)
+            response = null
+        }
+        return response
+    }
+
+    handlePostAccountResponse = (response) => {
+        let {statusMessage, statusType} = this.state
+        statusType = "warning"
+
+        if(!response) statusMessage = translate('SERVER_ERROR')
+        else if(response.data && response.data.success){
+
+            statusType = "success"
+            statusMessage = translate("SIGNUP_SUCCESS")
+            this.clearForm()
+        } else if (response.data && response.data.errors){
+
+            let serverResponseStatus = response.data.errors[0].state 
+            if(serverResponseStatus === "in_use") statusMessage = translate("SIGNUP_IN_USE")
+            else statusMessage = translate("SIGNUP_COULDNT_CREATE")
+        }
+        this.setState({statusType, statusMessage})
+    }
+
+    clearForm = () => {
+        this.setState({
+            name: "",
+            email: "",
+            password: "",
+            repeatedPassword: "",
+            country: getDisplayLanguage() === "pt_BR" ? "brazil" : "usa",
+        })
+    }
+
     
     render = () => (
-        <ScrollView contentContainerStyle={signUpContainer}>
+        <ScrollView keyboardShouldPersistTaps="always" contentContainerStyle={signUpContainer}>
             <KeyboardAvoidingView style={{width: "100%"}}>
-                <Popup type={this.state.statusType} message={this.state.statusMessage} />
+                <Popup type={this.state.statusType} message={this.state.statusMessage} clearStatusMessage={this.clearStatusMessage} />
                 <Text style={[h1, mb4, textCenter, textDarkGrey]}>{translate('SIGNUP_TITLE')}</Text>
                 <View style={my4}>
                     <Image source={ShortLogo} style={lightGreyLogoImage} />
@@ -151,4 +208,4 @@ export default class SignUp extends Component {
         </ScrollView>
     )
     
-}
+} 
