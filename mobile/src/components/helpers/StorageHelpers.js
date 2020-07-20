@@ -37,7 +37,29 @@ export const getUser =  async () => {
     return user
 }
 
-export const resetStorages = async () => {
+export const checkIsNotFirstAccess = async () => {
+    let checkIsNot = false
+    try {
+        checkIsNot = await AsyncStorage.getItem("@isNotFirstAccess")
+        
+    } catch (error) {
+        checkIsNot = false
+    }
+    return checkIsNot
+}
+
+export const setIsNotFirstAccess = async () => {
+    let checkIsNot = false
+    try {
+        checkIsNot = await AsyncStorage.setItem("@isNotFirstAccess", "true")
+        
+    } catch (error) {
+        checkIsNot = false
+    }
+    return checkIsNot
+}
+
+export const resetUserStorages = async () => {
     await AsyncStorage.removeItem("@token")
     await AsyncStorage.removeItem("@name")
     await AsyncStorage.removeItem("@email")

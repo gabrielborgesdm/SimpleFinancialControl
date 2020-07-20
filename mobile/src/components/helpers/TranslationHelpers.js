@@ -3,7 +3,7 @@ import { NativeModules } from "react-native"
 
 export const translate = (key) => {
     let language = getDisplayLanguage()
-    language = "pt_BR"
+    //language = "pt_BR"
     let translation = (translationJson[language] && translationJson[language][key]) ? translationJson[language][key] : null
     return translation || key
 }
@@ -11,7 +11,7 @@ export const translate = (key) => {
 export const getDisplayLanguage = () => {
     let language = NativeModules.I18nManager.localeIdentifier
     language = language.includes("pt") ? "pt_br" : "en_US"
-    language = "pt_BR"
+    //language = "pt_BR"
     return language
 }
   
@@ -71,6 +71,13 @@ const translationJson = {
         STRONG_PASSWORD_MEDIUM: "Médio",
         STRONG_PASSWORD_STRONG: "Forte",
         
+        WELCOME_TO: "Bem vindo(a) ao",
+        ALREADY_HAVE_AN_ACCOUNT: "Já tem uma conta?",
+        SIGN_IN: "Faça Login",
+
+        DOESNT_HAVE_AN_ACCOUNT: "Não tem uma conta?",
+        SIGN_UP: "Cadastre-se",
+
         HOME_TITLE: "Início",
         HOME_SUBTITLE: "Simplifique as suas finanças",
         HOME_WELCOME: "Bem Vindo(a)!",
@@ -84,11 +91,11 @@ const translationJson = {
         NAV_ADD_TRANSACTIONS: "Nova Transação",
         NAV_LOGOUT: "Sair",
 
-        LOGIN_TITLE: "Entrar",
-        LOGIN_SUBTITLE: "Entre com a sua conta",
-        LOGIN_INCORRECT: "Senha incorreta.",
-        LOGIN_INACTIVE_ACCOUNT: "Sua conta precisa ser confirmada, confira o seu e-mail para confirmar a sua conta.",
-        LOGIN_NOEXISTENT_ACCOUNT: "Essa conta não existe.",
+        SIGNIN_TITLE: "Entrar",
+        SIGNIN_SUBTITLE: "Entre com a sua conta",
+        SIGNIN_INCORRECT: "Senha incorreta.",
+        SIGNIN_INACTIVE_ACCOUNT: "Sua conta precisa ser confirmada, confira o seu e-mail para confirmar a sua conta.",
+        SIGNIN_NOEXISTENT_ACCOUNT: "Essa conta não existe.",
 
         SIGNUP_TITLE: "Criar Conta",
         SIGNUP_SUBTITLE: "Crie uma conta",
@@ -208,7 +215,7 @@ const translationJson = {
         FORM_PASSWORD_MUST_HAVE_MORE_THAN_SIX_CHAR: "Password must have at least 6 characters",
         FORM_INSERT_YOUR_PASSWORD: "Please enter your password",
         FORM_REPEAT_YOUR_PASSWORD: "Please repeat your password",
-        FORM_PASSWORD_IS_INSECURE: "Password is not secure, try letting her more complex",
+        FORM_PASSWORD_IS_INSECURE: "Password is not secure, try letting it more complex",
         FORM_INSERT_YOUR_COUNTRY: "Please enter your country",
         FORM_FORGOT_YOUR_PASSWORD: "Forgot your password?",
         FORM_PLACEHOLDER_PASSWORD: "Enter your Password",
@@ -243,6 +250,13 @@ const translationJson = {
         STRONG_PASSWORD_MEDIUM: "Medium",
         STRONG_PASSWORD_STRONG: "Strong",
 
+        WELCOME_TO: "Welcome to",
+        ALREADY_HAVE_AN_ACCOUNT: "Already have an account?",
+        SIGN_IN: "Sign in",
+
+        DOESNT_HAVE_AN_ACCOUNT: "Doesn't have an account?",
+        SIGN_UP: "Sign up",
+
         HOME_TITLE: "Home",
         HOME_SUBTITLE: "Simplify your finances",
         HOME_WELCOME: "Welcome",
@@ -256,11 +270,11 @@ const translationJson = {
         NAV_ADD_TRANSACTIONS: "Add Transactions",
         NAV_LOGOUT: "Logout",
 
-        LOGIN_TITLE: "Login",
-        LOGIN_SUBTITLE: "Log in your account",
-        LOGIN_INCORRECT: "Password is wrong.",
-        LOGIN_INACTIVE_ACCOUNT: "Your account needs to be confirmed, check your e-mail to confirm your account.",
-        LOGIN_NOEXISTENT_ACCOUNT: "Account does not exist.",
+        SIGNIN_TITLE: "Sign in",
+        SIGNIN_SUBTITLE: "Log in your account",
+        SIGNIN_INCORRECT: "Password is wrong.",
+        SIGNIN_INACTIVE_ACCOUNT: "Your account needs to be confirmed, check your e-mail to confirm your account.",
+        SIGNIN_NOEXISTENT_ACCOUNT: "Account does not exist.",
 
         SIGNUP_TITLE: "Sign up",
         SIGNUP_SUBTITLE: "Create an account",
