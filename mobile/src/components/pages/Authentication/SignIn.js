@@ -88,6 +88,26 @@ export default class SignIn extends Component {
         return response
     }
 
+    showConfirmAccountStatus = (statusMessage) => {
+        this.setState({
+            statusMessage: statusMessage.message,
+            statusType: statusMessage.success ? "success" : "warning"
+        }, this.props.navigation.setParams({statusMessage: null}))
+
+    }
+
+    componentDidMount = () => {
+        if(this.props.route.params && this.props.route.params.statusMessage){
+            this.showConfirmAccountStatus(this.props.route.params.statusMessage)
+        }
+    }
+
+    componentDidUpdate = () => {
+        if(this.props.route.params && this.props.route.params.statusMessage){
+            this.showConfirmAccountStatus(this.props.route.params.statusMessage)
+        }
+    }
+
     handlePostSignInResponse = async (response) => {
         let {statusMessage, statusType} = this.state
         statusType = "warning"
@@ -96,7 +116,7 @@ export default class SignIn extends Component {
         else if(response.data && response.data.success){
             let check = await setStorages(response.data)
             if(check) {
-                this.props.navigation.navigate("transactions")
+                this.props.navigation.navigate("home")
                 return
             } else statusMessage = translate("SERVER_ERROR")
         } else if (response.data && response.data.errors){
@@ -147,7 +167,11 @@ export default class SignIn extends Component {
                             style={minimalistInputControl}
                             ></TextInput>
                     </View>
-                    
+                    <View style={[minimalistInputGroup, mb3]}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("passwordRecoveryEmail")}>
+                            <Text style={[textDarkGrey, textBold, textUnderline]}>{translate("FORGOT_YOUR_PASSWORD")}</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={[minimalistInputGroup]}>
                         <TouchableOpacity onPress={this.handleSignInSubmit} disabled={this.checkSignInEmptyFields()} style={[ buttonMinimalist, bgYellow, this.checkSignInEmptyFields() ? opacityLow : opacityHigh]}>
                             <Text style={[textDarkGrey]}>{translate("SIGN_IN")}</Text>

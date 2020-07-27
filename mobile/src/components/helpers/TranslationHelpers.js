@@ -180,18 +180,21 @@ const translationJson = {
         CONFIRM_ACCOUNT_SOMETHING_WENT_WRONG: "Aconteceu algo de errado",
         CONFIRM_ACCOUNT_ACTIVATING_ACCOUNT: "Ativando conta",
         CONFIRM_ACCOUNT_ACTIVATED_ACCOUNT: "Conta ativada com sucesso",
+        CONFIRM_ACCOUNT_ACTIVATION_LINK_INVALID: "Link de Ativação Inválido",
         CONFIRM_ACCOUNT_LOGIN: "Entrar",
         CONFIRM_ACCOUNT_SIGNUP: "Cadastrar",
         CONFIRM_ACCOUNT_ACCOUNT_TITLE: "Ativação da Conta",
         CONFIRM_ACCOUNT_ACCOUNT_SUBTITLE: "Você consiguirá utilizar conta após sua ativação",
 
         RECOVER_PASSWORD_TITLE: "Recupere a sua senha",
+        FORGOT_YOUR_PASSWORD: "Esqueceu a sua senha?",
+        SEND_RECOVERY_EMAIL: "Enviar E-mail de Recuperação",
         RECOVER_PASSWORD_NEW_PASSWORD: "Nova senha",
         RECOVER_PASSWORD_SUBTITLE: "Recupere a sua senha se você a perdeu",
         RECOVER_PASSWORD_PASSWORDS_MUST_BE_THE_SAME: "As senhas precisam ser Iguais",
         RECOVER_PASSWORD_ACCESS_EMAIL_TO_RECOVER_PASSWORD: "Acesse o seu e-mail para recuperar a sua senha.",
         RECOVER_PASSWORD_NOT_POSSIBLE_TO_CHANGE_PASSWORD: "Não foi possível mudar a sua senha.",
-        RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS_DO_YOU_WANT_LOGIN: "Senha alterada com sucesso, você deseja entrar em sua conta?"
+        RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS: "Senha alterada com sucesso!"
 
     },
 
@@ -357,18 +360,21 @@ const translationJson = {
         CONFIRM_ACCOUNT_SOMETHING_WENT_WRONG: "Something went wrong",
         CONFIRM_ACCOUNT_ACTIVATING_ACCOUNT: "Activating account",
         CONFIRM_ACCOUNT_ACTIVATED_ACCOUNT: "Account activated with success",
+        CONFIRM_ACCOUNT_ACTIVATION_LINK_INVALID: "Activation Link is Invalid",
         CONFIRM_ACCOUNT_LOGIN: "Log in",
         CONFIRM_ACCOUNT_SIGNUP: "Sign Up",
         CONFIRM_ACCOUNT_ACCOUNT_TITLE: "Account Activation",
         CONFIRM_ACCOUNT_ACCOUNT_SUBTITLE: "You will be able to use your account after its activation",
         
         RECOVER_PASSWORD_TITLE: "Recover your password",
+        FORGOT_YOUR_PASSWORD: "Forgot your password?",
+        SEND_RECOVERY_EMAIL: "Send Recovery E-mail",
         RECOVER_PASSWORD_NEW_PASSWORD: "New password",
         RECOVER_PASSWORD_SUBTITLE: "Recover your password if you lost it.",
         RECOVER_PASSWORD_PASSWORDS_MUST_BE_THE_SAME: "The passwords must be the same",
         RECOVER_PASSWORD_ACCESS_EMAIL_TO_RECOVER_PASSWORD: "Access your e-mail to recover your password",
         RECOVER_PASSWORD_NOT_POSSIBLE_TO_CHANGE_PASSWORD: "It wasn't possible to change your password",
-        RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS_DO_YOU_WANT_LOGIN: "Password updated with success! Do you want to log in?",
+        RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS: "Password updated with success!",
     }
 
 }

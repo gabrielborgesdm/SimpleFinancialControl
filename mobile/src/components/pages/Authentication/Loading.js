@@ -8,40 +8,50 @@ const { lightBlue, lightGreen } = colors
 const { flex1 } = styles
 export default class Loading extends React.Component {
 
-    componentDidMount() { 
-        Linking.getInitialURL().then(url => {
-            this.navigate(url)
-        })
+    async componentDidMount() {
+        const url = await Linking.getInitialURL()
+        this.navigate(url)
+        Linking.addEventListener('url', this.handleOpenURL)
     }
 
     handleOpenURL = (event) => {
         this.navigate(event.url)
-    }  
-    
-    navigate = async (url) => {
+    }
+
+    navigate = (url = null) => {
+        
         const { navigate } = this.props.navigation
-        let routeName
         if(url){
-            const route = url.replace(/.*?:\/\//g, '')
-            const id = route.match(/\/([^\/]+)\/?$/)[1]
-            routeName = route.split('/')[0]
-        }
-    
-        if (routeName === 'recoverpassword') {
-            navigate('signUp', { id })
-        } else {
-            if (await getToken()) {
-                navigate('transactions')
+            let route = url.replace(/.*?:\/\//g, '')
+            let page = route.split("/")[1]
+            if(page === "confirmaccount"){
+                let token = route.split("/")[2]
+                navigate("confirmAccount", {token})
+
+            } else if(page === "recoverpassword"){
+                let token = route.split("/")[2]
+                navigate("passwordRecovery", {token})
+
             } else {
-                if(await checkIsNotFirstAccess()){
-                    navigate('signIn')
-                } else {
-                    navigate('welcome')
-                }
+                this.navigateWithoutLink() 
             }
-            
+        } else {
+            this.navigateWithoutLink()
+        }   
+    }
+
+    navigateWithoutLink = async () => {
+        const { navigate } = this.props.navigation
+        if (await getToken()) {
+            navigate('home')
+        } else {
+            if(await checkIsNotFirstAccess()){
+                navigate('signIn')
+            } else {
+                navigate('welcome')
+            }
         }
-    } 
+    }
 
     render = () =>
         <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 2}} colors={[ lightBlue, lightGreen]} style={[flex1]}>
