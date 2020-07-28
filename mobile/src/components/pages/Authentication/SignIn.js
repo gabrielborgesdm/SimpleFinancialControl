@@ -1,20 +1,20 @@
 import React, { Component } from "react"
 import { View, Text, KeyboardAvoidingView, TextInput, Image, TouchableOpacity, ScrollView, Keyboard} from "react-native"
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUser, faEnvelope, faLock, faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons'
 import LinearGradient from 'react-native-linear-gradient'
 
 import axios from "../../services/axios"
-import { validateEmail, validatePassword, validateRepeatedPassword } from "../../helpers/ValidationHelpers"
-import { translate, getDisplayLanguage } from "../../helpers/TranslationHelpers"
-import {WEBSITE_URL} from "react-native-dotenv"
+import { validateEmail } from "../../helpers/ValidationHelpers"
+import { translate } from "../../helpers/TranslationHelpers"
 import Popup from "../../templates/Popup"
+import LoadingIcon from "../../templates/LoadingIcon"
 import {setStorages} from "../../helpers/StorageHelpers"
 import ShortLogo from "../../../assets/img/short-logo2.png"
 import { styles, colors } from "../../../assets/Styles"
 const { lightBlue, lightGreen } = colors
-const { h1, h4, h3, mt5, mb3, flex1, textBold, textUnderline, bgYellow, minimalistInputControl, minimalistRadioControl, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
-minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, signUpContainer, alignCenter, my2,mb4, my4, opacityHigh, opacityLow
+const { h1, h4, h3, mt5, mb3, flex1, textBold, textUnderline, bgYellow, minimalistInputControl, minimalistInputIcon, lightGreyLogoImage,
+minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, opacityHigh, opacityLow
 } = styles
 
 
@@ -26,6 +26,7 @@ export default class SignIn extends Component {
             password: "",
             statusMessage: "",
             statusType: "warning",
+            isLoadingRequest: false
         }
     }
     
@@ -81,10 +82,12 @@ export default class SignIn extends Component {
     postSignIn = async (email, password) => {
         let response
         try {
+            this.setState({isLoadingRequest: true})
             response = await axios.post("/accounts/signin", {email, password})
         } catch (error) {
             response = null
         }
+        this.setState({isLoadingRequest: false})
         return response
     }
 
@@ -130,9 +133,9 @@ export default class SignIn extends Component {
 
     render = () => (
         <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 2}} colors={[ lightBlue, lightGreen]} style={[flex1]}>
+            <Popup type={this.state.statusType} message={this.state.statusMessage} clearStatusMessage={this.clearStatusMessage} />
             <ScrollView keyboardShouldPersistTaps="always" contentContainerStyle={[flex1, { justifyContent: "center"}]}>
                 <KeyboardAvoidingView style={{width: "100%"}}>
-                    <Popup type={this.state.statusType} message={this.state.statusMessage} clearStatusMessage={this.clearStatusMessage} />
                     <Text style={[h1,textCenter, textDarkGrey]}>{translate('SIGNIN_TITLE')}</Text>
                     <View style={mt5}>
                         <Image source={ShortLogo} style={lightGreyLogoImage} />
@@ -173,9 +176,18 @@ export default class SignIn extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={[minimalistInputGroup]}>
-                        <TouchableOpacity onPress={this.handleSignInSubmit} disabled={this.checkSignInEmptyFields()} style={[ buttonMinimalist, bgYellow, this.checkSignInEmptyFields() ? opacityLow : opacityHigh]}>
-                            <Text style={[textDarkGrey]}>{translate("SIGN_IN")}</Text>
-                        </TouchableOpacity>
+                        {this.state.isLoadingRequest ?
+                            <TouchableOpacity onPress={this.handleSignInSubmit} disabled={true} style={[ buttonMinimalist, bgYellow, opacityLow]}>
+                                <LoadingIcon />
+                                <Text style={[textDarkGrey]}>  {translate("ICON_LOADING")}</Text>
+                            </TouchableOpacity>
+                        :
+                            <TouchableOpacity onPress={this.handleSignInSubmit} disabled={this.checkSignInEmptyFields()} style={[ buttonMinimalist, bgYellow, this.checkSignInEmptyFields() ? opacityLow : opacityHigh]}>
+                                <FontAwesomeIcon icon={faUser} />
+                                <Text style={[textDarkGrey]}>  {translate("SIGN_IN")}</Text>
+                            </TouchableOpacity>
+                        
+                        }
                     </View>
                     <View style={[minimalistInputGroup], {justifyContent: "center", alignItems: "center", paddingTop: 20}}>
                         <Text style={[textDarkGrey, h4]}>{translate("DOESNT_HAVE_AN_ACCOUNT")}</Text>

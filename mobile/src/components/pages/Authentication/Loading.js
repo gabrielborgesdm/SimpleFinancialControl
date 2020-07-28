@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Linking } from 'react-native'
+import { Linking } from 'react-native'
 import { styles, colors } from "../../../assets/Styles"
 import LinearGradient from 'react-native-linear-gradient'
 

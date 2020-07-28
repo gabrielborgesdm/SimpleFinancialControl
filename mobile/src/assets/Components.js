@@ -159,6 +159,7 @@ export const components = {
     
     textLeft: { textAlign: "left" },
     textCenter: { textAlign: "center" },
+    textJustify: { textAlign: "justify" },
     textRight: { textAlign: "right" },
     
     textUppercase: { textTransform: "uppercase" },

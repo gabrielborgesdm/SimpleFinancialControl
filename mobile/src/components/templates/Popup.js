@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
         zIndex: 100,
         flexDirection: "row",
         right: 0,
+        top: 40,
     },
 
     bg_success: { backgroundColor: "#399A68" },

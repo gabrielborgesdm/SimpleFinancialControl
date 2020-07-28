@@ -91,7 +91,7 @@ const translationJson = {
         NAV_ADD_TRANSACTIONS: "Nova Transação",
         NAV_LOGOUT: "Sair",
 
-        SIGNIN_TITLE: "Entrar",
+        SIGNIN_TITLE: "Fazer Login",
         SIGNIN_SUBTITLE: "Entre com a sua conta",
         SIGNIN_INCORRECT: "Senha incorreta.",
         SIGNIN_INACTIVE_ACCOUNT: "Sua conta precisa ser confirmada, confira o seu e-mail para confirmar a sua conta.",
@@ -194,8 +194,11 @@ const translationJson = {
         RECOVER_PASSWORD_PASSWORDS_MUST_BE_THE_SAME: "As senhas precisam ser Iguais",
         RECOVER_PASSWORD_ACCESS_EMAIL_TO_RECOVER_PASSWORD: "Acesse o seu e-mail para recuperar a sua senha.",
         RECOVER_PASSWORD_NOT_POSSIBLE_TO_CHANGE_PASSWORD: "Não foi possível mudar a sua senha.",
-        RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS: "Senha alterada com sucesso!"
+        RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS: "Senha alterada com sucesso!",
+        RECOVER_PASSWORD_INSTRUCTIONS: "Coloque o seu endereço de e-mail e então verifique a sua conta para recuperar a sua senha de usuário.",
+        RECOVER_NEW_PASSWORDS_INSTRUCTIONS: "Digite e repita a nova senha desejada para sua conta de usuário.",
 
+        
     },
 
     "en_US": {
@@ -375,6 +378,8 @@ const translationJson = {
         RECOVER_PASSWORD_ACCESS_EMAIL_TO_RECOVER_PASSWORD: "Access your e-mail to recover your password",
         RECOVER_PASSWORD_NOT_POSSIBLE_TO_CHANGE_PASSWORD: "It wasn't possible to change your password",
         RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS: "Password updated with success!",
+        RECOVER_PASSWORD_INSTRUCTIONS: "Enter your e-mail address, then check your mail account in order to recover your account password.",
+        RECOVER_NEW_PASSWORDS_INSTRUCTIONS: "Type and repeat the new desired password for your user account."
     }
 
 }

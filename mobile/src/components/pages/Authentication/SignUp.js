@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { View, Text, KeyboardAvoidingView, TextInput, Image, TouchableOpacity, ScrollView, Keyboard} from "react-native"
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUser, faEnvelope, faLock, faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faEnvelope, faLock, faCheckCircle, faCircle, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import LinearGradient from 'react-native-linear-gradient'
 
 import axios from "../../services/axios"
@@ -9,12 +9,12 @@ import { validateEmail, validatePassword, validateRepeatedPassword } from "../..
 import { translate, getDisplayLanguage } from "../../helpers/TranslationHelpers"
 import {WEBSITE_URL} from "react-native-dotenv"
 import Popup from "../../templates/Popup"
-
+import LoadingIcon from "../../templates/LoadingIcon"
 import ShortLogo from "../../../assets/img/short-logo2.png"
 import { styles, colors } from "../../../assets/Styles"
 const { lightBlue, lightGreen } = colors
-const { h1, h4, h3, mt5, mb3, flex1, textBold, textUnderline, bgYellow, minimalistInputControl, minimalistRadioControl, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
-minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, signUpContainer, alignCenter, my2,mb4, my4, opacityHigh, opacityLow
+const { h1, h4, h3, mt5, flex1, textBold, textUnderline, bgYellow, minimalistInputControl, minimalistRadioControl, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
+minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, alignCenter, opacityHigh, opacityLow
 } = styles
 
 
@@ -29,6 +29,7 @@ export default class SignUp extends Component {
             country: getDisplayLanguage() === "pt_BR" ? "brazil" : "usa",
             statusMessage: "",
             statusType: "warning",
+            isLoadingRequest: false,
         }
     }
     
@@ -93,13 +94,13 @@ export default class SignUp extends Component {
         let confirmAccountUrl = `${WEBSITE_URL}/confirmaccount`
         let response
         try {
+            this.setState({isLoadingRequest: true})
             response = await axios.post("/accounts/signup", {name, email, password, country, confirmAccountUrl})
-            console.log(response, confirmAccountUrl)
-
         } catch (error) {
-            console.log("teste", confirmAccountUrl, error)
+            console.log(error)
             response = null
         }
+        this.setState({isLoadingRequest: false})
         return response
     }
 
@@ -205,11 +206,21 @@ export default class SignUp extends Component {
                             <Text style={textDarkGrey}>{translate("FORM_OPTION_USA")}</Text>
                         </TouchableOpacity>
                     </View>
+
                     <View style={[minimalistInputGroup]}>
-                        <TouchableOpacity onPress={this.handleSignUpSubmit} disabled={this.checkSignUpEmptyFields()} style={[ buttonMinimalist, bgYellow, this.checkSignUpEmptyFields() ? opacityLow : opacityHigh]}>
-                            <Text style={[textDarkGrey]}>{translate("CREATE_ACCOUNT")}</Text>
-                        </TouchableOpacity>
+                        {this.state.isLoadingRequest ?
+                            <TouchableOpacity onPress={this.handleSignInSubmit} disabled={true} style={[ buttonMinimalist, bgYellow, opacityLow]}>
+                                <LoadingIcon />
+                                <Text style={[textDarkGrey]}>  {translate("ICON_LOADING")}</Text>
+                            </TouchableOpacity>
+                        :
+                            <TouchableOpacity onPress={this.handleSignUpSubmit} disabled={this.checkSignUpEmptyFields()} style={[ buttonMinimalist, bgYellow, this.checkSignUpEmptyFields() ? opacityLow : opacityHigh]}>
+                                <FontAwesomeIcon icon={faUserPlus} />
+                                <Text style={[textDarkGrey]}>  {translate("CREATE_ACCOUNT")}</Text>
+                            </TouchableOpacity>
+                        }
                     </View>
+                    
                     <View style={[minimalistInputGroup], {justifyContent: "center", alignItems: "center", paddingTop: 20}}>
                         <Text style={[textDarkGrey, h4]}>{translate("ALREADY_HAVE_AN_ACCOUNT")}</Text>
                         <TouchableOpacity onPress={()=>this.props.navigation.navigate("signIn")}>

@@ -1,21 +1,12 @@
 import React, { Component } from "react"
-import { View, Text, KeyboardAvoidingView, TextInput, Image, TouchableOpacity, ScrollView, Keyboard} from "react-native"
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUser, faEnvelope, faLock, faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons'
 import LinearGradient from 'react-native-linear-gradient'
 
 import axios from "../../services/axios"
-import { validateEmail, validatePassword, validateRepeatedPassword } from "../../helpers/ValidationHelpers"
-import { translate, getDisplayLanguage } from "../../helpers/TranslationHelpers"
-import {WEBSITE_URL} from "react-native-dotenv"
-import Popup from "../../templates/Popup"
-import {setStorages} from "../../helpers/StorageHelpers"
-import ShortLogo from "../../../assets/img/short-logo2.png"
+import { translate } from "../../helpers/TranslationHelpers"
+
 import { styles, colors } from "../../../assets/Styles"
 const { lightBlue, lightGreen } = colors
-const { h1, h4, h3, mt5, mb3, flex1, textBold, textUnderline, bgYellow, minimalistInputControl, minimalistRadioControl, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
-minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, signUpContainer, alignCenter, my2,mb4, my4, opacityHigh, opacityLow
-} = styles
+const { flex1 } = styles
 
 export default class ConfirmAccount extends Component {
 

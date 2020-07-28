@@ -1,20 +1,19 @@
 import React, { Component } from "react"
 import { View, Text, KeyboardAvoidingView, TextInput, Image, TouchableOpacity, ScrollView, Keyboard} from "react-native"
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUser, faEnvelope, faLock, faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faLock, faShare } from '@fortawesome/free-solid-svg-icons'
 import LinearGradient from 'react-native-linear-gradient'
 
 import axios from "../../services/axios"
 import { validateEmail, validatePassword, validateRepeatedPassword } from "../../helpers/ValidationHelpers"
-import { translate, getDisplayLanguage } from "../../helpers/TranslationHelpers"
-import {WEBSITE_URL} from "react-native-dotenv"
+import { translate } from "../../helpers/TranslationHelpers"
 import Popup from "../../templates/Popup"
-import {setStorages} from "../../helpers/StorageHelpers"
+import LoadingIcon from "../../templates/LoadingIcon"
 import ShortLogo from "../../../assets/img/short-logo2.png"
 import { styles, colors } from "../../../assets/Styles"
 const { lightBlue, lightGreen } = colors
-const { h1, h4, h3, mt5, mb3, flex1, textBold, textUnderline, bgYellow, minimalistInputControl, minimalistRadioControl, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
-minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, signUpContainer, alignCenter, my2,mb4, my4, opacityHigh, opacityLow
+const { h1, mt5, flex1, textLg, textJustify, my3, bgYellow, minimalistInputControl, minimalistInputIcon, lightGreyLogoImage,
+minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, opacityHigh, opacityLow
 } = styles
 
 export default class RecoverPassword extends Component {
@@ -27,6 +26,7 @@ export default class RecoverPassword extends Component {
             token: null,
             statusMessage: "",
             statusType: "warning",
+            isLoadingRequest: false
         }
     }
 
@@ -85,12 +85,14 @@ export default class RecoverPassword extends Component {
     postRecoverPassword = async (password, token) => {
         let response
         try {
+            this.setState({isLoadingRequest: true})
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
             response = await axios.post("/accounts/recoverPassword", {password})
 
         } catch (error) {
             response = null
         }
+        this.setState({isLoadingRequest: false})
         return response
     }
 
@@ -124,12 +126,16 @@ export default class RecoverPassword extends Component {
 
     render = () => (
         <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 2}} colors={[ lightBlue, lightGreen]} style={[flex1]}>
+            <Popup type={this.state.statusType} message={this.state.statusMessage} clearStatusMessage={this.clearStatusMessage} />
             <ScrollView keyboardShouldPersistTaps="always" contentContainerStyle={[flex1, { justifyContent: "center"}]}>
                 <KeyboardAvoidingView style={{width: "100%"}}>
-                    <Popup type={this.state.statusType} message={this.state.statusMessage} clearStatusMessage={this.clearStatusMessage} />
                     <Text style={[h1,textCenter, textDarkGrey]}>{translate('RECOVER_PASSWORD_TITLE')}</Text>
                     <View style={mt5}>
                         <Image source={ShortLogo} style={lightGreyLogoImage} />
+                    </View>
+
+                    <View style={[minimalistInputGroup]}>
+                        <Text style={[textDarkGrey, textLg, textJustify, my3]}>{translate("RECOVER_NEW_PASSWORDS_INSTRUCTIONS")}</Text>
                     </View>
 
                     <View style={minimalistInputGroup}>
@@ -161,9 +167,17 @@ export default class RecoverPassword extends Component {
                     </View>
             
                     <View style={[minimalistInputGroup]}>
-                        <TouchableOpacity onPress={this.handleRecoverPassword} disabled={this.checkEmptyFields("passwords")} style={[ buttonMinimalist, bgYellow, this.checkEmptyFields("passwords") ? opacityLow : opacityHigh]}>
-                            <Text style={[textDarkGrey]}>{translate("RECOVER_PASSWORD_TITLE")}</Text>
-                        </TouchableOpacity>
+                        {this.state.isLoadingRequest ?
+                            <TouchableOpacity onPress={this.handleSignInSubmit} disabled={true} style={[ buttonMinimalist, bgYellow, opacityLow]}>
+                                <LoadingIcon />
+                                <Text style={[textDarkGrey]}>  {translate("ICON_LOADING")}</Text>
+                            </TouchableOpacity>
+                        :
+                            <TouchableOpacity onPress={this.handleRecoverPassword} disabled={this.checkEmptyFields("passwords")} style={[ buttonMinimalist, bgYellow, this.checkEmptyFields("passwords") ? opacityLow : opacityHigh]}>
+                                <FontAwesomeIcon icon={faShare} />
+                                <Text style={[textDarkGrey]}>  {translate("RECOVER_PASSWORD_TITLE")}</Text>
+                            </TouchableOpacity>
+                        }
                     </View>
                 </KeyboardAvoidingView>
             </ScrollView>
