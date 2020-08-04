@@ -5,15 +5,20 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faCircle, faHome, faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
+
 import Loading from './components/pages/Authentication/Loading'
 import Welcome from './components/pages/Authentication/Welcome'
+
 import SignUp from './components/pages/Authentication/SignUp'
 import SignIn from './components/pages/Authentication/SignIn'
 import ConfirmAccount from './components/pages/Authentication/ConfirmAccount'
 import PasswordRecovery from './components/pages/Authentication/PasswordRecovery'
 import PasswordRecoveryEmail from './components/pages/Authentication/PasswordRecoveryEmail'
+
 import Transactions from './components/pages/Transactions/Transactions'
-import { faCircle, faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
+
+import Menu from './components/pages/Menu/Menu'
 
 
 export default class App extends Component {
@@ -23,7 +28,8 @@ export default class App extends Component {
         return (
             <HomeStack.Navigator tabBarOptions={{ activeTintColor: 'tomato', inactiveTintColor: 'gray', showLabel: false}}>
                 <HomeStack.Screen name="transactions" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faHome} color={color} />  }} component={Transactions} /> 
-                <HomeStack.Screen name="transactions2" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faPlus} color={color} />  }} component={Transactions} /> 
+                <HomeStack.Screen name="addTransactions" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faPlus} color={color} />  }} component={Transactions} /> 
+                <HomeStack.Screen name="menu" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faBars} color={color} />  }} component={Menu} /> 
             </HomeStack.Navigator>
         )
     }

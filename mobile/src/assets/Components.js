@@ -40,9 +40,13 @@ export const components = {
     positionAbsolute: { position: "absolute" },
 
     flex1: { flex: 1 },
+    flexGrow1: { flexGrow: 1 },
+
+    flexRow: {flexDirection: "row"},
+    flexColumn: {flexDirection: "column"},
+
     dNone: { display: "none" },
     dFlex: { display: "flex" },
-    flexGrow1: { flexGrow: 1 },
 
     bottom0: { bottom: 0 },
     right0: { right: 0 },
@@ -144,7 +148,13 @@ export const components = {
     pl4: { paddingLeft: spacing.s4 },
     pl5: { paddingLeft: spacing.s5 },
     
+    bgRed: { backgroundColor: colors.red },
+    bgBlack: { backgroundColor: colors.black },
     bgYellow: { backgroundColor: colors.yellow },
+    bgDarkBlue: { backgroundColor: colors.darkBlue },
+    bgLightBlue: { backgroundColor: colors.lightBlue },
+    bgLightGreen: { backgroundColor: colors.lightGreen },
+    bgdarkGreen: { backgroundColor: colors.darkGreen },
     bgLightGrey: { backgroundColor: colors.lightGrey },
     bgDarkGrey: { backgroundColor: colors.darkGrey },
     

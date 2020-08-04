@@ -66,6 +66,21 @@ export const styles = StyleSheet.create({...components, ...{
     height: dimensions.quarterWidth + 50,
     resizeMode: "contain",
     alignSelf: "center",
+  },
+
+  touchableMenuOption: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+elevation: 3,
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    paddingVertical: 25
   }
 }})
   

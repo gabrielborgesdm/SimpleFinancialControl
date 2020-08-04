@@ -197,6 +197,12 @@ const translationJson = {
         RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS: "Senha alterada com sucesso!",
         RECOVER_PASSWORD_INSTRUCTIONS: "Coloque o seu endereço de e-mail e então verifique a sua conta para recuperar a sua senha de usuário.",
         RECOVER_NEW_PASSWORDS_INSTRUCTIONS: "Digite e repita a nova senha desejada para sua conta de usuário.",
+        
+        LOGOFF: "Sair",
+        ARE_YOU_SURE_YOU_WANT_TO_LEAVE: "Você tem certeza que deseja sair?",
+        YES: "sim",
+        NO: "não",
+        SETTINGS: "Opções",
 
         
     },
@@ -379,7 +385,14 @@ const translationJson = {
         RECOVER_PASSWORD_NOT_POSSIBLE_TO_CHANGE_PASSWORD: "It wasn't possible to change your password",
         RECOVER_PASSWORD_PASSWORD_UPDATED_WITH_SUCCESS: "Password updated with success!",
         RECOVER_PASSWORD_INSTRUCTIONS: "Enter your e-mail address, then check your mail account in order to recover your account password.",
-        RECOVER_NEW_PASSWORDS_INSTRUCTIONS: "Type and repeat the new desired password for your user account."
+        RECOVER_NEW_PASSWORDS_INSTRUCTIONS: "Type and repeat the new desired password for your user account.",
+
+        LOGOFF: "Logoff",
+        ARE_YOU_SURE_YOU_WANT_TO_LEAVE: "Are you sure you want to leave?",
+        YES: "yes",
+        NO: "no",
+        SETTINGS: "Settings"
+        
     }
 
 }
