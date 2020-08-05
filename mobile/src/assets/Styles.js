@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Dimensions} from 'react-native'
 import {dimensions, components, colors, spacing, fonts } from "./Components" 
 import { color } from 'react-native-reanimated'
 export {dimensions, colors, spacing, fonts } 
@@ -77,10 +77,21 @@ export const styles = StyleSheet.create({...components, ...{
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
 
-elevation: 3,
+  elevation: 3,
     backgroundColor: "#fff",
     paddingHorizontal: 10,
     paddingVertical: 25
+  },
+
+  /* Transactions */
+
+  roundedBox: {
+    width: Dimensions.get("window").width - 30, 
+    alignSelf: "center", 
+    alignItems: "center", 
+    borderRadius: 10, 
+    justifyContent: "space-evenly", 
+    flexDirection: "row"
   }
 }})
   

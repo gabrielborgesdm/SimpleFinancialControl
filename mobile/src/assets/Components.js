@@ -45,6 +45,11 @@ export const components = {
     flexRow: {flexDirection: "row"},
     flexColumn: {flexDirection: "column"},
 
+    justifyCenter: { justifyContent: "center" },
+    justifySpaceBetween: { justifyContent: "space-between" },
+    justifySpaceAround: { justifyContent: "space-around" },
+    justifySpaceEvenly: { justifyContent: "space-evenly" },
+
     dNone: { display: "none" },
     dFlex: { display: "flex" },
 
@@ -55,8 +60,6 @@ export const components = {
 
     opacityHigh: { opacity: 1 },
     opacityLow: { opacity: 0.7 },
-
-    
 
     alignCenter: { alignSelf: "center" },
 

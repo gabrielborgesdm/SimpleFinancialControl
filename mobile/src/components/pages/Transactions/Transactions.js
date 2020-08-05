@@ -1,10 +1,11 @@
 import React, { Component } from "react"
 import { View, Text, Image, TouchableOpacity} from "react-native"
 import LinearGradient from 'react-native-linear-gradient'
-
-import { getUser, resetUserStorages } from "../../helpers/StorageHelpers"
+import axios from "../../services/axios"
+import { getUser } from "../../helpers/StorageHelpers"
+import { getMaskedCoin, getUnMaskedCoin } from "../../helpers/LocationHelpers"
 import { styles, colors } from "../../../assets/Styles"
-const { flex1, h1, h3, h4, textCenter, textSm, mt5, mb3, textUnderline, py5, bgYellow, flexGrow1, textBold, fullWidthImage, minimalistInputGroup, buttonMinimalist, textDarkGrey, p2, mx1, my5 } = styles
+const { flex1, h1, h3, h4, textWhite, textSm, textLg, textLightGreen, flexRow, textRed, roundedBox, justifySpaceAround, flexGrow1, textBold, fullWidthImage, minimalistInputGroup, buttonMinimalist, textDarkGrey, p2, mx1, my5 } = styles
 const { lightBlue, lightGreen } = colors
 
 export default class Transactions extends Component {
@@ -12,22 +13,113 @@ export default class Transactions extends Component {
     constructor(props){
         super(props)
         this.state = {
-            user: null
+            user: {},
+            fetchedTransactions: [],
+            transactions: [],
+            incomesAndExpenses: [],
+            incomes:[],
+            expenses: [],
+            balanceAmount:0,
+            incomesAmount: 0,
+            expensesAmount: 0,
         }
     }
+
     getUser = async () => {
-        /* let user = await getUser()
-        console.log("user", user)
-        if(user) this.setState({user}) */
+        let user = await getUser()
+        this.setState({user})
     }
+
+    getBalanceAmountColor = () => {
+        let {balanceAmount} = this.state
+
+        balanceAmount = getUnMaskedCoin(balanceAmount)
+        if(balanceAmount > 0){
+            return textLightGreen
+        } else if(balanceAmount < 0){
+            return textRed
+        } else {
+            return textDarkGrey
+        }
+    }
+
     componentDidMount(){
        this.getUser() 
     }
+
+    getTransactions = async () => {
+        let response = null
+        try {
+            response = await axios.get("/transaction")
+        } catch (error) {
+            console.log(error)
+        }
+        if(response && response.data && response.data.success){
+            let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
+            this.setState({fetchedTransactions: transactions}) 
+            this.getWealth(transactions)
+        }
+    }
+
+    getWealth = async (transactions) => {
+        
+        let expenses = []
+        let incomes = []
+        let incomesAndExpenses = []
+        let expensesAmount = 0
+        let incomesAmount = 0
+        let balanceAmount = 0
+
+        transactions.forEach((transaction)=>{
+            let { amount } = transaction
+            if(amount > 0){
+                incomesAmount += amount
+                incomes.push(transaction)
+            } else {
+                expensesAmount += amount * -1
+                expenses.push(transaction)
+            }
+            incomesAndExpenses.push(transaction)
+            balanceAmount += amount
+        })
+        
+        incomesAmount = await getMaskedCoin(incomesAmount)
+        expensesAmount = await getMaskedCoin(expensesAmount)
+        balanceAmount = await getMaskedCoin(balanceAmount)
+
+        this.setState({
+            incomesAmount: incomesAmount, 
+            expensesAmount: expensesAmount, 
+            balanceAmount: balanceAmount,
+            expenses,
+            incomes,
+            incomesAndExpenses,
+            transactions
+        })
+    }
+
     render = () => (
-        <View style={[flex1, ]}>
-            <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 2}} style={[py5]} colors={[ lightBlue, lightGreen]}>
-                <Text style={[h1, textDarkGrey, textCenter, textBold]}>Olá {this.state.user && this.state.user.name}!</Text>
+        <View style={[flex1]}>
+            <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 2}} style={[ flexRow, justifySpaceAround, {padding: 50}]} colors={[ lightBlue, lightGreen]}>
+            <Text style={[textWhite, textLg]}>{this.state.user.name}'s Info</Text>
             </LinearGradient>
+            <View style={[roundedBox, {height: 80, marginTop: -40, backgroundColor: "#fff" }]}>
+                <View style={{ flexGrow: 1, height: "100%", justifyContent: "center", alignItems: "center"}}>
+                    <Text style={[textRed, textLg]}>{this.state.incomesAmount}</Text>
+                    <Text style={[textBold]}>Expenses</Text>
+                </View>
+    
+                <View style={{ flexGrow: 1, height: "100%", justifyContent: "center", alignItems: "center"}}>
+                    <Text style={[textLg, this.getBalanceAmountColor()]}>{this.state.balanceAmount}</Text>
+                    <Text style={[textBold]}>Balance</Text>
+                </View>
+    
+                <View style={{flexGrow: 1, height: "100%", justifyContent: "center",  alignItems: "center"}}>
+                    <Text style={[textLightGreen, textLg]}>{this.state.expensesAmount}</Text>
+                    <Text style={[textBold]}>Incomes</Text>
+                </View>
+            </View>
+
         </View>
     )
     
