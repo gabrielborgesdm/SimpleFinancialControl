@@ -3,8 +3,8 @@ import { View, Text, KeyboardAvoidingView, TextInput, Image, TouchableOpacity, S
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUser, faEnvelope, faLock, faCheckCircle, faCircle, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import LinearGradient from 'react-native-linear-gradient'
+import {getAxiosInstance} from "../../services/axios"
 
-import axios from "../../services/axios"
 import { validateEmail, validatePassword, validateRepeatedPassword } from "../../helpers/ValidationHelpers"
 import { translate, getDisplayLanguage } from "../../helpers/TranslationHelpers"
 import {WEBSITE_URL} from "react-native-dotenv"
@@ -95,6 +95,7 @@ export default class SignUp extends Component {
         let response
         try {
             this.setState({isLoadingRequest: true})
+            let axios = await getAxiosInstance()
             response = await axios.post("/accounts/signup", {name, email, password, country, confirmAccountUrl})
         } catch (error) {
             console.log(error)

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons'
 import LinearGradient from 'react-native-linear-gradient'
 
-import axios from "../../services/axios"
+import {getAxiosInstance} from "../../services/axios"
 import { validateEmail } from "../../helpers/ValidationHelpers"
 import { translate } from "../../helpers/TranslationHelpers"
 import Popup from "../../templates/Popup"
@@ -83,6 +83,7 @@ export default class SignIn extends Component {
         let response
         try {
             this.setState({isLoadingRequest: true})
+            let axios = await getAxiosInstance()
             response = await axios.post("/accounts/signin", {email, password})
         } catch (error) {
             response = null

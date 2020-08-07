@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { View, Text, Image, TouchableOpacity} from "react-native"
 import LinearGradient from 'react-native-linear-gradient'
-import axios from "../../services/axios"
+import {getAxiosInstance} from "../../services/axios"
 import { getUser } from "../../helpers/StorageHelpers"
 import { getMaskedCoin, getUnMaskedCoin } from "../../helpers/LocationHelpers"
 import { styles, colors } from "../../../assets/Styles"
@@ -45,20 +45,36 @@ export default class Transactions extends Component {
 
     componentDidMount(){
        this.getUser() 
+       this.getTransactions()
     }
 
     getTransactions = async () => {
         let response = null
         try {
+            let axios = await getAxiosInstance()
             response = await axios.get("/transaction")
+            
+            if(response && response.data && response.data.success){
+                
+                let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
+                
+                this.setState({fetchedTransactions: transactions}) 
+                this.getWealth(transactions)
+            }
         } catch (error) {
             console.log(error)
         }
-        if(response && response.data && response.data.success){
-            let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
-            this.setState({fetchedTransactions: transactions}) 
-            this.getWealth(transactions)
-        }
+    }
+
+    abstractObjectFromTransactionsQuery = (query) => {
+        let transactions = []
+        Object.values(query).forEach((queryElement, index)=>{
+            let {_id, amount, category, details, transactionType, transactionDate} = queryElement
+            transactionDate = new Date(transactionDate).toISOString().split('T')[0] 
+            let transaction = {order: index + 1, _id, amount, category, details, transactionType, transactionDate}
+            transactions.push(transaction)
+        })
+        return transactions
     }
 
     getWealth = async (transactions) => {
@@ -105,7 +121,7 @@ export default class Transactions extends Component {
             </LinearGradient>
             <View style={[roundedBox, {height: 80, marginTop: -40, backgroundColor: "#fff" }]}>
                 <View style={{ flexGrow: 1, height: "100%", justifyContent: "center", alignItems: "center"}}>
-                    <Text style={[textRed, textLg]}>{this.state.incomesAmount}</Text>
+                    <Text style={[textRed, textLg]}>{this.state.expensesAmount}</Text>
                     <Text style={[textBold]}>Expenses</Text>
                 </View>
     
@@ -115,7 +131,7 @@ export default class Transactions extends Component {
                 </View>
     
                 <View style={{flexGrow: 1, height: "100%", justifyContent: "center",  alignItems: "center"}}>
-                    <Text style={[textLightGreen, textLg]}>{this.state.expensesAmount}</Text>
+                    <Text style={[textLightGreen, textLg]}>{this.state.incomesAmount}</Text>
                     <Text style={[textBold]}>Incomes</Text>
                 </View>
             </View>
