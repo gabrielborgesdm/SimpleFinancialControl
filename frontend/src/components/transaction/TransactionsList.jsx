@@ -23,6 +23,7 @@ class TransactionsList extends Component{
     buildTransactionsTable(transactions){
         this.setState({transactionsList: transactions})
     }
+    
     turnArrowsToRight(elementIndex = -1) {
         let arrows = document.getElementsByName("arrow")
         for(let i = 0; i < arrows.length; i++){

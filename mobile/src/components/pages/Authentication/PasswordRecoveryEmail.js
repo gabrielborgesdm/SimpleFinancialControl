@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faEnvelope, faShare } from '@fortawesome/free-solid-svg-icons'
 import LinearGradient from 'react-native-linear-gradient'
 
-import {getAxiosInstance} from "../../services/axios"
+import axios from "../../services/axios"
 import { validateEmail } from "../../helpers/ValidationHelpers"
 import { translate, getDisplayLanguage } from "../../helpers/TranslationHelpers"
 import {WEBSITE_URL} from "react-native-dotenv"
@@ -79,7 +79,6 @@ export default class RecoverPassword extends Component {
         let response
         try {
             this.setState({isLoadingRequest: true})
-            let axios = await getAxiosInstance()
             response = await axios.post("/accounts/passwordRecovery", {email, country, frontendRecoverURL: `${WEBSITE_URL}/recoverpassword`})
 
         } catch (error) {

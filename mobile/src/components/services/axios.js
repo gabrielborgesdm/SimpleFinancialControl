@@ -3,17 +3,24 @@ import {API_BASE_URL} from "react-native-dotenv"
 import {getToken} from "../helpers/StorageHelpers"
 
 
-export const getAxiosInstance = async () => {
-    const baseURL = API_BASE_URL
+const axiosIntance = axios.create({
+    baseURL: API_BASE_URL
+})
+
+axiosIntance.interceptors.request.use(async (config) => {
     const token = await getToken()
+    if(token != null){
+        config.headers.Authorization = `Bearer ${token}`
+    }
 
-    let options = {}
-    if(baseURL) options["baseURL"] = baseURL
-    if(token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-    let axiosInstance = axios.create(options)
-    return axiosInstance
-}
+    return config
+    },
+    (error) => {
+        console.log(error)
+    }
+)
 
 
+export default axiosIntance
 
 

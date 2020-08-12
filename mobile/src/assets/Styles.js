@@ -92,6 +92,27 @@ export const styles = StyleSheet.create({...components, ...{
     borderRadius: 10, 
     justifyContent: "space-evenly", 
     flexDirection: "row"
+  },
+
+  /* History */
+  historyLog: {
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    
+    
+  },
+
+  historyLogIconView: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.darkGrey,
+    borderWidth: 1,
+    borderRadius: 100,
+    width: 50,
+    height: 50,
+    marginRight: 20,
   }
 }})
   

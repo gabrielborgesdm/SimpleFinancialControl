@@ -1,4 +1,5 @@
 import { getUser } from "../helpers/StorageHelpers"
+import { getDisplayLanguage } from "./TranslationHelpers"
 
 export const getMaskedCoin = async (amount) => {
     
@@ -26,4 +27,14 @@ export const getUnMaskedCoin = (amount) => {
     amount = amount.replace(",", ".")
    
     return amount
+}
+
+export const getFormatedDate = async (date) => {
+    let country = await getUser().coutry
+    if(country === "brazil"){
+        date = new Date(date).toLocaleDateString().split('T')[0] 
+    } else {
+        date = new Date(date).toISOString().split('T')[0] 
+    }
+    return date
 }

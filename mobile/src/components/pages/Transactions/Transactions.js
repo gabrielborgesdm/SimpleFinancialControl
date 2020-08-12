@@ -1,7 +1,7 @@
 import React, { Component } from "react"
-import { View, Text, Image, TouchableOpacity} from "react-native"
+import { View, Text, Image, SafeAreaView} from "react-native"
 import LinearGradient from 'react-native-linear-gradient'
-import {getAxiosInstance} from "../../services/axios"
+import axios from "../../services/axios"
 import { getUser } from "../../helpers/StorageHelpers"
 import { getMaskedCoin, getUnMaskedCoin } from "../../helpers/LocationHelpers"
 import { styles, colors } from "../../../assets/Styles"
@@ -51,9 +51,8 @@ export default class Transactions extends Component {
     getTransactions = async () => {
         let response = null
         try {
-            let axios = await getAxiosInstance()
             response = await axios.get("/transaction")
-            
+            console.log(response.data)
             if(response && response.data && response.data.success){
                 
                 let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
@@ -115,7 +114,7 @@ export default class Transactions extends Component {
     }
 
     render = () => (
-        <View style={[flex1]}>
+        <SafeAreaView style={[flex1]}>
             <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 2}} style={[ flexRow, justifySpaceAround, {padding: 50}]} colors={[ lightBlue, lightGreen]}>
             <Text style={[textWhite, textLg]}>{this.state.user.name}'s Info</Text>
             </LinearGradient>
@@ -136,7 +135,7 @@ export default class Transactions extends Component {
                 </View>
             </View>
 
-        </View>
+        </SafeAreaView>
     )
     
 }

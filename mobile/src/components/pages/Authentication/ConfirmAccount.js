@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import LinearGradient from 'react-native-linear-gradient'
 
-import {getAxiosInstance} from "../../services/axios"
+import axios from "../../services/axios"
 import { translate } from "../../helpers/TranslationHelpers"
 
 import { styles, colors } from "../../../assets/Styles"
@@ -17,7 +17,6 @@ export default class ConfirmAccount extends Component {
         let message = ""
         if(token){
             try {
-                let axios = await getAxiosInstance()
                 response = await axios.get(`/accounts/confirmEmail/${token}`)
                 if(response && response.data.success){
                     success = true

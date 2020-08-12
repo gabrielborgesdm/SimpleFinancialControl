@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCircle, faHome, faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faHome, faHistory, faBars } from '@fortawesome/free-solid-svg-icons';
 
 import Loading from './components/pages/Authentication/Loading'
 import Welcome from './components/pages/Authentication/Welcome'
@@ -17,6 +17,7 @@ import PasswordRecovery from './components/pages/Authentication/PasswordRecovery
 import PasswordRecoveryEmail from './components/pages/Authentication/PasswordRecoveryEmail'
 
 import Transactions from './components/pages/Transactions/Transactions'
+import History from './components/pages/History/History'
 
 import Menu from './components/pages/Menu/Menu'
 
@@ -28,7 +29,7 @@ export default class App extends Component {
         return (
             <HomeStack.Navigator tabBarOptions={{ activeTintColor: 'tomato', inactiveTintColor: 'gray', showLabel: false}}>
                 <HomeStack.Screen name="transactions" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faHome} color={color} />  }} component={Transactions} /> 
-                <HomeStack.Screen name="addTransactions" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faPlus} color={color} />  }} component={Transactions} /> 
+                <HomeStack.Screen name="history" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faHistory} color={color} />  }} component={History} /> 
                 <HomeStack.Screen name="menu" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faBars} color={color} />  }} component={Menu} /> 
             </HomeStack.Navigator>
         )
