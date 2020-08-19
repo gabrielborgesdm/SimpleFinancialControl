@@ -33,6 +33,6 @@ export default class LoadingIcon extends Component {
             outputRange: ['0deg', '360deg']
             })
         }]}}>
-            <FontAwesomeIcon  icon={faSpinner} />
+            <FontAwesomeIcon size={this.props.size}  style={this.props.style} icon={faSpinner} />
         </Animated.View>
 }

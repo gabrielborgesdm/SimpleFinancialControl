@@ -43,6 +43,7 @@ const translationJson = {
         FORM_LABEL_COUNTRY: "País (Tipo da moeda)",
         FORM_OPTION_BRAZIL: "Brazil - R$",
         FORM_OPTION_USA: "U.S.A - $",
+        FILTER_TRANSACTIONS: "Filtrar transações",
 
         TABLE_DETAILS: "Detalhes",
         TABLE_AMOUNT: "Quantidade",
@@ -234,6 +235,7 @@ const translationJson = {
         FORM_LABEL_COUNTRY: "Country (Currency Type)",
         FORM_OPTION_BRAZIL: "Brazil - R$",
         FORM_OPTION_USA: "U.S.A - $",
+        FILTER_TRANSACTIONS: "Filtrar Transações",
         
         TABLE_DETAILS: "Details",
         TABLE_AMOUNT: "Amount",

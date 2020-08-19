@@ -119,7 +119,7 @@ export default class SignIn extends Component {
         else if(response.data && response.data.success){
             let check = await setStorages(response.data)
             if(check) {
-                this.props.navigation.navigate("transactions")
+                this.props.navigation.navigate("home", { screen: 'transactions' })
                 return
             } else statusMessage = translate("SERVER_ERROR")
         } else if (response.data && response.data.errors){

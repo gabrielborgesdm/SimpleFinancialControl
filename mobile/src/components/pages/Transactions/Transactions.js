@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { View, Text, Image, SafeAreaView} from "react-native"
 import LinearGradient from 'react-native-linear-gradient'
-import axios from "../../services/axios"
+
 import { getUser } from "../../helpers/StorageHelpers"
 import { getMaskedCoin, getUnMaskedCoin } from "../../helpers/LocationHelpers"
 import { styles, colors } from "../../../assets/Styles"
@@ -23,6 +23,8 @@ export default class Transactions extends Component {
             incomesAmount: 0,
             expensesAmount: 0,
         }
+
+        this.transactionsDB = null
     }
 
     getUser = async () => {
@@ -40,28 +42,6 @@ export default class Transactions extends Component {
             return textRed
         } else {
             return textDarkGrey
-        }
-    }
-
-    componentDidMount(){
-       this.getUser() 
-       this.getTransactions()
-    }
-
-    getTransactions = async () => {
-        let response = null
-        try {
-            response = await axios.get("/transaction")
-            console.log(response.data)
-            if(response && response.data && response.data.success){
-                
-                let transactions = this.abstractObjectFromTransactionsQuery(response.data.transactions)
-                
-                this.setState({fetchedTransactions: transactions}) 
-                this.getWealth(transactions)
-            }
-        } catch (error) {
-            console.log(error)
         }
     }
 
@@ -112,6 +92,11 @@ export default class Transactions extends Component {
             transactions
         })
     }
+
+    componentDidMount(){
+        this.getUser() 
+    }
+ 
 
     render = () => (
         <SafeAreaView style={[flex1]}>

@@ -83,6 +83,19 @@ export const styles = StyleSheet.create({...components, ...{
     paddingVertical: 25
   },
 
+  /* SyncView */
+  syncView: {
+    position: "absolute",
+    flexDirection: "row",
+    backgroundColor: colors.lightGrey,
+
+    padding: 10,
+    alignItems: "flex-start", 
+    justifyContent: "flex-start",
+    top: 0,
+    right: 0,
+    zIndex: 1,
+  },
   /* Transactions */
 
   roundedBox: {

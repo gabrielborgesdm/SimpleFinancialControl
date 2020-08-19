@@ -1,9 +1,9 @@
 import React, { Component } from "react"
-import { View, Text, Image, SafeAreaView} from "react-native"
+import { View, Text, TextInput, Dimensions, SafeAreaView} from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { styles, colors } from "../../../assets/Styles"
 import axios from "../../services/axios"
-const { flex1, h1, h3, h4, textWhite, textSm, textLg, bgWhite, textRight, historyLog, historyLogIconView, justifySpaceAround, flexGrow1, textBold, fullWidthImage, minimalistInputGroup, buttonMinimalist, textDarkGrey, py3, mx1, my5 } = styles
+const { flex1, h1, h3, h4, textWhite, minimalistInputControl, textLg, textRight, historyLog, historyLogIconView, justifySpaceAround, flexGrow1, textBold, fullWidthImage, minimalistInputGroup, buttonMinimalist, textDarkGrey, py3, mx1, my5 } = styles
 const { lightBlue, lightGreen } = colors
 import { getFormatedDate, getMaskedCoin } from "../../helpers/LocationHelpers"
 import { getCategory } from "../../helpers/CategoryHelpers"
@@ -17,7 +17,7 @@ export default class Transactions extends Component {
         super(props)
         this.state = {
             user: {},
-        
+            filter: ""
         }
     }
 
@@ -55,21 +55,6 @@ export default class Transactions extends Component {
             index++ 
         }
 
-        /* Object.values(query).forEach(async (queryElement, index)=>{
-            let {_id, amount, category, details, transactionType, transactionDate} = queryElement
-            details = details || translate('TRANSACTIONS_LIST_NO_DESCRIPTION')
-            category = getCategory(category)
-            let categoryIcon = category.icon
-            category = category.category
-            transactionDate = await getFormatedDate(transactionDate)
-            let amountValue = amount
-            let amountMasked = await getMaskedCoin(amount)
-            let transactionTypeValue = transactionType
-            transactionType = transactionType === "income" ? translate('TRANSACTIONS_LIST_INCOME') : translate('TRANSACTIONS_LIST_EXPENSE')
-            let transaction = {order: index + 1, _id, amountValue, amountMasked, categoryIcon, category, details, transactionTypeValue, transactionType, transactionDate}
-            transactions.push(transaction)
-        }) */
-        console.log("teste", transactions)
         return transactions
     }
 
@@ -80,8 +65,19 @@ export default class Transactions extends Component {
     }
 
     render = () => (
-        <SafeAreaView style={[flex1]}>
-            <ScrollView style={{backgroundColor: "#fff"}}>
+        <SafeAreaView style={[flex1, {backgroundColor: "#fff"}]}>
+            <ScrollView horizontal={true} contentContainerStyle={{backgroundColor: "#ff00ff"}}>
+                <Text>asdsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssasd</Text>
+            </ScrollView>
+
+            <ScrollView>
+                <TextInput 
+                    placeholder={translate('FILTER_TRANSACTIONS')}
+                    autoCapitalize="none"
+                    defaultValue={this.state.filter}
+                    onChangeText={text=>this.setState({filter: text})}
+                    style={[minimalistInputControl]}>
+                </TextInput>
                 {(this.state.transactionsList && this.state.transactionsList.length) ? 
                     this.state.transactionsList.map((transaction, index)=> 
                         <View key={`log${index}${transaction._id}`} style={[historyLog]}>
