@@ -18,14 +18,14 @@ export default class TransactionsSync extends Component {
     }
 
     loadRealm = () => {
-        /* Realm.deleteFile({
+        /*  Realm.deleteFile({
             schema: TransactionSchema
-        }) */ 
+        }) */  
         Realm.open({
             schema: TransactionSchema
         }).then(realm => {
             this.setState({ realm })
-        })
+        })  
     }
 
     getRealm = async () => {
@@ -56,6 +56,62 @@ export default class TransactionsSync extends Component {
         return transactions.length ? transactions : null
     }
 
+    syncTransactions = async () => {
+        let onlineTransactions = await this.getOnlineTransactions()
+        let offlineTransactions = await this.getOfflineTransactions()
+        
+        let {transactionsToInsert, transactionsToUpdate} = await this.getTransactionsToInsert(onlineTransactions, offlineTransactions)
+        this.insertTransactionsToInsert(transactionsToInsert)
+        this.updateTransactionsToUpdate(transactionsToUpdate)
+    }
+
+    getTransactionsToInsert = async (onlineTransactions, offlineTransactions) => {
+        if(!offlineTransactions) return {transactionsToInsert: onlineTransactions}
+        else if(!onlineTransactions) return null
+
+        let transactionsToInsert = [], transactionsToUpdate = []
+        onlineTransactions.forEach(onlineTransaction => {
+            let offlineTransaction = offlineTransactions.filter(offlineTransaction=>offlineTransaction._id === onlineTransaction._id)
+            if(offlineTransaction.length === 0){
+                transactionsToInsert.push(onlineTransaction)
+            } else {
+                let transactionToUpdate = this.checkHasDifferences(onlineTransactions, offlineTransaction[0])
+                if(transactionToUpdate){
+                    transactionsToUpdate.push(transactionToUpdate)
+                }
+            }
+        })
+
+        return {transactionsToInsert, transactionsToUpdate}
+    }
+
+    checkHasDifferences = (onlineTransactions, offlineTransaction) => {
+        if(!onlineTransactions && !onlineTransactions.length) return
+        if(!offlineTransaction) return
+        let transactionToBeUpdated = false
+
+        let checkNeedToUpdate = false
+        onlineTransactions.forEach(onlineTransaction=>{
+            if(onlineTransaction._id === offlineTransaction._id){
+                if(onlineTransaction.amount !== offlineTransaction.amount) checkNeedToUpdate = true
+                if(onlineTransaction.category !== offlineTransaction.category) checkNeedToUpdate = true
+                if(onlineTransaction.details !== offlineTransaction.details) checkNeedToUpdate = true
+                if(onlineTransaction.transactionDate !== offlineTransaction.transactionDate) checkNeedToUpdate = true
+                if(onlineTransaction.transactionType !== offlineTransaction.transactionType) checkNeedToUpdate = true
+                if(checkNeedToUpdate) transactionToBeUpdated = onlineTransaction
+            }
+        })
+
+        return transactionToBeUpdated
+    }
+
+    insertTransactionsToInsert = async (transactionsToInsert) => {
+        if(!transactionsToInsert || !transactionsToInsert.length) return
+        for (const transaction of transactionsToInsert) {
+            await this.insertOfflineTransaction(transaction)
+        }
+    }
+
     insertOfflineTransaction = async (transactions) => {
         let realm = await this.getRealm()
         await realm.write(async () => {
@@ -63,36 +119,22 @@ export default class TransactionsSync extends Component {
         })
     }
 
-    syncTransactions = async () => {
-        let transactionsToUpdate = null, transactionsToInsert = null, transactionsToDelete = null
-        let onlineTransactions = await this.getOnlineTransactions()
-        let offlineTransactions = await this.getOfflineTransactions()
-        
-        console.log(offlineTransactions)
-        transactionsToInsert = await this.getTransactionsToInsert(onlineTransactions, offlineTransactions)
-        this.insertTransactionsToInsert(transactionsToInsert)
-
-    }
-
-    insertTransactionsToInsert = async (transactionsToInsert) => {
-        for (const transaction of transactionsToInsert) {
-            await this.insertOfflineTransaction(transaction)
+    updateTransactionsToUpdate = async (transactionsToUpdate) => {
+        if(!transactionsToUpdate || !transactionsToUpdate.length) return
+        for (const transaction of transactionsToUpdate) {
+            await this.updateOfflineTransaction(transaction)
         }
     }
 
-    getTransactionsToInsert = async (onlineTransactions, offlineTransactions) => {
-        if(!offlineTransactions) return onlineTransactions
-        else if(!onlineTransactions) return null
-
-        let transactionsToInsert = []
-        onlineTransactions.forEach(onlineTransaction => {
-            if(offlineTransactions.filter(offlineTransaction=>offlineTransaction._id === onlineTransaction._id).length === 0){
-                transactionsToInsert.push(onlineTransaction)
-            }
+    updateOfflineTransaction = async (transaction) => {
+        console.log(transaction)
+        let realm = await this.getRealm()
+        await realm.write(async () => {
+            await realm.create('Transaction', transaction, 'modified');
         })
-
-        return transactionsToInsert
     }
+
+    
     
     componentDidMount() {
         

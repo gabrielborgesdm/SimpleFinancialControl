@@ -2,6 +2,7 @@
 export const TransactionSchema =  [
     {
         name: 'Transaction', 
+        primaryKey: "_id",
         properties: {
             _id: 'string',
             amount: "float",
