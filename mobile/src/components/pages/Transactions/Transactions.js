@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { View, Text, Image, SafeAreaView} from "react-native"
 import LinearGradient from 'react-native-linear-gradient'
+import { syncTransactions } from '../../services/TransactionsSync'
+import { getOfflineTransactions } from '../../services/OfflineTransactionsCrud'
 
 import { getUser } from "../../helpers/StorageHelpers"
 import { getMaskedCoin, getUnMaskedCoin } from "../../helpers/LocationHelpers"
@@ -27,6 +29,12 @@ export default class Transactions extends Component {
         this.transactionsDB = null
     }
 
+    syncAndGetTransactions = async () => {
+        await syncTransactions()
+        let transactions = await getOfflineTransactions()
+        console.log(transactions)
+    }
+
     getUser = async () => {
         let user = await getUser()
         this.setState({user})
@@ -45,16 +53,6 @@ export default class Transactions extends Component {
         }
     }
 
-    abstractObjectFromTransactionsQuery = (query) => {
-        let transactions = []
-        Object.values(query).forEach((queryElement, index)=>{
-            let {_id, amount, category, details, transactionType, transactionDate} = queryElement
-            transactionDate = new Date(transactionDate).toISOString().split('T')[0] 
-            let transaction = {order: index + 1, _id, amount, category, details, transactionType, transactionDate}
-            transactions.push(transaction)
-        })
-        return transactions
-    }
 
     getWealth = async (transactions) => {
         
@@ -95,6 +93,7 @@ export default class Transactions extends Component {
 
     componentDidMount(){
         this.getUser() 
+        this.syncAndGetTransactions()
     }
  
 

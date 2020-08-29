@@ -16,7 +16,6 @@ import ConfirmAccount from './components/pages/Authentication/ConfirmAccount'
 import PasswordRecovery from './components/pages/Authentication/PasswordRecovery'
 import PasswordRecoveryEmail from './components/pages/Authentication/PasswordRecoveryEmail'
 
-import TransactionsSync from './components/pages/Transactions/TransactionsSync'
 import Transactions from './components/pages/Transactions/Transactions'
 import History from './components/pages/History/History'
 
@@ -24,12 +23,16 @@ import Menu from './components/pages/Menu/Menu'
 
 
 export default class App extends Component {
+    
+    constructor(props){
+        super(props)
+
+    }
 
     HomeStackScreen() {
         const HomeStack = createBottomTabNavigator()
         return (
             <React.Fragment>
-                <TransactionsSync />
                 <HomeStack.Navigator tabBarOptions={{ activeTintColor: 'tomato', inactiveTintColor: 'gray', showLabel: false}}>
                     <HomeStack.Screen name="transactions" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faHome} color={color} />  }} component={Transactions} /> 
                     <HomeStack.Screen name="history" options={{ tabBarIcon: ({ focused, color, size }) => <FontAwesomeIcon icon={faHistory} color={color} />  }} component={History} /> 
