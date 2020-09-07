@@ -14,7 +14,7 @@ import ShortLogo from "../../../assets/img/short-logo2.png"
 import { styles, colors } from "../../../assets/Styles"
 const { lightBlue, lightGreen } = colors
 const { h1, h4, h3, mt5, flex1, textBold, textUnderline, bgYellow, minimalistInputControl, minimalistRadioControl, minimalistRadioGroup, minimalistInputIcon, lightGreyLogoImage,
-minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, alignCenter, opacityHigh, opacityLow
+minimalistInputGroup, textCenter, textDarkGrey, buttonMinimalist, mr1, alignSelfCenter, opacityHigh, opacityLow
 } = styles
 
 
@@ -198,11 +198,11 @@ export default class SignUp extends Component {
                     </View>
                     <View style={minimalistRadioGroup}>
                         <TouchableOpacity style={minimalistRadioControl} onPress={()=>this.setState({country: "brazil"})}>
-                            <FontAwesomeIcon icon={this.state.country === "brazil" ? faCheckCircle : faCircle } style={[mr1, alignCenter, textDarkGrey]} />
+                            <FontAwesomeIcon icon={this.state.country === "brazil" ? faCheckCircle : faCircle } style={[mr1, alignSelfCenter, textDarkGrey]} />
                             <Text style={textDarkGrey}>{translate("FORM_OPTION_BRAZIL")}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={minimalistRadioControl} onPress={()=>this.setState({country: "usa"})}>
-                            <FontAwesomeIcon icon={this.state.country === "usa" ? faCheckCircle : faCircle }  style={[mr1, alignCenter, textDarkGrey]} />
+                            <FontAwesomeIcon icon={this.state.country === "usa" ? faCheckCircle : faCircle }  style={[mr1, alignSelfCenter, textDarkGrey]} />
                             <Text style={textDarkGrey}>{translate("FORM_OPTION_USA")}</Text>
                         </TouchableOpacity>
                     </View>

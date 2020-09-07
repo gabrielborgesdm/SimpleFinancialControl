@@ -9,7 +9,9 @@ export const dimensions = {
     
 export const colors  = {
     red: "#D33F49",
-    black: "#201E1F",
+    white: "#fff",
+    black: "#000",
+    dark: "#201E1F",
     yellow: "#FFC857",
     darkBlue: "#199a8b",
     lightBlue: "#21CEBA",
@@ -61,7 +63,10 @@ export const components = {
     opacityHigh: { opacity: 1 },
     opacityLow: { opacity: 0.7 },
 
-    alignCenter: { alignSelf: "center" },
+    alignSelfCenter: { alignSelf: "center" },
+    alignItemsCenter: { alignItems: "center" },
+
+
 
     fullWidthImage: { width: dimensions.fullWidth - 50, height: dimensions.fullWidth - 50},
     halfWidthImage: { width: dimensions.halfWidth, height: dimensions.halfWidth},
@@ -151,8 +156,10 @@ export const components = {
     pl4: { paddingLeft: spacing.s4 },
     pl5: { paddingLeft: spacing.s5 },
     
+    bgWhite: { backgroundColor: colors.white },
     bgRed: { backgroundColor: colors.red },
     bgBlack: { backgroundColor: colors.black },
+    bgDark: { backgroundColor: colors.dark },
     bgYellow: { backgroundColor: colors.yellow },
     bgDarkBlue: { backgroundColor: colors.darkBlue },
     bgLightBlue: { backgroundColor: colors.lightBlue },
@@ -162,6 +169,7 @@ export const components = {
     bgDarkGrey: { backgroundColor: colors.darkGrey },
     
     textBlack: { color: colors.black },
+    textDark: { color: colors.dark },
     textRed: { color: colors.red },
     textYellow: { color: colors.yellow },
     textLightBlue: { color: colors.lightBlue },
@@ -191,5 +199,98 @@ export const components = {
     h4: {fontSize: fonts.f2, fontWeight: "bold"},
     h5: {fontSize: fonts.f1, fontWeight: "bold"},
 
+    hr: {width: "100%", borderWidth: 1},
+
     borderRounded: {borderWidth: 0, borderRadius: 100},
+    boxShadow1: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+
+    modalModal: {
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    
+    modalView: {
+        width: Dimensions.get("screen").width - 50,
+        backgroundColor: colors.white,
+        borderRadius: 5,
+        shadowColor: colors.dark,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    
+    modalViewHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: spacing.s1,
+        paddingVertical: spacing.s1,
+        backgroundColor: colors.lightBlue,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        borderBottomWidth: 0.3,
+        borderBottomColor: colors.dark
+    },
+    
+    modalViewHeaderTitleView: {
+        flexGrow: 1,
+    },
+    
+    modalViewHeaderTitle: {
+        color: colors.darkGrey,
+        fontSize: fonts.f3, 
+        fontWeight: "bold"
+    },
+    
+    modalViewBody: {
+        flex: 1,
+        paddingHorizontal: spacing.s1,
+        paddingVertical: spacing.s2,
+        backgroundColor: colors.lightGrey,
+        borderBottomRightRadius: 5,
+        borderBottomLeftRadius: 5,
+    },
+
+    formGroup: {
+        flexDirection: "column",
+        margin: spacing.s1,
+        justifyContent: "center",
+    },
+
+    formLabel: {
+        color: colors.dark,
+        fontSize: fonts.f2,
+    },
+
+    formControl: {
+        flexGrow: 1,
+        flexDirection: "row",
+        borderWidth: 1,
+        borderRadius: 5,
+        height: 40,
+        paddingLeft: spacing.s2,
+        borderColor: colors.dark,
+    },
+
+    formControlButtonRight: {
+        height: 40,
+        position: "absolute",
+        bottom: 0,
+        paddingHorizontal: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        right: spacing.s2,
+    }
 }

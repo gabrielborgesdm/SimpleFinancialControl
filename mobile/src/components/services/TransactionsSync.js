@@ -37,7 +37,7 @@ const getTransactionsToInsert = async (onlineTransactions, offlineTransactions) 
 }
 
 const checkHasDifferences = (onlineTransactions, offlineTransaction) => {
-    if(!onlineTransactions && !onlineTransactions.length) return
+    if(!onlineTransactions || !onlineTransactions.length) return
     if(!offlineTransaction) return
     let transactionToBeUpdated = false
 

@@ -1,10 +1,34 @@
-export const abstractObjectFromTransactionsQuery = (query) => {
-    let transactions = []
-    Object.values(query).forEach((queryElement, index)=>{
-        let {_id, amount, category, details, transactionType, transactionDate} = queryElement
-        transactionDate = new Date(transactionDate).toISOString().split('T')[0] 
-        let transaction = {order: index + 1, _id, amount, category, details, transactionType, transactionDate}
-        transactions.push(transaction)
-    })
-    return transactions
+import { getFormatedDate, getMaskedCoin } from "../helpers/LocationHelpers"
+import { getCategory } from "../helpers/CategoryHelpers"
+import { translate } from "../helpers/TranslationHelpers"
+
+export const getFormattedTransactions = async (transactions) => {
+    let newTransactions = []
+    let index = 0
+    
+    for(let i = 0; i < transactions.length; i++){
+        let transaction = transactions[`${i}`]
+        
+        let {_id, amount, category, details, transactionType, transactionDate} = transaction
+        
+        
+        let formattedTransaction = {
+            order: i + 1, 
+            _id, 
+            amount, 
+            amountMasked: await getMaskedCoin(amount), 
+            categoryIcon: getCategory(category).icon, 
+            categoryTranslated: getCategory(category).category, 
+            categoryKey: category,
+            details: details || translate('TRANSACTIONS_LIST_NO_DESCRIPTION'), 
+            transactionType,
+            transactionTypeTranslated: transactionType === "income" ? translate('TRANSACTIONS_LIST_INCOME') : translate('TRANSACTIONS_LIST_EXPENSE'), 
+            transactionDate: transactionDate,
+            transactionDateFormatted: await getFormatedDate(transactionDate)
+        }
+        
+        newTransactions.push(formattedTransaction)
+    }
+
+    return newTransactions
 }

@@ -126,6 +126,40 @@ export const styles = StyleSheet.create({...components, ...{
     width: 50,
     height: 50,
     marginRight: 20,
+  },
+
+  /* DATE DROPDOWN */
+
+  dateDropdownView: {
+    borderRadius: 5,
+    backgroundColor: colors.white,
+    shadowColor: colors.dark,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+    position: "absolute",
+    zIndex: 2,
+    right: -5
+  },
+
+  dateDropdownHeader: {
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    borderTopLeftRadius: 5,
+    borderTopEndRadius: 5,
+    
+  },
+
+  dateDropdownItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    borderTopColor: colors.dark,
+    borderTopWidth: 0.3
   }
 }})
   
