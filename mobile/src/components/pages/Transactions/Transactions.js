@@ -123,7 +123,11 @@ export default class Transactions extends Component {
                     <View style={[flexRow, flexGrow1, justifySpaceBetween, alignItemsCenter, px3 ]}>
                         <Text style={[textWhite, textLg]}>{this.state.user.name}</Text>
                         {this.state.isDateDropdownVisible ? 
-                            <DateDropdown isDateDropdownVisible={this.state.isDateDropdownVisible} handleCloseDateDropdown={this.handleCloseDateDropdown} />
+                            <DateDropdown 
+                                navigation={this.props.navigation} 
+                                isDateDropdownVisible={this.state.isDateDropdownVisible} 
+                                handleCloseDateDropdown={this.handleCloseDateDropdown} 
+                            />
                         : 
                             <TouchableOpacity onPress={()=>this.setState({isDateDropdownVisible: true})}>
                                 <FontAwesomeIcon icon={faCalendar} size={20} style={[textDarkGrey]} />

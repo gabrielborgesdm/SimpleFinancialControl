@@ -277,7 +277,7 @@ export const components = {
     formControl: {
         flexGrow: 1,
         flexDirection: "row",
-        borderWidth: 1,
+        borderWidth: 0.3,
         borderRadius: 5,
         height: 40,
         paddingLeft: spacing.s2,

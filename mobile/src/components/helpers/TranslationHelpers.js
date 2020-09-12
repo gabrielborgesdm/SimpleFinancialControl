@@ -127,6 +127,8 @@ const translationJson = {
         DATE_DROPDOWN_END_DATE: "Data Final",
         DATE_DROPDOWN_START_DATE_CANT_BE_EMPTY: "Data Inicial não pode estar vazia",
         DATE_DROPDOWN_END_DATE_CANT_BE_EMPTY: "Data Final não pode estar vazia",
+        DATE_DROPDOWN_START_DATE_CANT_BE_HIGHER_THAN_END_DATE: "A Data Inicial não pode ser maior do que a data final",
+        DATE_DROPDOWN_START_DATE_CANT_BE_EQUALS_TO_END_DATE: "A Data Inicial não pode ser igual à data final",
         DATE_DROPDOWN_CLOSE: "Fechar",
         DATE_DROPDOWN_SAVE: "Salvar",
 
@@ -319,6 +321,8 @@ const translationJson = {
         DATE_DROPDOWN_END_DATE: "End Date",
         DATE_DROPDOWN_START_DATE_CANT_BE_EMPTY: "Start Date can't be empty",
         DATE_DROPDOWN_END_DATE_CANT_BE_EMPTY: "End Date can't be empty",
+        DATE_DROPDOWN_START_DATE_CANT_BE_HIGHER_THAN_END_DATE: "Start Date can't be Higher than End Date",
+        DATE_DROPDOWN_START_DATE_CANT_BE_EQUALS_TO_END_DATE: "Start Date can't be equals to End Date",
         DATE_DROPDOWN_CLOSE: "Close",
         DATE_DROPDOWN_SAVE: "Save",
 
@@ -394,6 +398,8 @@ const translationJson = {
         YES: "yes",
         NO: "no",
         SETTINGS: "Settings"
+
+        
         
     }
 

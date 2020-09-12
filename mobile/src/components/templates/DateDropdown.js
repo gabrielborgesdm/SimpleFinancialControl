@@ -6,15 +6,15 @@ import moment from 'moment'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { TextInputMask } from 'react-native-masked-text'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCalendar, faTimesCircle, faEnvelope, faUser, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCalendar, faTimesCircle, faEnvelope, faUser, faCheck, faSave } from '@fortawesome/free-solid-svg-icons'
 
 import { getUser } from '../helpers/StorageHelpers'
 import { translate } from '../helpers/TranslationHelpers'
 import { styles, colors } from "../../assets/Styles"
 const { lightBlue, dark } = colors
 const {
-    bgWhite, flexRow, dateDropdownItem, dateDropdownView, textCenter, dateDropdownHeader, modalView, modalModal, formGroup, formLabel, formControl, formControlButtonRight,
-    minimalistInputGroup, modalViewHeader, modalViewHeaderTitleView, modalViewHeaderTitle, p1, modalViewBody, buttonMinimalist, bgLightGreen, opacityLow, opacityHigh, flexGrow1
+    bgWhite, textYellow, dateDropdownItem, dateDropdownView, textCenter, dateDropdownHeader, modalView, modalModal, formGroup, formLabel, formControl, formControlButtonRight,
+    minimalistInputGroup, modalViewHeader, modalViewHeaderTitleView, modalViewHeaderTitle, p1, modalViewBody, buttonMinimalist, bgLightBlue, opacityLow, opacityHigh, flexGrow1
 } = styles
  
 export default class DateDropdown extends Component{
@@ -27,14 +27,13 @@ export default class DateDropdown extends Component{
                 start: "",
                 end: "",
             },
-            dateFilterEnd: "",
             isCustomModalVisible: false,
+            customModalStatus: "",
             user: {}
         }
     }
     
     handleDateChange = dateMode => {
-        console.log("test", dateMode)
         if(dateMode === "custom") {
             this.setState({isCustomModalVisible: true})
         } else {
@@ -48,8 +47,53 @@ export default class DateDropdown extends Component{
     }
 
     chooseCustomDate = () => {
-        this.setState({isCustomModalVisible: false})
+        if(!this.checkDateEmptyFields()) return
+        if(!this.checkDateFieldsAreValid()) return
+
         this.props.navigation.setParams({dateMode: "custom", dateFilter: this.state.dateFilter})
+        this.setState({isCustomModalVisible: false})
+        this.props.handleCloseDateDropdown()
+
+    }
+
+    checkDateEmptyFields = () => {
+        let {dateFilter} = this.state
+        let checkCanChooseCustomDate = true
+        if(!dateFilter.start) checkCanChooseCustomDate = false
+        if(!dateFilter.end) checkCanChooseCustomDate = false
+        return checkCanChooseCustomDate
+    }
+    
+    checkDateFieldsAreValid = () => {
+        let {dateFilter} = this.state
+        let errorMessage = ""
+
+        let start = this.createNewDateFromFormattedString(dateFilter.start)
+        let end = this.createNewDateFromFormattedString(dateFilter.end)
+
+
+        if(start > end) errorMessage = translate("DATE_DROPDOWN_START_DATE_CANT_BE_HIGHER_THAN_END_DATE")
+        if(+start === +end) errorMessage = translate("DATE_DROPDOWN_START_DATE_CANT_BE_EQUALS_TO_END_DATE")
+        
+        if(errorMessage) this.setState({customModalStatus: errorMessage})
+
+        return errorMessage ? false : true
+    }
+
+    createNewDateFromFormattedString = (dateString) => {
+        let day, month, year
+        
+        if(this.state.user.country === "brazil") {
+            day = dateString.split("/")[0]
+            month = dateString.split("/")[1]
+            year = dateString.split("/")[2]
+        } else {
+            day = dateString.split("-")[1]
+            month = dateString.split("-")[0]
+            year = dateString.split("-")[2]
+        }
+
+        return new Date(year, month, day)
     }
 
     handleDateTimeChange = (type, selectedDate) => {
@@ -83,10 +127,10 @@ export default class DateDropdown extends Component{
         <Fragment>
             {this.state.isCustomModalVisible &&
                 <Modal isVisible={this.state.isCustomModalVisible} useNativeDriver={true} style={modalModal}>
-                    <View style={[modalView, {height: 280}]}>
+                    <View style={[modalView, {height: 300}]}>
                         <View style={modalViewHeader}>
                             <View style={modalViewHeaderTitleView}>
-                                <Text style={modalViewHeaderTitle}>Custom Date</Text>
+                                <Text style={modalViewHeaderTitle}>{translate("DATE_DROPDOWN_CUSTOM_DATE")}</Text>
                             </View>
                             <View>
                                 <TouchableOpacity style={p1} onPress={()=>this.setState({isCustomModalVisible: false})}>
@@ -95,8 +139,9 @@ export default class DateDropdown extends Component{
                             </View>
                         </View>
                         <View style={modalViewBody}>
+                            {this.state.customModalStatus ? <Text style={[textCenter, textYellow]}>{this.state.customModalStatus}</Text> : false}
                             <View style={formGroup}>
-                                <Text style={formLabel}>Enter the custom start date</Text>
+                                <Text style={formLabel}>{translate("DATE_DROPDOWN_START_DATE")}</Text>
                                 <TextInputMask
                                     type={'datetime'}
                                     options={{
@@ -114,7 +159,7 @@ export default class DateDropdown extends Component{
                             </View>
 
                             <View style={[formGroup]}>
-                                <Text style={formLabel}>Enter the custom end date</Text>
+                                <Text style={formLabel}>{translate("DATE_DROPDOWN_END_DATE")}</Text>
                                 <TextInputMask
                                     type={'datetime'}
                                     options={{
@@ -146,9 +191,13 @@ export default class DateDropdown extends Component{
                             <View style={flexGrow1}></View>
 
                             <View style={[formGroup]}>
-                                <TouchableOpacity disabled={this.state.dateFilter.start && this.state.dateFilter.end ? true : false} onPress={()=>this.chooseCustomDate()} style={[ buttonMinimalist, bgLightGreen]}>
-                                    <FontAwesomeIcon icon={faCheck} />
-                                    <Text style={[formLabel]}>  Choose Custom Date</Text>
+                                <TouchableOpacity 
+                                    disabled={!this.checkDateEmptyFields()}  
+                                    onPress={()=>this.chooseCustomDate()} 
+                                    style={[ buttonMinimalist, bgLightBlue, {opacity: this.checkDateEmptyFields() ? 1 : 0.7}]}
+                                >
+                                    <FontAwesomeIcon icon={faSave} />
+                                    <Text style={[formLabel]}> {translate("DATE_DROPDOWN_SAVE")}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -159,24 +208,28 @@ export default class DateDropdown extends Component{
                 <View>
                     <View style={[dateDropdownView]}>
                         <View style={dateDropdownHeader}>
-                            <Text style={[textCenter]}>Filtrar por Data</Text>
+                            <Text style={[textCenter]}>{translate("DATE_DROPDOWN_FILTER_BY_DATE")}</Text>
                         </View>
                         <View>
                             
+                            <TouchableOpacity style={[dateDropdownItem]} onPress={()=>this.handleDateChange("last_week")}>
+                                <Text style={[textCenter]}>{translate("DATE_DROPDOWN_LAST_WEEK")}</Text>
+                            </TouchableOpacity>
+
                             <TouchableOpacity style={[dateDropdownItem]} onPress={()=>this.handleDateChange("last_month")}>
-                                <Text style={[textCenter]}>Último Mês</Text>
+                                <Text style={[textCenter]}>{translate("DATE_DROPDOWN_LAST_MONTH")}</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={[dateDropdownItem]} onPress={()=>this.handleDateChange("last_year")}>
-                                <Text style={[textCenter]}>Últimos 12 meses</Text>
+                                <Text style={[textCenter]}>{translate("DATE_DROPDOWN_LAST_YEAR")}</Text>
                             </TouchableOpacity>
-
-                            <TouchableOpacity style={[dateDropdownItem]} onPress={()=>this.handleDateChange("custom")}>
-                                <Text style={[textCenter]}>Customizado</Text>
-                            </TouchableOpacity>
-
+                            
                             <TouchableOpacity style={[dateDropdownItem]} onPress={()=>this.handleDateChange("all")}>
-                                <Text style={[textCenter]}>Todas Transações</Text>
+                                <Text style={[textCenter]}>{translate("DATE_DROPDOWN_ALL_ENTRIES")}</Text>
+                            </TouchableOpacity>
+                            
+                            <TouchableOpacity style={[dateDropdownItem]} onPress={()=>this.handleDateChange("custom")}>
+                                <Text style={[textCenter]}>{translate("DATE_DROPDOWN_CUSTOM_DATE")}</Text>
                             </TouchableOpacity>
 
                         </View>
