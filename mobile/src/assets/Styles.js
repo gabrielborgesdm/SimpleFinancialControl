@@ -160,6 +160,22 @@ export const styles = StyleSheet.create({...components, ...{
     paddingHorizontal: 5,
     borderTopColor: colors.dark,
     borderTopWidth: 0.3
+  },
+
+  /* CHARTS */
+
+  chartArrow: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    display: "flex",
+    justifyContent: "center",
+    zIndex: 100
+  },
+
+  chartArrowIcon: {
+      color: colors.lightBlue,
+      padding: 20
   }
 }})
   

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCalendar } from '@fortawesome/free-solid-svg-icons'
 
 import { syncTransactions } from '../../services/TransactionsSync'
+import { getFormattedDateType } from '../../helpers/DateHelpers'
 import { getOfflineTransactions } from '../../services/OfflineTransactionsCrud'
 import { getFormattedTransactions } from '../../helpers/TransactionHelpers'
 import { getMaskedCoin, getUnMaskedCoin } from "../../helpers/LocationHelpers"
@@ -14,7 +15,7 @@ import IncomesChart from "./Components/IncomesChart"
 import DateDropdown from "../../templates/DateDropdown"
 import { getUser } from "../../helpers/StorageHelpers"
 import { styles, colors } from "../../../assets/Styles"
-const { flex1, h1, h3, px3, textWhite, textSm, textLg, textLightGreen, flexRow, textRed, roundedBox, justifySpaceAround, flexGrow1, textBold, alignItemsCenter, justifySpaceBetween, textDarkGrey, p2, mx1, my5 } = styles
+const { flex1, h1, textSm, px3, textWhite, mr1, textLg, textLightGreen, flexRow, textRed, roundedBox, justifySpaceAround, flexGrow1, textBold, alignItemsCenter, justifySpaceBetween, textDarkGrey, p2, mx1, my5 } = styles
 const { lightBlue, lightGreen } = colors
 
 export default class Transactions extends Component {
@@ -121,17 +122,21 @@ export default class Transactions extends Component {
                 <View style={[flexGrow1]}>
                     <LinearGradient start={{x: 0, y: 0}} end={{x: 0, y: 2}} style={[ flexRow, justifySpaceAround, {paddingVertical: 50}]} colors={[ lightBlue, lightGreen]}>
                     <View style={[flexRow, flexGrow1, justifySpaceBetween, alignItemsCenter, px3 ]}>
-                        <Text style={[textWhite, textLg]}>{this.state.user.name}</Text>
-                        {this.state.isDateDropdownVisible ? 
-                            <DateDropdown 
-                                navigation={this.props.navigation} 
-                                isDateDropdownVisible={this.state.isDateDropdownVisible} 
-                                handleCloseDateDropdown={this.handleCloseDateDropdown} 
-                            />
-                        : 
-                            <TouchableOpacity onPress={()=>this.setState({isDateDropdownVisible: true})}>
-                                <FontAwesomeIcon icon={faCalendar} size={20} style={[textDarkGrey]} />
-                            </TouchableOpacity>
+                        <Text style={[textWhite, textLg, flexGrow1]}>{this.state.user.name}</Text>
+                        <DateDropdown 
+                            navigation={this.props.navigation} 
+                            isDateDropdownVisible={this.state.isDateDropdownVisible} 
+                            handleCloseDateDropdown={this.handleCloseDateDropdown} 
+                        />
+                        {!this.state.isDateDropdownVisible &&
+                            <React.Fragment>
+                                {this.props.route && this.props.route.params && this.props.route.params && this.props.route.params.dateFilter &&
+                                    <Text style={[textWhite, textSm, mr1]}>{getFormattedDateType(this.props.route.params.dateFilter.type)}</Text>
+                                }
+                                <TouchableOpacity onPress={()=>this.setState({isDateDropdownVisible: true})}>
+                                    <FontAwesomeIcon icon={faCalendar} size={20} style={[textDarkGrey]} />
+                                </TouchableOpacity>
+                            </React.Fragment>
                         }
                     </View>
                     </LinearGradient>
@@ -152,7 +157,7 @@ export default class Transactions extends Component {
                         </View>
                     </View>
 
-                    <IncomesChart transactions={this.state.transactions} />
+                    <IncomesChart navigation={this.props.navigation} route={this.props.route} transactions={this.state.transactions} user={this.state.user} />
                 </View>
             </TouchableWithoutFeedback>
 

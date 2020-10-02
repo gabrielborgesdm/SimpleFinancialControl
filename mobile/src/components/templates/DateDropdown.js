@@ -8,13 +8,14 @@ import { TextInputMask } from 'react-native-masked-text'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCalendar, faTimesCircle, faEnvelope, faUser, faCheck, faSave } from '@fortawesome/free-solid-svg-icons'
 
+import { doMathOperationWithDate } from "../helpers/DateHelpers"
 import { getUser } from '../helpers/StorageHelpers'
 import { translate } from '../helpers/TranslationHelpers'
 import { styles, colors } from "../../assets/Styles"
 const { lightBlue, dark } = colors
 const {
-    bgWhite, textYellow, dateDropdownItem, dateDropdownView, textCenter, dateDropdownHeader, modalView, modalModal, formGroup, formLabel, formControl, formControlButtonRight,
-    minimalistInputGroup, modalViewHeader, modalViewHeaderTitleView, modalViewHeaderTitle, p1, modalViewBody, buttonMinimalist, bgLightBlue, opacityLow, opacityHigh, flexGrow1
+    bgWhite, textYellow, dateDropdownItem, dateDropdownView, textCenter, dateDropdownHeader, modalView, modalModal, formGroup, formLabel, formControl,
+    formControlButtonRight, modalViewHeader, modalViewHeaderTitleView, modalViewHeaderTitle, p1, modalViewBody, buttonMinimalist, bgLightBlue, flexGrow1
 } = styles
  
 export default class DateDropdown extends Component{
@@ -26,6 +27,7 @@ export default class DateDropdown extends Component{
             dateFilter: {
                 start: "",
                 end: "",
+                type: ""
             },
             isCustomModalVisible: false,
             customModalStatus: "",
@@ -34,23 +36,40 @@ export default class DateDropdown extends Component{
     }
     
     handleDateChange = dateMode => {
+        let {dateFilter} = this.state
+        dateFilter.type = dateMode
+
         if(dateMode === "custom") {
-            this.setState({isCustomModalVisible: true})
+            this.setState({isCustomModalVisible: true, dateFilter})
         } else {
-            /* let getDateFilterStart = this.getDateFilterStart(mode)
-            this.props.navigation.setParams({date: dateMode}) */
-            
+            if(dateMode !== "all") dateFilter = this.getDateAccordingToType(dateFilter)
+            this.props.navigation.setParams({dateFilter, dateFilterTypeHasChanged: true}) 
             this.props.handleCloseDateDropdown()
         }
+    }
 
+    getDateAccordingToType = (dateFilter) => {
+        let endDate  = new Date().toISOString()
+        let startDate
+        if(dateFilter.type === "last_week") {
+            startDate = doMathOperationWithDate("subtract", "days", 7)
+        } else if(dateFilter.type === "last_month") {
+            startDate = doMathOperationWithDate("subtract", "months", 1)
+        } else if(dateFilter.type === "last_year") {
+            startDate = doMathOperationWithDate("subtract", "years", 1)
+        }
+        
+        dateFilter.start = startDate.toISOString()
+        dateFilter.end = endDate
 
+        return dateFilter
     }
 
     chooseCustomDate = () => {
         if(!this.checkDateEmptyFields()) return
         if(!this.checkDateFieldsAreValid()) return
 
-        this.props.navigation.setParams({dateMode: "custom", dateFilter: this.state.dateFilter})
+        this.props.navigation.setParams({dateMode: "custom", dateFilter: this.state.dateFilter, dateFilterTypeHasChanged: true})
         this.setState({isCustomModalVisible: false})
         this.props.handleCloseDateDropdown()
 
@@ -106,21 +125,17 @@ export default class DateDropdown extends Component{
         dateFilter[type] = date
         this.setState({dateFilter, isDateDatePickerVisible: false})
 
-        
-    }
-
-    getDateFilterStart = () => {
-        
     }
 
     getUser = async () => {
         let user = await getUser()
-        console.log(user)
         this.setState({user})
     }
     
     componentDidMount = () => {
         this.getUser()
+        this.handleDateChange("last_year")
+
     }
 
     render = () => 
