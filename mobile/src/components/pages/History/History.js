@@ -44,10 +44,7 @@ export default class Transactions extends Component {
 
     render = () => (
         <SafeAreaView style={[flex1, {backgroundColor: "#fff"}]}>
-            <ScrollView horizontal={true} contentContainerStyle={{backgroundColor: "#ff00ff"}}>
-                <Text>asdsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssasd</Text>
-            </ScrollView>
-
+           
             <ScrollView>
                 <TextInput 
                     placeholder={translate('FILTER_TRANSACTIONS')}
