@@ -9,7 +9,6 @@ Simple financial control is an application in which you can takes note
 - [x] Besides the general Transactions View, there is a detailed transactions page, where you can sort, filter and download them as you wish.
 - [x] Transactions can be exported to CSV, XLS and JSON formats.
 - [x] Password Security Risk Component implemented.
-- [ ] Create a landing page for the application.
 
 ### Instalation ###
 1. Rename .env-example to .env. Then enter your configuration:

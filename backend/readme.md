@@ -8,7 +8,6 @@
 - [x] [Nodemailer](https://nodemailer.com/about/) to deliver account related E-mails.
 - [x] Simple Financial Controls e-mails have both Portuguese and English versions.
 - [x] [Bull Queue Jobs](https://github.com/OptimalBits/bull) running in a separated server and integrated with Nodemailer to avoid the risk of losing any e-mails or any future implemented processes that can eventually fail.
-- [ ] Anti-Bruteforce system. 
 
 ### Instalation ###
 1. Rename .env-example to .env. Then enter your configuration.
