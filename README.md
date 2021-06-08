@@ -1,7 +1,5 @@
 # Simple Financial Control #
-Simple Financial Control is an application that helps you to have control of your incomes and expenses.
-
-I divided the application in back-end and front-end. The first part is an API Rest Server, the second is a responsive web application developed with React, and the third one is a mobile app created with React Native. To know more about features and installation instructions, have a look at the project available on my portfolio.
+Simple Financial Control is an application that helps you to have control of your incomes and expenses. it has an API Rest Server developed with Node and Express. In order to develop a responsive web application I used React and Bootstrap. Finally, for Database I chose Mongo.
 
 # Instalation #
 
